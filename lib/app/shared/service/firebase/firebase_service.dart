@@ -4,13 +4,13 @@ import 'package:firebase/firebase.dart' as fb;
 
 class FirebaseService extends Disposable {
 
-
   initFirebase() {
     fb.initializeApp(
       apiKey: APIKEY,
       projectId: PROJECTID,
       databaseURL: DATABASEURL,
     );
+    return fb.firestore();
   }
 
 

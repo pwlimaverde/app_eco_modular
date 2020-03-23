@@ -10,6 +10,7 @@ class OpsModel {
   String entrada;
   String entrega;
   String vendedor;
+  bool produzido;
   int op;
 
   OpsModel(
@@ -22,6 +23,7 @@ class OpsModel {
       this.entrada,
       this.entrega,
       this.vendedor,
+      this.produzido,
       this.op});
 
 //  OpsModel.fromJson(Map<String, dynamic> json) {
@@ -48,6 +50,7 @@ class OpsModel {
     data['entrada'] = this.entrada;
     data['entrega'] = this.entrega;
     data['vendedor'] = this.vendedor;
+    data['produzido'] = this.produzido;
     data['op'] = this.op;
     return data;
   }
@@ -76,6 +79,7 @@ class OpsModel {
       entrada: doc.data()['entrada'],
       entrega: doc.data()['entrega'],
       vendedor: doc.data()['vendedor'],
+      produzido: doc.data()['produzido'],
       op: doc.data()['op'],
     );
   }

@@ -1,15 +1,10 @@
 import 'dart:html' as html;
-import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_module.dart';
-import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_repository.dart';
+import 'package:eco_web_mobx/app/modules/upload_ops/repositories/upload_ops_interface.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
-import 'package:firebase/firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'dart:convert' as convert;
-import 'dart:async';
 import 'dart:convert';
 import 'package:intl/intl.dart';
-import 'package:firebase/firebase.dart' as fb;
 
 part 'upload_ops_controller.g.dart';
 
@@ -17,33 +12,20 @@ class UploadOpsController = _UploadOpsControllerBase with _$UploadOpsController;
 
 abstract class _UploadOpsControllerBase with Store {
 
-  final Firestore firestore;
-
-  _UploadOpsControllerBase(this.firestore);
-
-  final repo = UploadOpsModule.to.get<UploadOpsRepository>();
-
-  CollectionReference get ops => fb.firestore().collection("ops");
-
-  Stream<List<DocumentSnapshot>> get streamOps => ops.onSnapshot
-      .map((QuerySnapshot query) => query.docs.map((doc) => doc).toList());
-
-  Future<String> loadAsset(String path) async {
-    return await rootBundle.loadString(path);
+  final IUploadOpsRepository repository;
+  _UploadOpsControllerBase(IUploadOpsRepository this.repository){
+    getOpsList();
   }
 
-  Stream<List<OpsModel>> getOps() {
-    Firestore fbs = firestore;
-    try {
-      return fbs.collection("ops").onSnapshot.map((query) {
-        return query.docs.map((doc) {
-          return OpsModel.fromDocument(doc);
-        });
-      });
-    } catch (e) {
-      print("Erro => $e");
-    }
+  @observable
+  ObservableStream<List<OpsModel>> opsList;
+
+  @action
+  getOpsList(){
+    opsList = repository.getOps().asObservable();
   }
+
+
 
   uploadOps(context) {
     html.InputElement uploadInput = html.FileUploadInputElement();
@@ -134,4 +116,6 @@ abstract class _UploadOpsControllerBase with Store {
       },
     );
   }
+
+
 }
