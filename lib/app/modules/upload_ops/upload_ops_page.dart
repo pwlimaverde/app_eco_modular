@@ -48,15 +48,16 @@ class _UploadOpsPageState
                 );
               }
               List<DocumentSnapshot> docs = snapshot.data;
-              List<OpsModel> ops = _getOps2(docs);
+//              List<OpsModel> ops = _getOps2(docs);
               return Container(
                 height: 400,
                 width: 600,
                 child: ListView.builder(
-                  itemCount: ops.length,
+                  itemCount: docs.length,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, index){
-                    return Text("OP: ${ops[index].op}");
+                    OpsModel ops = OpsModel.fromDocument(docs[index]);
+                    return Text("OP: ${ops.op}");
                   },
                 ),
               );
@@ -71,7 +72,12 @@ class _UploadOpsPageState
 _getOps2(List<DocumentSnapshot> docs){
   List<OpsModel> ops = [];
   for(DocumentSnapshot doc in docs){
-    OpsModel op = OpsModel.fromMap(doc.data());
+    OpsModel op = OpsModel.fromDocument(doc);
+    String teste = doc.data().toString();
+    String teste2 = doc.ref.id;
+    print("ref _getOps: $teste2");
+    print("all _getOps: $teste");
+    print("OP _getOps: ${op.reference.id}");
     print("OP _getOps: ${op.op}");
     print("CLIENTE _getOps: ${op.cliente}");
     print("SERVIÇO _getOps: ${op.servico}");

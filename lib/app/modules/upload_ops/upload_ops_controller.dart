@@ -6,14 +6,10 @@ import 'package:firebase/firestore.dart';
 import 'package:flutter/services.dart';
 import 'package:mobx/mobx.dart';
 import 'dart:convert' as convert;
-import 'package:excel/excel.dart';
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io' as io;
-import 'package:spreadsheet_decoder/spreadsheet_decoder.dart';
 import 'package:intl/intl.dart';
 import 'package:firebase/firebase.dart' as fb;
-import '../../app_module.dart';
 
 part 'upload_ops_controller.g.dart';
 
@@ -41,8 +37,7 @@ abstract class _UploadOpsControllerBase with Store {
     try {
       return fbs.collection("ops").onSnapshot.map((query) {
         return query.docs.map((doc) {
-          print(doc.data());
-          return OpsModel.fromMap(doc.data());
+          return OpsModel.fromDocument(doc);
         });
       });
     } catch (e) {
