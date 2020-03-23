@@ -1,3 +1,4 @@
+import 'package:eco_web_mobx/app/shared/service/firebase/firebase_service.dart';
 import 'package:eco_web_mobx/app/shared/global/shared_preferences/prefs_service.dart';
 import 'package:eco_web_mobx/app/app_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -13,6 +14,7 @@ import 'shared/modules/login/login_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => FirebaseService()),
         Bind((i) => PrefsService()),
         Bind((i) => AppController()),
         Bind((i) => LoginbuttonController()),

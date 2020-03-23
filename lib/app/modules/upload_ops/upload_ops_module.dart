@@ -1,5 +1,7 @@
+import 'package:eco_web_mobx/app/app_module.dart';
 import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_repository.dart';
 import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_controller.dart';
+import 'package:eco_web_mobx/app/shared/service/firebase/firebase_service.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_page.dart';
 
@@ -7,7 +9,9 @@ class UploadOpsModule extends ChildModule {
   @override
   List<Bind> get binds => [
         Bind((i) => UploadOpsRepository()),
-        Bind((i) => UploadOpsController()),
+        Bind((i) => UploadOpsController(
+              AppModule.to.get<FirebaseService>().initFirebase(),
+            )),
       ];
 
   @override

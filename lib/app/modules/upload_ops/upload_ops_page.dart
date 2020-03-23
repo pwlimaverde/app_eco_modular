@@ -1,4 +1,6 @@
 import 'package:eco_web_mobx/app/modules/upload_ops/upload_ops_controller.dart';
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
+import 'package:firebase/firestore.dart';
 import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -6,7 +8,6 @@ import 'upload_ops_controller.dart';
 import 'upload_ops_module.dart';
 
 class UploadOpsPage extends StatefulWidget {
-
   final String title;
 
   const UploadOpsPage({Key key, this.title = "UploadOps"}) : super(key: key);
@@ -35,8 +36,46 @@ class _UploadOpsPageState
               onPressed: () => controller.uploadOps(context),
             ),
           ),
+          StreamBuilder(
+            stream: controller.streamOps,
+            builder: (context, snapshot) {
+              if (snapshot.hasError) {
+                return Text("Deu erro => ${snapshot.error}");
+              }
+              if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+              List<DocumentSnapshot> docs = snapshot.data;
+              List<OpsModel> ops = _getOps2(docs);
+              return Container(
+                height: 400,
+                width: 600,
+                child: ListView.builder(
+                  itemCount: ops.length,
+                  scrollDirection: Axis.vertical,
+                  itemBuilder: (context, index){
+                    return Text("OP: ${ops[index].op}");
+                  },
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
+}
+
+_getOps2(List<DocumentSnapshot> docs){
+  List<OpsModel> ops = [];
+  for(DocumentSnapshot doc in docs){
+    OpsModel op = OpsModel.fromMap(doc.data());
+    print("OP _getOps: ${op.op}");
+    print("CLIENTE _getOps: ${op.cliente}");
+    print("SERVIÇO _getOps: ${op.servico}");
+    ops.add(op);
+  }
+  return ops;
 }

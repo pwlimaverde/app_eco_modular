@@ -1,48 +1,67 @@
+import 'package:firebase/firestore.dart';
+
 class OpsModel {
-    int id;
+    DocumentReference reference;
     int orcamento;
     String cliente;
     String servico;
-    String quant;
-    String valor;
+    int quant;
+    int valor;
     String entrada;
+    String entrega;
     String vendedor;
     int op;
 
     OpsModel(
-        {this.id,
+        {this.reference,
             this.orcamento,
             this.cliente,
             this.servico,
             this.quant,
             this.valor,
             this.entrada,
+            this.entrega,
             this.vendedor,
             this.op});
 
     OpsModel.fromJson(Map<String, dynamic> json) {
-        id = json['id'];
+        reference = json['reference'];
         orcamento = json['orcamento'];
         cliente = json['cliente'];
         servico = json['servico'];
         quant = json['quant'];
         valor = json['valor'];
         entrada = json['entrada'];
+        entrega = json['entrega'];
         vendedor = json['vendedor'];
         op = json['op'];
     }
 
     Map<String, dynamic> toJson() {
         final Map<String, dynamic> data = new Map<String, dynamic>();
-        data['id'] = this.id;
+        data['reference'] = this.reference;
         data['orcamento'] = this.orcamento;
         data['cliente'] = this.cliente;
         data['servico'] = this.servico;
         data['quant'] = this.quant;
         data['valor'] = this.valor;
         data['entrada'] = this.entrada;
+        data['entrega'] = this.entrega;
         data['vendedor'] = this.vendedor;
         data['op'] = this.op;
         return data;
+    }
+
+    OpsModel.fromMap(Map<String, dynamic> map){
+        reference = map['reference'];
+        orcamento = map['orcamento'];
+        cliente = map['cliente'];
+        servico = map['servico'];
+        quant = map['quant'];
+        valor = map['valor'];
+        entrada = map['entrada'];
+        entrega = map['entrega'];
+        vendedor = map['vendedor'];
+        op = map['op'];
     }
 }
