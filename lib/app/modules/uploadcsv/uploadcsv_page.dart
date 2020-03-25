@@ -2,8 +2,6 @@ import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../app_controller.dart';
-import '../../app_module.dart';
 import 'uploadcsv_controller.dart';
 import 'widgets/header/header_widget.dart';
 import 'widgets/menu/menu_widget.dart';
@@ -20,17 +18,23 @@ class UploadcsvPage extends StatefulWidget {
 
 class _UploadcsvPageState
     extends ModularState<UploadcsvPage, UploadcsvController> {
-  final controllerGeral = AppModule.to.get<AppController>();
 
-  double get sizeW => controllerGeral.size.width;
-
-  double get sizeH => controllerGeral.size.height;
+  bool get showMenu => controller.size.width <= 1080;
+  double get sizeW => controller.size.width;
+  double get sizeH => controller.size.height;
 
   //use 'controller' variable to access controller
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    controller.uploadOps();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    controller.uploadOps(context);
+
     return Scaffold(
       body: Column(
         children: <Widget>[
@@ -55,6 +59,7 @@ class _UploadcsvPageState
   }
 
   _observerBody() {
+    controller.getQuery(context);
     return Observer(
       builder: (_) {
         return Container(
@@ -62,11 +67,11 @@ class _UploadcsvPageState
           height: sizeH - hederHeight,
           child: Row(
             children: <Widget>[
-              controllerGeral.showMenu
+              showMenu
                   ? _rightWidget()
                   : Row(
                       children: <Widget>[
-                        MenuWidget(),
+                        _menuWidget(),
                         _rightWidget(),
                       ],
                     )
@@ -80,10 +85,13 @@ class _UploadcsvPageState
   _rightWidget() {
     return RightWidget(
       menuWidth: menuWidth,
-      showMenu: controllerGeral.showMenu,
+      showMenu: showMenu,
       sizeW: sizeW,
       controller: controller,
     );
   }
 
+  _menuWidget(){
+    return MenuWidget(controller: controller);
+  }
 }

@@ -1,4 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import '../../app_controller.dart';
+import '../../app_module.dart';
 import 'model/ops_model.dart';
 import 'repositories/uploadcsv_interface.dart';
 import 'dart:html' as html;
@@ -13,6 +16,17 @@ abstract class _UploadcsvControllerBase with Store {
   final IUploadcsvRepository repository;
 
   _UploadcsvControllerBase(this.repository);
+
+  @observable
+  Orientation orientation;
+  @observable
+  Size size;
+  @action
+  getQuery(context) {
+    size = MediaQuery.of(context).size;
+    orientation = MediaQuery.of(context).orientation;
+  }
+
 
   @observable
   String msgError;
@@ -42,7 +56,7 @@ abstract class _UploadcsvControllerBase with Store {
     ativMsgError(null);
   }
 
-  uploadOps(context) {
+  uploadOps() {
     ativMsgError(null);
 
 

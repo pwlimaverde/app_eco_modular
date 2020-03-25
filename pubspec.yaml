@@ -61,8 +61,9 @@ flutter:
 
 
 scripts:
-  build: flutter pub run build_runner watch --delete-conflicting-outputs
-  clean: flutter pub run build_runner clean
+  mobx: flutter pub get & flutter pub run build_runner watch --delete-conflicting-outputs
+  build_apk: flutter pub get & flutter build apk -t lib/main_production.dart --release
+  build_web: flutter pub get & flutter build web -t lib/main_production.dart --release
 
   # To add assets to your application, add an assets section, like this:
   # assets:

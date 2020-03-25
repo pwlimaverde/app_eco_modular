@@ -1,18 +1,18 @@
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
+class MenuWidget extends StatelessWidget {
 
-import '../../uploadcsv_controller.dart';
+  var controller;
 
-class MenuWidget extends StatefulWidget {
-  @override
-  _MenuWidgetState createState() => _MenuWidgetState();
-}
+  MenuWidget({this.controller});
 
-class _MenuWidgetState extends ModularState<MenuWidget, UploadcsvController> {
   @override
   Widget build(BuildContext context) {
+    return _container();
+  }
+
+  _container() {
     return Container(
       width: menuWidth,
       color: Colors.grey[400],
@@ -21,7 +21,7 @@ class _MenuWidgetState extends ModularState<MenuWidget, UploadcsvController> {
           ListTile(
             leading: IconButton(
               icon: Icon(Icons.file_upload),
-              onPressed: () => controller.uploadOps(context),
+              onPressed: () => controller.uploadOps(),
             ),
             title: Text("Upload"),
           ),
