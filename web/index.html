@@ -2,11 +2,56 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>eco_web_mobx</title>
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="A new Flutter application.">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="uploadcsvweb">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" type="image/png" href="favicon.png"/>
+
+  <title>uploadcsvweb</title>
+  <link rel="manifest" href="manifest.json">
 </head>
 <body>
-  <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/6.6.1/firebase-firestore.js"></script>
+  <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/7.6.1/firebase-firestore.js"></script>
+
+  <!-- ADD THIS BEFORE YOUR main.dart.js SCRIPT -->
+  <script>
+  // Your web app's Firebase configuration
+  var firebaseConfig = {
+    apiKey: "AIzaSyCGV7FNvvQxhcERym5aqflPSG9Nz1kqNYA",
+    authDomain: "ecoprint-b6513.firebaseapp.com",
+    databaseURL: "https://ecoprint-b6513.firebaseio.com",
+    projectId: "ecoprint-b6513",
+    storageBucket: "ecoprint-b6513.appspot.com",
+    messagingSenderId: "88813349583",
+    appId: "1:88813349583:web:dabce8d2469248f108e5ba",
+    measurementId: "G-5E5VYK9D9Q"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  firebase.analytics();
+
+  </script>
+  <!-- END OF FIREBASE INIT CODE -->
+
   <script src="main.dart.js" type="application/javascript"></script>
 </body>
 </html>

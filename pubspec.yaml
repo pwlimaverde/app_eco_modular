@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.1.0 <3.0.0"
 
 dependencies:
+  cloud_firestore: ^0.13.4+2
   firebase: ^7.2.1
   intl: ^0.16.1
   spreadsheet_decoder: ^1.1.0
@@ -32,7 +33,7 @@ dependencies:
   mobx: ^0.4.0+1
   dio: ^3.0.9
   rxdart: ^0.23.1
-  flutter_modular: ^0.5.3
+  flutter_modular: ^1.0.0
   flutter:
     sdk: flutter
 
