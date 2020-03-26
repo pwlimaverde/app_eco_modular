@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../model/ops_model.dart';
+import '../../uploadcsv_status.dart';
 
 class RightWidget extends StatelessWidget {
   var menuWidth;
@@ -13,17 +14,19 @@ class RightWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
-      if (controller.upandoOps == true) {
-        return _buildContainer(_load());
-      }
-      if (controller.msgError != null) {
-        return _buildContainer(Text("${controller.msgError}"));
-      }
-      if (controller.opsListUpload.isEmpty) {
+      if (controller.status == UploadcsvStatus.none) {
         return _buildContainer(
-            Text("colocar conteudo quando a Lista tiver vasia"));
+            Text("colocar conteudo geral"));
+      }else if (controller.status == UploadcsvStatus.loading) {
+        return _buildContainer(_load());
+      }else if (controller.status == UploadcsvStatus.success) {
+        UploadcsvStatus statusRight = controller.status;
+        final list = statusRight.valorGet as List<OpsModel>;
+        return _buildContainer(_ListaUploadOps(list));
+      }else{
+        UploadcsvStatus statusRight = controller.status;
+        return _buildContainer(Text("${statusRight.valorGet}"));
       }
-      return _buildContainer(_ListaUploadOps());
     });
   }
 
@@ -41,11 +44,11 @@ class RightWidget extends StatelessWidget {
     );
   }
 
-  _ListaUploadOps() {
+  _ListaUploadOps(List<OpsModel> list) {
     return ListView.builder(
-        itemCount: controller.opsListUpload.length,
-        itemBuilder: (_, index) {
-          OpsModel model = controller.opsListUpload[index];
+        itemCount: list.length,
+        itemBuilder: (context, index) {
+          OpsModel model = list[index];
           return _buildCheckboxListTile(model);
         });
   }

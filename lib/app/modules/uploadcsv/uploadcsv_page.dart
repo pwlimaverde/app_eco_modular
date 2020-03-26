@@ -46,6 +46,7 @@ class _UploadcsvPageState
   }
 
   _observerHeader() {
+    controller.getQuery(context);
     return Observer(
       builder: (_) {
         return HeaderWidget(

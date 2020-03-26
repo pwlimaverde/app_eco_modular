@@ -7,20 +7,31 @@ import 'repositories/uploadcsv_interface.dart';
 import 'dart:html' as html;
 import 'dart:convert' as convert;
 import 'package:intl/intl.dart' as intl;
+
+import 'uploadcsv_status.dart';
+
 part 'uploadcsv_controller.g.dart';
 
 class UploadcsvController = _UploadcsvControllerBase with _$UploadcsvController;
 
 abstract class _UploadcsvControllerBase with Store {
-
   final IUploadcsvRepository repository;
 
   _UploadcsvControllerBase(this.repository);
 
   @observable
+  UploadcsvStatus status = UploadcsvStatus.none;
+
+  @action
+  setStatus(UploadcsvStatus statusUP) {
+    status = statusUP;
+  }
+
+  @observable
   Orientation orientation;
   @observable
   Size size;
+
   @action
   getQuery(context) {
     size = MediaQuery.of(context).size;
@@ -28,51 +39,21 @@ abstract class _UploadcsvControllerBase with Store {
   }
 
 
-  @observable
-  String msgError;
-  @action
-  ativMsgError(String msg){
-    msgError = msg;
-  }
-
-  @observable
-  bool upandoOps = false;
-  @action
-  ativUpandoOps(bool valor){
-    upandoOps = valor;
-  }
-
-  @observable
-  ObservableList<OpsModel> opsListUpload = ObservableList<OpsModel>();
-  @action
-  getOpsListUpload(List<OpsModel> listOpsUP){
-    if(listOpsUP == null){
-      ativUpandoOps(false);
-      ativMsgError("Nenhuma OP nova localizada");
-    }
-    print("${listOpsUP[0].op}");
-    opsListUpload = listOpsUP.asObservable();
-    ativUpandoOps(false);
-    ativMsgError(null);
-  }
-
   uploadOps() {
-    ativMsgError(null);
-
-
-    try{
+    setStatus(UploadcsvStatus.loading);
+    try {
       html.InputElement uploadInput = html.FileUploadInputElement();
       uploadInput.click();
 
       uploadInput.onChange.listen(
-            (e) {
+        (e) {
           List<html.File> files = uploadInput.files;
           if (files.length > 0) {
             final html.File file = files[0];
             print("Upload file: ${file.name}");
 
             final reader = html.FileReader();
-            reader.onLoadEnd.listen((e) async{
+            reader.onLoadEnd.listen((e) async {
               Object result = reader.result;
 
               var now = DateTime.now();
@@ -85,12 +66,12 @@ abstract class _UploadcsvControllerBase with Store {
               String mimeType = s.substring(s.indexOf(":") + 1, s.indexOf(";"));
               print("mimeType: $mimeType");
 
-              if(!file.name.contains(".csv")){
-                ativUpandoOps(false);
-                return print("não é um csv");
+              if (!file.name.contains(".csv")) {
+                setStatus(
+                  UploadcsvStatus.error..valorSet = "O arquivo não é *.csv",
+                );
               }
-
-              ativUpandoOps(true);
+              setStatus(UploadcsvStatus.loading);
 
               dynamic bytes = convert.base64.decode(base64);
               String decoderByte = convert.utf8.decode(bytes);
@@ -99,7 +80,7 @@ abstract class _UploadcsvControllerBase with Store {
                   .replaceAll('Série: P"', 'Série: P",\r\n')
                   .trim();
               List<String> decoderRow = decoderReple.split(',\r\n');
-              List<OpsModel> listOps= [];
+              List<OpsModel> listOps = [];
 
               for (String item in decoderRow) {
                 OpsModel up = OpsModel();
@@ -118,15 +99,21 @@ abstract class _UploadcsvControllerBase with Store {
                     .replaceAll(',00', '')
                     .replaceAll('.', '')
                     .trim());
-                up.valor = double.parse(i2[4].substring(0, i2[4].indexOf('",')).replaceFirst('.', '').replaceAll(',', '.').trim());
+                up.valor = double.parse(i2[4]
+                    .substring(0, i2[4].indexOf('",'))
+                    .replaceFirst('.', '')
+                    .replaceAll(',', '.')
+                    .trim());
                 String entrada = i2[4]
                     .substring(i2[4].indexOf('",') + 2)
                     .replaceAll('"', '')
                     .trim();
                 up.entrada = entrada;
                 String voe = i2[5];
-                String vendedor =
-                voe.substring(0, voe.indexOf(',')).replaceAll('"', '').trim();
+                String vendedor = voe
+                    .substring(0, voe.indexOf(','))
+                    .replaceAll('"', '')
+                    .trim();
                 up.vendedor = vendedor;
                 String oe = voe.substring(voe.indexOf(',') + 1);
                 String op = oe.substring(0, oe.indexOf(','));
@@ -136,20 +123,28 @@ abstract class _UploadcsvControllerBase with Store {
                 listOps.add(up);
               }
 
-              getOpsListUpload(await upload(listOps));
-
+              List<OpsModel> listOk = await upload(listOps);
+              if (listOk == null) {
+                setStatus(
+                  UploadcsvStatus.error..valorSet = "Nenhuma OP nova carregada",
+                );
+              } else {
+                setStatus(
+                  UploadcsvStatus.success..valorSet = listOk,
+                );
+              }
             });
 
             reader.readAsDataUrl(file);
           }
         },
       );
-    }catch(e){
-      ativUpandoOps(false);
-      ativMsgError("Erro upload catch - $e");
+    } catch (e) {
+      setStatus(
+        UploadcsvStatus.error..valorSet = e,
+      );
     }
   }
 
   Future upload(List<OpsModel> model) => repository.upload(model);
-
 }
