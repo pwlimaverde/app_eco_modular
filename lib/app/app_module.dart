@@ -5,6 +5,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_web_mobx/app/app_widget.dart';
 import 'package:eco_web_mobx/app/modules/home/home_module.dart';
+import 'modules/ops/ops_module.dart';
 import 'modules/uploadcsv/uploadcsv_module.dart';
 import 'shared/global/loginbutton/loginbutton_controller.dart';
 import 'shared/global/menudrawer/menudrawer_controller.dart';
@@ -27,6 +28,7 @@ class AppModule extends MainModule {
         Router('/', module: HomeModule()),
         Router('/login', module: LoginModule()),
         Router('/upload', module: UploadcsvModule()),
+        Router('/ops', module: OpsModule()),
       ];
 
   @override

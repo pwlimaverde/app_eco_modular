@@ -7,7 +7,7 @@ class RightWidget extends StatelessWidget {
   var menuWidth;
   var showMenu;
   var sizeW;
-  var controller;
+  final controller;
 
   RightWidget({this.menuWidth, this.showMenu, this.sizeW, this.controller});
 

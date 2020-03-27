@@ -14,9 +14,10 @@ description: A new Flutter application.
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.7.2 <3.0.0"
 
 dependencies:
+  key_value_store_web: ^1.0.0
   cloud_firestore: ^0.13.4+2
   firebase: ^7.2.1
   intl: ^0.16.1

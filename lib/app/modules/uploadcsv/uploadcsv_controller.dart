@@ -1,7 +1,6 @@
+import 'package:eco_web_mobx/app/shared/utilitario/auxiliares.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import '../../app_controller.dart';
-import '../../app_module.dart';
 import 'model/ops_model.dart';
 import 'repositories/uploadcsv_interface.dart';
 import 'dart:html' as html;
@@ -29,6 +28,7 @@ abstract class _UploadcsvControllerBase with Store {
 
   @observable
   Orientation orientation;
+
   @observable
   Size size;
 
@@ -37,7 +37,6 @@ abstract class _UploadcsvControllerBase with Store {
     size = MediaQuery.of(context).size;
     orientation = MediaQuery.of(context).orientation;
   }
-
 
   uploadOps() {
     setStatus(UploadcsvStatus.loading);
@@ -108,7 +107,10 @@ abstract class _UploadcsvControllerBase with Store {
                     .substring(i2[4].indexOf('",') + 2)
                     .replaceAll('"', '')
                     .trim();
-                up.entrada = entrada;
+                DateTime entradaFD = DateTime.parse(
+                  "${entrada.substring(6, 10)}-${entrada.substring(3, 5)}-${entrada.substring(0, 2)}",
+                );
+                up.entrada = entradaFD;
                 String voe = i2[5];
                 String vendedor = voe
                     .substring(0, voe.indexOf(','))
@@ -119,7 +121,10 @@ abstract class _UploadcsvControllerBase with Store {
                 String op = oe.substring(0, oe.indexOf(','));
                 up.op = int.parse(op);
                 String entrega = "${oe.substring(oe.indexOf(',') + 1)}-$ano";
-                up.entrega = entrega.replaceAll('-', '/');
+                DateTime entregaFD = DateTime.parse(
+                  "${entrega.substring(7, 11)}-${convertMes("${entrega.substring(3, 6)}")}-${entrega.substring(0, 2)}",
+                );
+                up.entrega = entregaFD;
                 listOps.add(up);
               }
 

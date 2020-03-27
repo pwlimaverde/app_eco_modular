@@ -3,11 +3,64 @@ import 'uploadcsv_interface.dart';
 import '../model/ops_model.dart';
 
 
-class UploadcsvRepository implements IUploadcsvRepository {
+class OpsRepository implements IOpsRepository {
 
   final Firestore firestore;
-  UploadcsvRepository(this.firestore);
+  OpsRepository(this.firestore);
 
+  @override
+  Future upProd(OpsModel model) async{
+    try{
+      model.reference.updateData({
+        'produzido': model.produzido,
+      });
+    }catch(e){
+
+    }
+  }
+
+  @override
+  Future upEnt(OpsModel model) {
+    try{
+      model.reference.updateData({
+        'entregue': model.entregue,
+      });
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
+  Future canProd(OpsModel model) {
+    try{
+      model.reference.updateData({
+        'cancelada': true,
+      });
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
+  Future atProd(OpsModel model) {
+    try{
+      model.reference.updateData({
+        'cancelada': false,
+      });
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
+  Stream<List<OpsModel>> getOps() {
+    return firestore.collection("ops").snapshots().map((query) {
+      return query.documents.map((doc) {
+        return OpsModel.fromDocument(doc);
+      }).toList();
+    });
+
+  }
 
   @override
   Future upload(List<OpsModel> listOps) async{
@@ -52,4 +105,6 @@ class UploadcsvRepository implements IUploadcsvRepository {
   //dispose will be called automatically
   @override
   void dispose() {}
+
+
 }
