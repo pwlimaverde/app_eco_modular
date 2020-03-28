@@ -2,30 +2,29 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'uploadcsv_interface.dart';
 import '../model/ops_model.dart';
 
-
 class UploadcsvRepository implements IUploadcsvRepository {
-
   final Firestore firestore;
+
   UploadcsvRepository(this.firestore);
 
-
   @override
-  Future upload(List<OpsModel> listOps) async{
+  Future upload(List<OpsModel> listOps) async {
     List<OpsModel> listOpsAnalitic = listOps;
     List<OpsModel> listOpsUP = [];
 
-    for(OpsModel model in listOps){
-      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+    for (OpsModel model in listOps) {
+      DocumentReference docRef =
+          firestore.collection("ops").document("${model.op}");
       DocumentSnapshot doc = await docRef.get();
       final exists = doc.exists;
-      if(!exists){
+      if (!exists) {
         listOpsUP.add(model);
         print("Ops nova - ${model.op}");
       }
     }
 
-    if(listOpsUP.length > 0){
-      for(OpsModel model in listOpsUP){
+    if (listOpsUP.length > 0) {
+      for (OpsModel model in listOpsUP) {
         firestore.collection("ops").document("${model.op}").setData({
           'cliente': model.cliente,
           'entrada': model.entrada,
@@ -46,7 +45,12 @@ class UploadcsvRepository implements IUploadcsvRepository {
     }
     print("total listOpsUP - ${listOpsUP.length}");
     print("total listOpsAnalitic - ${listOpsAnalitic.length}");
-    return listOpsUP.length>0?listOpsUP:null;
+
+    List test = await firestore.collection("ops").getDocuments().then((query) => query.documents.toList());
+
+    print("doc - ${DateTime.fromMillisecondsSinceEpoch(test[0]['entrega'].seconds * 1000)} - ${test[0]['entrega'].seconds}");
+
+    return listOpsUP.length > 0 ? listOpsUP : null;
   }
 
   //dispose will be called automatically

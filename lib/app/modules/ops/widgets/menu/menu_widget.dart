@@ -1,8 +1,9 @@
-import 'package:eco_web_mobx/app/modules/uploadcsv/uploadcsv_status.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../ops_status.dart';
 
 class MenuWidget extends StatelessWidget {
   var controller;
@@ -17,29 +18,26 @@ class MenuWidget extends StatelessWidget {
   }
 
   _container() {
+    controller.status;
     return Container(
       width: menuWidth,
       color: Colors.grey[400],
       child: ListView(
         children: <Widget>[
           Container(
-            color: Colors.blueGrey,
             child: ListTile(
-                leading: controller.status == UploadcsvStatus.loading
-                    ? CircularProgressIndicator()
-                    : IconButton(
-                        icon: Icon(Icons.file_upload),
-                        onPressed: () => controller.uploadOps(),
-                      ),
-                title: controller.status == UploadcsvStatus.loading
-                    ? Text("Upando")
-                    : Text("Upload")),
+                leading: IconButton(
+                  icon: Icon(Icons.file_upload),
+                  onPressed: () => _navUploadPage(),
+                ),
+                title: Text("Upload")),
           ),
           Container(
+            color: Colors.blueGrey,
             child: ListTile(
               leading: IconButton(
                 icon: Icon(Icons.cloud),
-                onPressed: () => _navOpsPage(),
+                onPressed: () => null,
               ),
               title: Text("Ops"),
             ),
@@ -59,6 +57,6 @@ class MenuWidget extends StatelessWidget {
   }
 }
 
-_navOpsPage() {
-  return Modular.to.pushNamed("/ops");
+_navUploadPage() {
+  return Modular.to.pushNamed("/upload");
 }

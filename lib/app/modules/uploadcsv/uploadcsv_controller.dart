@@ -18,6 +18,7 @@ abstract class _UploadcsvControllerBase with Store {
 
   _UploadcsvControllerBase(this.repository);
 
+
   @observable
   UploadcsvStatus status = UploadcsvStatus.none;
 
@@ -27,15 +28,11 @@ abstract class _UploadcsvControllerBase with Store {
   }
 
   @observable
-  Orientation orientation;
-
-  @observable
   Size size;
 
   @action
   getQuery(context) {
     size = MediaQuery.of(context).size;
-    orientation = MediaQuery.of(context).orientation;
   }
 
   uploadOps() {

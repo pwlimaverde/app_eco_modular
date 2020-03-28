@@ -12,22 +12,36 @@ class MenuWidget extends StatelessWidget {
       color: Colors.grey[400],
       child: ListView(
         children: <Widget>[
-          ListTile(
-            leading: IconButton(
-              icon: Icon(Icons.file_upload),
-              onPressed: () {
-                  _navUploadPage();
-              },
+          Center(
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.file_upload),
+                onPressed: () {
+                    _navUploadPage();
+                },
+              ),
+              title: Text("Upload"),
             ),
-            title: Text("Upload"),
           ),
-          ListTile(
-            leading: Icon(Icons.star),
-            title: Text("Item 2"),
+          Container(
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.cloud),
+                onPressed: () {
+                  _navOpsPage();
+                },
+              ),
+              title: Text("Ops"),
+            ),
           ),
-          ListTile(
-            leading: Icon(Icons.star),
-            title: Text("Item 3"),
+          Container(
+            child: ListTile(
+              leading: IconButton(
+                icon: Icon(Icons.star),
+                onPressed: () => null,
+              ),
+              title: Text("Orçamento Flexo ..."),
+            ),
           ),
         ],
       ),
@@ -37,4 +51,8 @@ class MenuWidget extends StatelessWidget {
 
 _navUploadPage() {
   return Modular.to.pushNamed("/upload");
+}
+
+_navOpsPage() {
+  return Modular.to.pushNamed("/ops");
 }
