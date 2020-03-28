@@ -9,22 +9,29 @@ class RightWidget extends StatelessWidget {
   var sizeW;
   final controller;
   Widget tab;
+  Widget list;
 
-  RightWidget({this.menuWidth, this.showMenu, this.sizeW, this.controller, this.tab});
+  RightWidget({
+    this.menuWidth,
+    this.showMenu,
+    this.sizeW,
+    this.controller,
+    this.tab,
+    this.list,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Observer(builder: (_) {
       if (controller.status == OpsStatus.none) {
-        return _buildContainer(
-            Text("colocar conteudo geral"));
-      }else if (controller.status == OpsStatus.loading) {
+        return _buildContainer(Text("colocar conteudo geral"));
+      } else if (controller.status == OpsStatus.loading) {
         return _buildContainer(_load());
-      }else if (controller.status == OpsStatus.success) {
+      } else if (controller.status == OpsStatus.success) {
         OpsStatus statusRight = controller.status;
         final list = statusRight.valorGet as List<OpsModel>;
         return _buildContainer(_ListaUploadOps(list));
-      }else{
+      } else {
         OpsStatus statusRight = controller.status;
         return _buildContainer(Text("${statusRight.valorGet}"));
       }
@@ -44,7 +51,14 @@ class RightWidget extends StatelessWidget {
       child: Column(
         children: <Widget>[
           tab,
-          Center(child: child),
+          Container(
+            color: Colors.greenAccent,
+            height: 400,
+            child: list,
+          ),
+          Center(
+            child: child,
+          ),
         ],
       ),
     );
@@ -61,8 +75,7 @@ class RightWidget extends StatelessWidget {
 
   _buildCheckboxListTile(OpsModel model) {
     return ListTile(
-      title: Text(
-          "Op: ${model.op} - ${model.cliente}"),
+      title: Text("Op: ${model.op} - ${model.cliente}"),
       subtitle: Text(model.servico),
     );
   }

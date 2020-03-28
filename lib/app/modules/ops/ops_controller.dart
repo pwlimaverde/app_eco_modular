@@ -1,5 +1,6 @@
 import 'package:eco_web_mobx/app/modules/ops/model/ops_model.dart';
 import 'package:eco_web_mobx/app/modules/ops/repositories/ops_interface.dart';
+import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'ops_status.dart';
@@ -11,10 +12,10 @@ class OpsController = _OpsControllerBase with _$OpsController;
 abstract class _OpsControllerBase with Store {
   final IOpsRepository repository;
   final prefsOps;
-  _OpsControllerBase(IOpsRepository this.repository, this.prefsOps){
+
+  _OpsControllerBase(IOpsRepository this.repository, this.prefsOps) {
     getOpsListAll();
   }
-
 
   @observable
   ObservableStream<List<OpsModel>> opsListAll;
@@ -24,9 +25,7 @@ abstract class _OpsControllerBase with Store {
     print("Inicio do carregamento em Conttroler");
     opsListAll = repository.getOpsAll().asObservable();
     print("Carregado em Conttroler");
-
   }
-
 
   @observable
   OpsStatus status = OpsStatus.none;
@@ -44,26 +43,24 @@ abstract class _OpsControllerBase with Store {
     size = MediaQuery.of(context).size;
   }
 
+  @action
+  getQueryMed(context, med, bool showMenu) {
+    getQuery(context);
+    if (!showMenu) {
+      var sizeL = size.width - menuWidth;
+      var prop = ((med * sizeL) / 100) - 16;
+      return prop;
+    }
+    var sizeL = size.width;
+    var prop = ((med * sizeL) / 100) - 16;
+    return prop;
+  }
 
 
-//  @action
-//  getQueryMed(context, med, bool showMenu) {
-//    Size _size = MediaQuery.of(context).size;
-//    if (showMenu) {
-//      var sizeL = _size.width - menuWidth;
-//      var prop = ((med * sizeL) / 100) - 16;
-//      return prop;
-//    }
-//
-//    var sizeR = _size.width;
-//    var prop = ((med * sizeR) / 100) - 16;
-//    return prop;
-//  }
-//
-//  getSize(size, med) {
-//    var prop = ((size * med) / 100);
-//    return prop;
-//  }
+  getSize(size, med) {
+    var prop = ((size * med) / 100);
+    return prop;
+  }
 //
 //
 //  @observable

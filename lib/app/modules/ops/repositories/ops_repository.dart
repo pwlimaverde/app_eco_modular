@@ -44,7 +44,6 @@ class OpsRepository implements IOpsRepository {
 
   @override
   Stream<List<OpsModel>> getOpsAll() {
-    print("Inicio do carregamento em Repo");
     return firestore.collection("ops").snapshots().map((query) {
       return query.documents.map((doc) {
         return OpsModel.fromDocument(doc);
