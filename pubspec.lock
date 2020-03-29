@@ -282,6 +282,13 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  fxpoi:
+    dependency: "direct main"
+    description:
+      name: fxpoi
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.1"
   glob:
     dependency: transitive
     description:

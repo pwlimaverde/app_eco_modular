@@ -40,16 +40,12 @@ class UploadcsvRepository implements IUploadcsvRepository {
           'cancelada': model.cancelada,
           'obs': model.obs,
         });
-        print("Op cadastrada - ${model.op}");
       }
     }
     print("total listOpsUP - ${listOpsUP.length}");
     print("total listOpsAnalitic - ${listOpsAnalitic.length}");
-
-    List test = await firestore.collection("ops").getDocuments().then((query) => query.documents.toList());
-
-    print("doc - ${DateTime.fromMillisecondsSinceEpoch(test[0]['entrega'].seconds * 1000)} - ${test[0]['entrega'].seconds}");
-
+//    List test = await firestore.collection("ops").getDocuments().then((query) => query.documents.toList());
+//    print("doc - ${DateTime.fromMillisecondsSinceEpoch(test[0]['entrega'].seconds * 1000)} - ${test[0]['entrega'].seconds}");
     return listOpsUP.length > 0 ? listOpsUP : null;
   }
 

@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.7.2 <3.0.0"
 
 dependencies:
+  fxpoi: ^1.0.1
   key_value_store_web: ^1.0.0
   cloud_firestore: ^0.13.4+2
   firebase: ^7.2.1
@@ -67,9 +68,8 @@ scripts:
   build_web: flutter pub get & flutter build web -t lib/main_production.dart --release
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - images/a_dot_burr.jpeg
-  #  - images/a_dot_ham.jpeg
+assets:
+  - assets/xls/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
