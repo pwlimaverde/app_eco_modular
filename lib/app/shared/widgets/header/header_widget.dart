@@ -1,6 +1,3 @@
-import 'dart:html';
-import 'package:eco_web_mobx/app/shared/global/loginbutton/loginbutton_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HeaderWidget extends StatelessWidget {
@@ -29,10 +26,10 @@ class HeaderWidget extends StatelessWidget {
 
   _login() {
     return Container(
-      width: 60,
+      width: 120,
       child: Row(
         children: <Widget>[
-          LoginbuttonWidget(),
+          Text("Login aqui"),
         ],
       ),
     );

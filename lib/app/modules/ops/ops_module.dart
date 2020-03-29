@@ -12,7 +12,7 @@ class OpsModule extends ChildModule {
   List<Bind> get binds => [
     Bind<IOpsRepository>(
             (i) => OpsRepository(Firestore.instance)),
-        Bind((i) => OpsController(i.get(), AppModule.to.get<PrefsService>())),
+        Bind((i) => OpsController(i.get(), Modular.get<PrefsService>())),
       ];
 
   @override

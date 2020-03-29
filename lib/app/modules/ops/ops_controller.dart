@@ -17,6 +17,7 @@ abstract class _OpsControllerBase with Store {
     getOpsListAll();
   }
 
+
   @observable
   ObservableStream<List<OpsModel>> opsListAll;
 

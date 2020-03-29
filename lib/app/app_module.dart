@@ -1,3 +1,5 @@
+import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
 import 'package:eco_web_mobx/app/shared/service/firebase/firebase_service.dart';
 import 'package:eco_web_mobx/app/shared/global/shared_preferences/prefs_service.dart';
 import 'package:eco_web_mobx/app/app_controller.dart';
@@ -15,6 +17,8 @@ import 'shared/modules/login/login_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => MenuController(Modular.get<PrefsService>())),
+        Bind((i) => HeaderController()),
         Bind((i) => FirebaseService()),
         Bind((i) => PrefsService()),
         Bind((i) => AppController()),

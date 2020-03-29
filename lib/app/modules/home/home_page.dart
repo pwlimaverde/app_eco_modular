@@ -1,11 +1,12 @@
 import 'package:eco_web_mobx/app/app_module.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
+import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import '../../app_controller.dart';
-import 'widgets/header/header_widget.dart';
-import 'widgets/menu/menu_widget.dart';
 import 'widgets/right/right_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,6 +21,8 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
 
   final controllerGeral = AppModule.to.get<AppController>();
+  final controllerHeader = Modular.get<HeaderController>();
+  final controllerMenu = Modular.get<MenuController>();
   double get sizeW => controllerGeral.size.width;
   double get sizeH => controllerGeral.size.height;
 
@@ -35,23 +38,10 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Column(
         children: <Widget>[
-          _observerHeader(),
+          controllerHeader.observerHeader(),
           _observerBody(),
         ],
       ),
-    );
-  }
-
-  _observerHeader() {
-    return Observer(
-      builder: (_) {
-        return HeaderWidget(
-          width: sizeW,
-          height: hederHeight,
-          color: Colors.grey[800],
-          tilulo: "Sistema Ecoprint  ${sizeW} / ${sizeH}",
-        );
-      },
     );
   }
 
@@ -67,7 +57,7 @@ class _HomePageState extends State<HomePage> {
                   ? _rightWidget()
                   : Row(
                       children: <Widget>[
-                        MenuWidget(),
+                        controllerMenu.observerMenuWidget(),
                         _rightWidget(),
                       ],
                     )

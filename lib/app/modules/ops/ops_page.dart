@@ -1,7 +1,7 @@
-import 'package:eco_web_mobx/app/modules/ops/widgets/header/header_widget.dart';
-import 'package:eco_web_mobx/app/modules/ops/widgets/menu/menu_widget.dart';
 import 'package:eco_web_mobx/app/modules/ops/widgets/right/right_widget.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
+import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -21,6 +21,9 @@ class OpsPage extends StatefulWidget {
 
 class _OpsPageState extends ModularState<OpsPage, OpsController>
     with SingleTickerProviderStateMixin<OpsPage> {
+  final controllerHeader = Modular.get<HeaderController>();
+  final controllerMenu = Modular.get<MenuController>();
+
   TabController _tabController;
 
   bool get showMenu => controller.size.width <= 1080;
@@ -48,7 +51,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
     return Scaffold(
       body: Column(
         children: <Widget>[
-          _observerHeader(),
+          controllerHeader.observerHeader(),
           _observerBody(),
         ],
       ),
@@ -111,20 +114,6 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
     );
   }
 
-  _observerHeader() {
-    controller.getQuery(context);
-    return Observer(
-      builder: (_) {
-        return HeaderWidget(
-          width: sizeW,
-          height: hederHeight,
-          color: Colors.grey[800],
-          tilulo: "Sistema Ecoprint  ${sizeW} / ${sizeH}",
-        );
-      },
-    );
-  }
-
   _observerBody() {
     controller.getQuery(context);
     return Observer(
@@ -138,7 +127,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
                   ? _rightWidget()
                   : Row(
                       children: <Widget>[
-                        _menuWidget(),
+                        controllerMenu.observerMenuWidget(),
                         _rightWidget(),
                       ],
                     )
@@ -160,8 +149,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
     );
   }
 
-
-  _testelist2(){
+  _testelist2() {
     return ListopsWidget(
       menuWidth: menuWidth,
       showMenu: showMenu,
@@ -172,7 +160,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
     );
   }
 
-  _testelist1(model){
+  _testelist1(model) {
     return ListtilesizeWidget(
       controller: controller,
       sizeGeral: 700,
@@ -182,9 +170,5 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
       title: "OP: ${model.op}",
       subTile: "Entrada: ${model.entrada}",
     );
-  }
-
-  _menuWidget() {
-    return MenuWidget(controller: controller);
   }
 }
