@@ -19,66 +19,57 @@ class UploadcsvPage extends StatefulWidget {
 class _UploadcsvPageState
     extends ModularState<UploadcsvPage, UploadcsvController> {
 
-  final controllerHeader = Modular.get<HeaderController>();
-  final controllerMenu = Modular.get<MenuController>();
-
-
-  bool get showMenu => controller.size.width <= 1080;
-  double get sizeW => controller.size.width;
-  double get sizeH => controller.size.height;
-
-  //use 'controller' variable to access controller
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    controller.uploadOps();
-  }
 
   @override
   Widget build(BuildContext context) {
-
+    controller.controllerGeral.getQuery(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
-          controllerHeader.observerHeader(),
-          _observerBody(),
+          controller.header,
+          _body(),
         ],
       ),
     );
   }
 
-  _observerBody() {
-    controller.getQuery(context);
-    return Observer(
-      builder: (_) {
-        return Container(
-          width: sizeW,
-          height: sizeH - hederHeight,
-          child: Row(
+  _body() {
+    return Container(
+      width: controller.sizeW,
+      height: controller.sizeH - hederHeight,
+      child: Row(
+        children: <Widget>[
+          controller.showMenu
+              ? _rightWidget()
+              : Row(
             children: <Widget>[
-              showMenu
-                  ? _rightWidget()
-                  : Row(
-                      children: <Widget>[
-                        controllerMenu.observerMenuWidget(),
-                        _rightWidget(),
-                      ],
-                    )
+              controller.menu,
+              _rightWidget(),
             ],
-          ),
-        );
-      },
+          )
+        ],
+      ),
     );
   }
 
   _rightWidget() {
     return RightWidget(
+      widget: raisedButton(),
       menuWidth: menuWidth,
-      showMenu: showMenu,
-      sizeW: sizeW,
+      showMenu: controller.showMenu,
+      sizeW: controller.sizeW,
       controller: controller,
     );
+  }
+
+  raisedButton() {
+    return RaisedButton(
+      child: Text("home - ${controller.sizeW}x${controller.sizeH}"),
+      onPressed: _nav,
+    );
+  }
+
+  _nav() {
+    return Modular.to.pushReplacementNamed("/");
   }
 }

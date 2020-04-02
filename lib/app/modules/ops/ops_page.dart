@@ -51,7 +51,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
     return Scaffold(
       body: Column(
         children: <Widget>[
-          controllerHeader.observerHeader(),
+          controllerHeader.header(sizeW, hederHeight),
           _observerBody(),
         ],
       ),
@@ -127,7 +127,7 @@ class _OpsPageState extends ModularState<OpsPage, OpsController>
                   ? _rightWidget()
                   : Row(
                       children: <Widget>[
-                        controllerMenu.observerMenuWidget(),
+                        controllerMenu.menuWidget(2),
                         _rightWidget(),
                       ],
                     )

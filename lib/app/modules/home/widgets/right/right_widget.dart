@@ -5,15 +5,23 @@ class RightWidget extends StatelessWidget {
   var menuWidth;
   var showMenu;
   var sizeW;
+  Widget widget;
 
 
-  RightWidget({this.menuWidth, this.showMenu, this.sizeW});
+  RightWidget({this.menuWidth, this.showMenu, this.sizeW, this.widget});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: showMenu ? sizeW : sizeW - menuWidth,
-      color: Colors.grey[200],
+    return Column(
+      children: <Widget>[
+        Center(
+          child: widget,
+        ),
+        Container(
+          width: showMenu ? sizeW : sizeW - menuWidth,
+          color: Colors.grey[200],
+        ),
+      ],
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:eco_web_mobx/app/shared/widgets/right/right_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
 import 'package:eco_web_mobx/app/shared/service/firebase/firebase_service.dart';
@@ -17,7 +18,8 @@ import 'shared/modules/login/login_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
-        Bind((i) => MenuController(Modular.get<PrefsService>())),
+        Bind((i) => RightController()),
+        Bind((i) => MenuController()),
         Bind((i) => HeaderController()),
         Bind((i) => FirebaseService()),
         Bind((i) => PrefsService()),
@@ -30,9 +32,12 @@ class AppModule extends MainModule {
   @override
   List<Router> get routers => [
         Router('/', module: HomeModule()),
-        Router('/login', module: LoginModule()),
-        Router('/upload', module: UploadcsvModule()),
-        Router('/ops', module: OpsModule()),
+        Router('/login',
+            module: LoginModule(), transition: TransitionType.noTransition),
+        Router('/upload',
+            module: UploadcsvModule(), transition: TransitionType.noTransition),
+        Router('/ops',
+            module: OpsModule(), transition: TransitionType.noTransition),
       ];
 
   @override

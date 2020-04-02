@@ -1,12 +1,8 @@
-import 'package:eco_web_mobx/app/app_module.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
-import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
-import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../app_controller.dart';
+import 'home_controller.dart';
 import 'widgets/right/right_widget.dart';
 
 class HomePage extends StatefulWidget {
@@ -18,61 +14,56 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-
-  final controllerGeral = AppModule.to.get<AppController>();
-  final controllerHeader = Modular.get<HeaderController>();
-  final controllerMenu = Modular.get<MenuController>();
-  double get sizeW => controllerGeral.size.width;
-  double get sizeH => controllerGeral.size.height;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
+class _HomePageState extends ModularState<HomePage, HomeController> {
   @override
   Widget build(BuildContext context) {
-    controllerGeral.getQuery(context);
+    controller.controllerGeral.getQuery(context);
     return Scaffold(
       body: Column(
         children: <Widget>[
-          controllerHeader.observerHeader(),
-          _observerBody(),
+          controller.header,
+          _body(),
         ],
       ),
     );
   }
 
-  _observerBody() {
-    return Observer(
-      builder: (_) {
-        return Container(
-          width: sizeW,
-          height: sizeH - hederHeight,
-          child: Row(
-            children: <Widget>[
-              controllerGeral.showMenu
-                  ? _rightWidget()
-                  : Row(
-                      children: <Widget>[
-                        controllerMenu.observerMenuWidget(),
-                        _rightWidget(),
-                      ],
-                    )
-            ],
-          ),
-        );
-      },
+  raisedButton() {
+    return RaisedButton(
+      child: Text("upload - ${controller.sizeW}x${controller.sizeH}"),
+      onPressed: _nav,
+    );
+  }
+
+  _body() {
+    return Container(
+      width: controller.sizeW,
+      height: controller.sizeH - hederHeight,
+      child: Row(
+        children: <Widget>[
+          controller.showMenu
+              ? _rightWidget()
+              : Row(
+                  children: <Widget>[
+                    controller.menu,
+                    _rightWidget(),
+                  ],
+                )
+        ],
+      ),
     );
   }
 
   _rightWidget() {
     return RightWidget(
+      widget: raisedButton(),
       menuWidth: menuWidth,
-      showMenu: controllerGeral.showMenu,
-      sizeW: sizeW,
+      showMenu: controller.showMenu,
+      sizeW: controller.sizeW,
     );
+  }
+
+  _nav() {
+    return Modular.to.pushReplacementNamed("/upload");
   }
 }

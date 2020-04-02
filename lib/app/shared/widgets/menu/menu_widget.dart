@@ -1,6 +1,6 @@
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'components/item/item_widget.dart';
 
 class MenuWidget extends StatelessWidget {
   final int page;
@@ -10,68 +10,44 @@ class MenuWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return _itensMenu();
+  }
+
+  _itensMenu() {
     return Container(
       width: menuWidth,
       color: Colors.grey[400],
       child: ListView(
         children: <Widget>[
-          Container(
-            child: ListTile(
-              selected: page == 0,
-              leading: Icon(Icons.home),
-              title: Text("Home"),
-              onTap: () {
-                onTap(0);
-                _navHomePage();
-              },
-            ),
+          ItemWidget(
+            page: page,
+            indice: 0,
+            nav: "/",
+            icon: Icon(Icons.home),
+            title: "Home",
           ),
-          Container(
-            child: ListTile(
-              selected: page == 1,
-              leading: Icon(Icons.file_upload),
-              title: Text("Upload"),
-              onTap: () {
-                onTap(1);
-                _navUploadPage();
-              },
-            ),
+          ItemWidget(
+            page: page,
+            indice: 1,
+            nav: "/upload",
+            icon: Icon(Icons.file_upload),
+            title: "Upload Ops",
           ),
-          Container(
-            child: ListTile(
-              selected: page == 2,
-              leading: Icon(Icons.cloud),
-              title: Text("Ops"),
-              onTap: () {
-                onTap(2);
-                _navOpsPage();
-              },
-            ),
+          ItemWidget(
+            page: page,
+            indice: 2,
+            nav: "/ops",
+            icon: Icon(Icons.cloud),
+            title: "Ops",
           ),
-          Container(
-            child: ListTile(
-              selected: page == 3,
-              leading: Icon(Icons.star),
-              title: Text("Orçamento Flexo ..."),
-              onTap: () {
-                onTap(3);
-              },
-            ),
+          ItemWidget(
+            page: page,
+            indice: 3,
+            icon: Icon(Icons.extension),
+            title: "Orçamento Flexo ...",
           ),
         ],
       ),
     );
   }
-}
-
-_navHomePage() {
-  return Modular.to.pushNamed("/");
-}
-
-_navUploadPage() {
-  return Modular.to.pushNamed("/upload");
-}
-
-_navOpsPage() {
-  return Modular.to.pushNamed("/ops");
 }

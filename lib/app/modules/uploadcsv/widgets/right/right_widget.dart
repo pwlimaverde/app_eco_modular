@@ -8,8 +8,9 @@ class RightWidget extends StatelessWidget {
   var showMenu;
   var sizeW;
   final controller;
+  Widget widget;
 
-  RightWidget({this.menuWidth, this.showMenu, this.sizeW, this.controller});
+  RightWidget({this.menuWidth, this.showMenu, this.sizeW, this.controller, this.widget});
 
   @override
   Widget build(BuildContext context) {
@@ -37,10 +38,17 @@ class RightWidget extends StatelessWidget {
   }
 
   _buildContainer(Widget child) {
-    return Container(
-      width: showMenu ? sizeW : sizeW - menuWidth,
-      color: Colors.grey[200],
-      child: Center(child: child),
+    return Column(
+      children: <Widget>[
+        Center(
+          child: widget,
+        ),
+        Container(
+          width: showMenu ? sizeW : sizeW - menuWidth,
+          color: Colors.grey[200],
+          child: Center(child: child),
+        ),
+      ],
     );
   }
 
