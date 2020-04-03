@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'home_controller.dart';
-import 'widgets/right/right_widget.dart';
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -28,13 +27,6 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     );
   }
 
-  raisedButton() {
-    return RaisedButton(
-      child: Text("upload - ${controller.sizeW}x${controller.sizeH}"),
-      onPressed: _nav,
-    );
-  }
-
   _body() {
     return Container(
       width: controller.sizeW,
@@ -42,11 +34,11 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
       child: Row(
         children: <Widget>[
           controller.showMenu
-              ? _rightWidget()
+              ? controller.right
               : Row(
                   children: <Widget>[
                     controller.menu,
-                    _rightWidget(),
+                    controller.right,
                   ],
                 )
         ],
@@ -54,16 +46,4 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
     );
   }
 
-  _rightWidget() {
-    return RightWidget(
-      widget: raisedButton(),
-      menuWidth: menuWidth,
-      showMenu: controller.showMenu,
-      sizeW: controller.sizeW,
-    );
-  }
-
-  _nav() {
-    return Modular.to.pushReplacementNamed("/upload");
-  }
 }

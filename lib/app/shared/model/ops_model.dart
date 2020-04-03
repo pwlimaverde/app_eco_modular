@@ -7,10 +7,13 @@ class OpsModel {
   String servico;
   int quant;
   double valor;
-  String entrada;
-  String entrega;
+  DateTime entrada;
+  DateTime entrega;
   String vendedor;
-  bool produzido;
+  DateTime produzido;
+  DateTime entregue;
+  bool cancelada;
+  String obs;
   int op;
 
   OpsModel(
@@ -23,7 +26,10 @@ class OpsModel {
       this.entrada,
       this.entrega,
       this.vendedor,
-      this.produzido = false,
+      this.produzido,
+      this.entregue,
+      this.cancelada = false,
+      this.obs,
       this.op});
 
   OpsModel.fromJson(Map<String, dynamic> json) {
@@ -36,6 +42,9 @@ class OpsModel {
     entrega = json['entrega'];
     vendedor = json['vendedor'];
     produzido = json['produzido'];
+    entregue = json['entregue'];
+    cancelada = json['cancelada'];
+    obs = json['obs'];
     op = json['op'];
   }
 
@@ -51,22 +60,12 @@ class OpsModel {
     data['entrega'] = this.entrega;
     data['vendedor'] = this.vendedor;
     data['produzido'] = this.produzido;
+    data['entregue'] = this.entregue;
+    data['cancelada'] = this.cancelada;
+    data['obs'] = this.obs;
     data['op'] = this.op;
     return data;
   }
-
-//  OpsModel.fromMap(Map<String, dynamic> map) {
-//    orcamento = map['orcamento'];
-//    cliente = map['cliente'];
-//    servico = map['servico'];
-//    quant = map['quant'];
-//    valor = map['valor'];
-//    entrada = map['entrada'];
-//    entrega = map['entrega'];
-//    vendedor = map['vendedor'];
-//    produzido = map['produzido'];
-//    op = map['op'];
-//  }
 
   factory OpsModel.fromDocument(DocumentSnapshot doc) {
     return OpsModel(
@@ -76,10 +75,15 @@ class OpsModel {
       servico: doc['servico'],
       quant: doc['quant'],
       valor: doc['valor'],
-      entrada: doc['entrada'],
-      entrega: doc['entrega'],
+      entrada:
+          DateTime.fromMillisecondsSinceEpoch(doc['entrada'].seconds * 1000),
+      entrega:
+          DateTime.fromMillisecondsSinceEpoch(doc['entrega'].seconds * 1000),
       vendedor: doc['vendedor'],
       produzido: doc['produzido'],
+      entregue: doc['entregue'],
+      cancelada: doc['cancelada'],
+      obs: doc['obs'],
       op: doc['op'],
     );
   }

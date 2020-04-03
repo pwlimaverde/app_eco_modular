@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'uploadcsv_interface.dart';
-import '../model/ops_model.dart';
+
 
 class UploadcsvRepository implements IUploadcsvRepository {
   final Firestore firestore;

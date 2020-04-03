@@ -1,11 +1,8 @@
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
-import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
-import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'uploadcsv_controller.dart';
-import 'widgets/right/right_widget.dart';
+
 
 class UploadcsvPage extends StatefulWidget {
   final String title;
@@ -40,11 +37,11 @@ class _UploadcsvPageState
       child: Row(
         children: <Widget>[
           controller.showMenu
-              ? _rightWidget()
+              ? controller.right
               : Row(
             children: <Widget>[
               controller.menu,
-              _rightWidget(),
+              controller.right,
             ],
           )
         ],
@@ -52,24 +49,4 @@ class _UploadcsvPageState
     );
   }
 
-  _rightWidget() {
-    return RightWidget(
-      widget: raisedButton(),
-      menuWidth: menuWidth,
-      showMenu: controller.showMenu,
-      sizeW: controller.sizeW,
-      controller: controller,
-    );
-  }
-
-  raisedButton() {
-    return RaisedButton(
-      child: Text("home - ${controller.sizeW}x${controller.sizeH}"),
-      onPressed: _nav,
-    );
-  }
-
-  _nav() {
-    return Modular.to.pushReplacementNamed("/");
-  }
 }

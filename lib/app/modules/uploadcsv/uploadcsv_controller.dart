@@ -1,41 +1,56 @@
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/auxiliares.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:eco_web_mobx/app/shared/widgets/right/right_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:grizzly_io/browser_loader.dart';
-import 'package:grizzly_io/io_loader.dart';
 import 'package:mobx/mobx.dart';
 import '../../app_controller.dart';
-import 'model/ops_model.dart';
 import 'repositories/uploadcsv_interface.dart';
 import 'dart:html' as html;
 import 'dart:convert' as convert;
 import 'package:intl/intl.dart' as intl;
 import 'uploadcsv_status.dart';
-import 'package:grizzly_io/grizzly_io.dart';
+import 'widgets/bodyuploadcsv/bodyuploadcsv_widget.dart';
 
 part 'uploadcsv_controller.g.dart';
 
 class UploadcsvController = _UploadcsvControllerBase with _$UploadcsvController;
 
 abstract class _UploadcsvControllerBase with Store {
-
   final IUploadcsvRepository repository;
 
-  _UploadcsvControllerBase(this.repository){
-//    uploadOps();
+  _UploadcsvControllerBase(this.repository) {
+    uploadOps();
   }
 
   final controllerGeral = Modular.get<AppController>();
-  get sizeW => controllerGeral.size.width;
-  get sizeH => controllerGeral.size.height;
-  get showMenu => controllerGeral.showMenu;
   final controllerHeader = Modular.get<HeaderController>();
-  get header => controllerHeader.header(sizeW, hederHeight);
   final controllerMenu = Modular.get<MenuController>();
+  final controllerRight = Modular.get<RightController>();
+
+  get sizeW => controllerGeral.size.width;
+
+  get sizeH => controllerGeral.size.height;
+
+  get showMenu => controllerGeral.showMenu;
+
+  get header => controllerHeader.header(sizeW, hederHeight);
+
   get menu => controllerMenu.menuWidget(1);
+
+  get right => controllerRight.rightWidget(
+        widget: BodyuploadcsvWidget(
+          showMenu: showMenu,
+          menuWidth: menuWidth,
+          sizeW: sizeW,
+          sizeH: sizeH,
+        ),
+        menuWidth: menuWidth,
+        showMenu: showMenu,
+        sizeW: sizeW,
+      );
 
   @observable
   UploadcsvStatus status = UploadcsvStatus.none;
@@ -91,7 +106,7 @@ abstract class _UploadcsvControllerBase with Store {
               List<OpsModel> listOps = [];
 
               for (String item in decoderRow) {
-                if(item.isNotEmpty){
+                if (item.isNotEmpty) {
                   OpsModel up = OpsModel();
                   List<String> i2 = item
                       .replaceAll("\r\n", " | ")

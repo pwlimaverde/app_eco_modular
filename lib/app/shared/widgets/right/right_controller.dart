@@ -1,15 +1,20 @@
+import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'right_widget.dart';
 
 part 'right_controller.g.dart';
 
 class RightController = _RightControllerBase with _$RightController;
 
 abstract class _RightControllerBase with Store {
-  @observable
-  int value = 0;
 
-  @action
-  void increment() {
-    value++;
+  rightWidget({Widget widget, var menuWidth, var showMenu, var sizeW}) {
+    return RightWidget(
+      widget: widget,
+      menuWidth: menuWidth,
+      showMenu: showMenu,
+      sizeW: sizeW,
+    );
   }
+
 }
