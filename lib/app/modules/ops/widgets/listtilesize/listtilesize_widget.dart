@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../ops_controller.dart';
 
 class ListtilesizeWidget extends StatelessWidget {
 
-  var controller;
   var sizeGeral;
   var sizeCont;
   var sizeFontTile;
@@ -13,9 +15,11 @@ class ListtilesizeWidget extends StatelessWidget {
   String subTile;
 
 
-  ListtilesizeWidget({this.controller, this.sizeGeral, this.sizeCont,
+  ListtilesizeWidget({this.sizeGeral, this.sizeCont,
     this.sizeFontTile, this.sizeFontSubTile, this.line, this.threeLine,
     this.title, this.subTile});
+
+  final controller = Modular.get<OpsController>();
 
   @override
   Widget build(BuildContext context) {

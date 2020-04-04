@@ -1,6 +1,8 @@
-import '../../model/ops_model.dart';
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
+import 'package:flutter_modular/flutter_modular.dart';
+
+import '../../ops_controller.dart';
 import '../listtilesize/listtilesize_widget.dart';
-import '../observerbutton/observerbutton_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
@@ -8,8 +10,6 @@ class ListopsWidget extends StatelessWidget {
   var menuWidth;
   bool showMenu;
   var sizeW;
-  var filtro;
-  final controller;
 //  bool upProd;
   bool allOps;
 
@@ -17,11 +17,11 @@ class ListopsWidget extends StatelessWidget {
     this.menuWidth,
     this.showMenu,
     this.sizeW,
-    this.controller,
-    this.filtro,
     this.allOps,
 //    this.upProd,
   });
+
+  final controller = Modular.get<OpsController>();
 
   @override
   Widget build(BuildContext context) {
@@ -46,14 +46,14 @@ class ListopsWidget extends StatelessWidget {
   }
 
   _listOpsProdL(context) {
-    controller.getQuery(context);
+    controller.controllerGeral.getQuery(context);
 //    if (!showMenu) {
       return Container(
         padding: EdgeInsets.all(12),
         child: ListView.builder(
-          itemCount: filtro != null ? filtro.length : 0,
+          itemCount: controller.opsListAll.data != null ? controller.opsListAll.data.length : 0,
           itemBuilder: (context, index) {
-            OpsModel o = filtro[index];
+            OpsModel o = controller.opsListAll.data[index];
             double size = controller.getQueryMed(context, 100, showMenu);
 //            bool upProd = controller.upProd ?? false;
 //            bool allOps = controller.allOps ?? false;
@@ -65,7 +65,6 @@ class ListopsWidget extends StatelessWidget {
                 child: Row(
                   children: <Widget>[
                     ListtilesizeWidget(
-                      controller: controller,
                       sizeGeral: size,
                       sizeCont: 10,
                       sizeFontTile: 2.2,
@@ -74,7 +73,6 @@ class ListopsWidget extends StatelessWidget {
                       subTile: "Entrada: ${o.entrada}",
                     ),
                     ListtilesizeWidget(
-                      controller: controller,
                       threeLine: true,
                       line: 3,
                       sizeGeral: size,
@@ -87,7 +85,6 @@ class ListopsWidget extends StatelessWidget {
                           "${o.servico.length >= 150 ? o.servico.substring(0, 150) : o.servico}",
                     ),
                     ListtilesizeWidget(
-                      controller: controller,
                       sizeGeral: size,
                       sizeCont: 10,
                       sizeFontTile: 2,
@@ -97,7 +94,6 @@ class ListopsWidget extends StatelessWidget {
                           "Vend: ${o.vendedor.length >= 8 ? o.vendedor.substring(0, 8) : o.vendedor}",
                     ),
                     ListtilesizeWidget(
-                      controller: controller,
                       threeLine: true,
                       line: 3,
                       sizeGeral: size,

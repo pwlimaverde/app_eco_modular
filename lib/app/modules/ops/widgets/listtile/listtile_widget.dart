@@ -1,5 +1,6 @@
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:flutter/material.dart';
-import '../../model/ops_model.dart';
+
 
 class ListtileWidget extends StatelessWidget {
 

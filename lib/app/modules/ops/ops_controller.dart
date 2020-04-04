@@ -1,9 +1,15 @@
-import 'package:eco_web_mobx/app/modules/ops/model/ops_model.dart';
 import 'package:eco_web_mobx/app/modules/ops/repositories/ops_interface.dart';
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
+import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/right/right_controller.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
+import '../../app_controller.dart';
 import 'ops_status.dart';
+import 'widgets/bodyops/bodyops_widget.dart';
 
 part 'ops_controller.g.dart';
 
@@ -17,6 +23,32 @@ abstract class _OpsControllerBase with Store {
     getOpsListAll();
   }
 
+  final controllerGeral = Modular.get<AppController>();
+  final controllerHeader = Modular.get<HeaderController>();
+  final controllerMenu = Modular.get<MenuController>();
+  final controllerRight = Modular.get<RightController>();
+
+  get sizeW => controllerGeral.size.width;
+
+  get sizeH => controllerGeral.size.height;
+
+  get showMenu => controllerGeral.showMenu;
+
+  get header => controllerHeader.header(sizeW, hederHeight);
+
+  get menu => controllerMenu.menuWidget(2);
+
+  get right => controllerRight.rightWidget(
+        widget: BodyopsWidget(
+          menuWidth: menuWidth,
+          showMenu: showMenu,
+          sizeH: sizeH,
+          sizeW: sizeW,
+        ),
+        menuWidth: menuWidth,
+        showMenu: showMenu,
+        sizeW: sizeW,
+      );
 
   @observable
   ObservableStream<List<OpsModel>> opsListAll;
@@ -56,7 +88,6 @@ abstract class _OpsControllerBase with Store {
     var prop = ((med * sizeL) / 100) - 16;
     return prop;
   }
-
 
   getSize(size, med) {
     var prop = ((size * med) / 100);

@@ -10,8 +10,7 @@ import 'repositories/ops_repository.dart';
 class OpsModule extends ChildModule {
   @override
   List<Bind> get binds => [
-    Bind<IOpsRepository>(
-            (i) => OpsRepository(Firestore.instance)),
+        Bind<IOpsRepository>((i) => OpsRepository(Firestore.instance)),
         Bind((i) => OpsController(i.get(), Modular.get<PrefsService>())),
       ];
 

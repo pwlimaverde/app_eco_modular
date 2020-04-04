@@ -1,6 +1,6 @@
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../../model/ops_model.dart';
 import '../../ops_status.dart';
 
 class RightWidget extends StatelessWidget {
