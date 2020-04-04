@@ -1,3 +1,4 @@
+import 'package:eco_web_mobx/app/shared/widgets/opslist/opslist_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/right/right_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
@@ -18,6 +19,7 @@ import 'shared/modules/login/login_module.dart';
 class AppModule extends MainModule {
   @override
   List<Bind> get binds => [
+        Bind((i) => OpslistController()),
         Bind((i) => RightController()),
         Bind((i) => MenuController()),
         Bind((i) => HeaderController()),

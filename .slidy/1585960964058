@@ -1,0 +1,2 @@
+lib/app/shared/widgets/opslist/components/opslisttile/opslisttile_widget.dart
+test/app/shared/widgets/opslist/components/opslisttile/opslisttile_widget_test.dart

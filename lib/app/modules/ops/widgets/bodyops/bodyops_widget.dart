@@ -1,4 +1,5 @@
 import 'package:eco_web_mobx/app/modules/ops/widgets/listops/listops_widget.dart';
+import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -88,8 +89,8 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
       controller: _tabController,
       children: [
         color(Colors.greenAccent),
-        buildObserver2(),
-        color(Colors.lightBlue),
+        color(Colors.blue),
+        _observerList(),
       ],
     );
   }
@@ -100,101 +101,18 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  buildObserver2() {
+  _observerList() {
     return Observer(
       builder: (context) {
+        List<OpsModel> filtro = controller.opsListAll.data;
         if (controller.opsListAll.hasError) {
           return Text("Teve um erro");
         }
         if (controller.opsListAll.data == null) {
           return CircularProgressIndicator();
         }
-        return _testelist2();
+        return controller.controllerOpsList.opslistWidget(widget.showMenu, filtro);
       },
     );
   }
-
-  _testelist2() {
-    return ListopsWidget(
-      menuWidth: menuWidth,
-      showMenu: widget.showMenu,
-      sizeW: widget.sizeW,
-      allOps: true,
-    );
-  }
-
 }
-
-//  buildObserver() {
-//    return Observer(
-//      builder: (_) {
-//        List<OpsModel> list = controller.opsListAll.data;
-//        if (controller.opsListAll.hasError) {
-//          return Text("Teve um erro");
-//        }
-//        if (controller.opsListAll.data == null) {
-//          return CircularProgressIndicator();
-//        }
-//        return ListView.builder(
-//          itemCount: list.length,
-//          itemBuilder: (context, index) {
-//            OpsModel model = list[index];
-//            return ListTile(
-//              title: Text("Op: ${model.op} - Data: ${model.entrada}"),
-//            );
-//          },
-//        );
-//      },
-//    );
-//  }
-
-
-
-//  _observerBody() {
-//    controller.getQuery(context);
-//    return Observer(
-//      builder: (_) {
-//        return Container(
-//          width: sizeW,
-//          height: sizeH - hederHeight,
-//          child: Row(
-//            children: <Widget>[
-//              showMenu
-//                  ? _rightWidget()
-//                  : Row(
-//                children: <Widget>[
-//                  controllerMenu.menuWidget(2),
-//                  _rightWidget(),
-//                ],
-//              )
-//            ],
-//          ),
-//        );
-//      },
-//    );
-//  }
-
-//  _rightWidget() {
-//    return RightWidget(
-//      list: buildObserver2(),
-//      tab: _tabBar(),
-//      menuWidth: menuWidth,
-//      showMenu: showMenu,
-//      sizeW: sizeW,
-//      controller: controller,
-//    );
-//  }
-
-
-
-//  _testelist1(model) {
-//    return ListtilesizeWidget(
-//      controller: controller,
-//      sizeGeral: 700,
-//      sizeCont: 10,
-//      sizeFontTile: 2.2,
-//      sizeFontSubTile: 1.5,
-//      title: "OP: ${model.op}",
-//      subTile: "Entrada: ${model.entrada}",
-//    );
-//  }
