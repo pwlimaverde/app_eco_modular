@@ -17,6 +17,7 @@ environment:
   sdk: ">=2.7.2 <3.0.0"
 
 dependencies:
+  date_format: ^1.0.8
   fxpoi: ^1.0.1
   key_value_store_web: ^1.0.0
   cloud_firestore: ^0.13.4+2

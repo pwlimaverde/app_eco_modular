@@ -1,6 +1,8 @@
+import 'package:date_format/date_format.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:intl/intl.dart';
 import '../../../app_controller.dart';
 import 'components/opslisttile/opslisttile_widget.dart';
 
@@ -25,10 +27,14 @@ class OpslistWidget extends StatelessWidget {
 
   _listOpsProdL(context) {
     controller.getQuery(context);
+    final f = DateFormat('dd/MM/yy');
+    final numMilhar = NumberFormat(",##0", "pt_BR");
 //    if (!showMenu) {
     return Container(
-      padding: EdgeInsets.all(12),
+      padding: EdgeInsets.all(4),
       child: ListView.builder(
+        scrollDirection: Axis.vertical,
+        shrinkWrap: true,
         itemCount: filtro != null
             ? filtro.length
             : 0,
@@ -45,45 +51,63 @@ class OpslistWidget extends StatelessWidget {
               child: Row(
                 children: <Widget>[
                   OpslisttileWidget(
+                    heightT: 25,
+                    heightS: 30,
                     sizeGeral: size,
                     sizeCont: 10,
-                    sizeFontTile: 2.2,
+                    sizeFontTile: 1.8,
                     sizeFontSubTile: 1.5,
-                    title: "OP: ${o.op}",
-                    subTile: "Entrada: ${o.entrada}",
+                    labelT: "OP:",
+                    title: "${o.op}",
+                    labelS: "Entrada:",
+                    subTile: f.format(o.entrada),
                   ),
                   OpslisttileWidget(
-                    threeLine: true,
-                    line: 3,
+                    heightT: 25,
+                    heightS: 30,
                     sizeGeral: size,
-                    sizeCont: 58,
-                    sizeFontTile: 2.2,
-                    sizeFontSubTile: 1.5,
+                    sizeCont: 50,
+                    sizeFontTile: 1.5,
+                    sizeFontSubTile: 1.2,
+                    line: 3,
+                    alingL: true,
                     title:
-                    "Cliente: ${o.cancelada == false ? o.cliente.length >= 35 ? o.cliente.substring(0, 35) : o.cliente : o.cliente.length >= 25 ? o.cliente.substring(0, 25) + " - OP CANCELADA" : o.cliente + " - OP CANCELADA"}",
+                    "${o.cancelada == false ? o.cliente.length >= 35 ? o.cliente.substring(0, 35) : o.cliente : o.cliente.length >= 25 ? o.cliente.substring(0, 25) + " - OP CANCELADA" : o.cliente + " - OP CANCELADA"}",
                     subTile:
-                    "${o.servico.length >= 150 ? o.servico.substring(0, 150) : o.servico}",
+                    "${o.servico.length >= 300 ? o.servico.substring(0, 300) : o.servico}",
                   ),
                   OpslisttileWidget(
+                    heightT: 25,
+                    heightS: 30,
                     sizeGeral: size,
                     sizeCont: 10,
-                    sizeFontTile: 2,
+                    sizeFontTile: 1.8,
                     sizeFontSubTile: 1.5,
-                    title: "QT: ${o.quant}",
-                    subTile:
-                    "Vend: ${o.vendedor.length >= 8 ? o.vendedor.substring(0, 8) : o.vendedor}",
+                    labelT: "QT:",
+                    title: "${numMilhar.format(o.quant)}",
+                    labelS: "Vend:",
+                    subTile: "${o.vendedor.length >= 12 ? o.vendedor.substring(0, 12) : o.vendedor}",
                   ),
-                  OpslisttileWidget(
-                    threeLine: true,
-                    line: 3,
-                    sizeGeral: size,
-                    sizeCont: 15,
-                    sizeFontTile: 2.2,
-                    sizeFontSubTile: 1.5,
-                    title: "Entrega: ${o.entrega}",
-                    subTile:
-                    "${o.obs != null ? o.obs.length >= 68 ? o.obs.substring(0, 68) : o.obs : ""}",
-                  ),
+//                  OpslisttileWidget(
+//                    sizeGeral: size,
+//                    sizeCont: 10,
+//                    sizeFontTile: 2,
+//                    sizeFontSubTile: 1.5,
+//                    title: "QT: ${o.quant}",
+//                    subTile:
+//                    "Vend: ${o.vendedor.length >= 8 ? o.vendedor.substring(0, 8) : o.vendedor}",
+//                  ),
+//                  OpslisttileWidget(
+//                    threeLine: false,
+//                    line: 3,
+//                    sizeGeral: size,
+//                    sizeCont: 15,
+//                    sizeFontTile: 2.2,
+//                    sizeFontSubTile: 1.5,
+//                    title: "Entrega: ${o.entrega}",
+//                    subTile:
+//                    "${o.obs != null ? o.obs.length >= 68 ? o.obs.substring(0, 68) : o.obs : ""}",
+//                  ),
 //                    Container(
 //                      width: controller.getSize(size, 3),
 //                      child: allOps == false
@@ -133,7 +157,7 @@ class OpslistWidget extends StatelessWidget {
 //                    ),
                 ],
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
               ),
             ),
           );
