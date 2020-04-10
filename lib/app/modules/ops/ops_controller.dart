@@ -95,6 +95,10 @@ abstract class _OpsControllerBase with Store {
     var prop = ((size * med) / 100);
     return prop;
   }
+
+
+  Future upProd(OpsModel model) => repository.upProd(model);
+  Future canProd(OpsModel model) => repository.canProd(model);
 //
 //
 //  @observable

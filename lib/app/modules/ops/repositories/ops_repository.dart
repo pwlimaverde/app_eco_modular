@@ -9,38 +9,49 @@ class OpsRepository implements IOpsRepository {
   OpsRepository(this.firestore);
 
 
-//  @override
-//  Future upEnt(OpsModel model) {
-//    try{
-//      model.reference.updateData({
-//        'entregue': model.entregue,
-//      });
-//    }catch(e){
-//      print(e);
-//    }
-//  }
-
   @override
-  Future canProd(OpsModel model) {
+  Future upProd(OpsModel model) async{
+    var now = DateTime.now();
     try{
-      model.reference.updateData({
-        'cancelada': true,
-      });
+      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+      DocumentSnapshot doc = await docRef.get();
+      if(doc.data['produzido'] != null && doc.data['entregue'] != null){
+        return;
+      }
+      if(doc.data['produzido'] == null){
+        model.reference.updateData({
+          'produzido': now,
+        });
+      }else{
+        model.reference.updateData({
+          'entregue': now,
+        });
+      }
     }catch(e){
       print(e);
     }
   }
-//
-//  @override
-//  Future atProd(OpsModel model) {
-//    try{
-//      model.reference.updateData({
-//        'cancelada': false,
-//      });
-//    }catch(e){
-//      print(e);
-//    }
-//  }
+
+  @override
+  Future canProd(OpsModel model) async{
+    try{
+      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+      DocumentSnapshot doc = await docRef.get();
+      if(doc.data['cancelada'] == false){
+        model.reference.updateData({
+          'cancelada': true,
+        });
+      }else{
+        model.reference.updateData({
+          'cancelada': false,
+        });
+      }
+
+    }catch(e){
+      print(e);
+    }
+  }
+
 
   @override
   Stream<List<OpsModel>> getOpsAll() {

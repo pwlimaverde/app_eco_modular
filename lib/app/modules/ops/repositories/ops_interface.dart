@@ -4,8 +4,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 abstract class IOpsRepository extends Disposable{
   Stream<List<OpsModel>> getOpsAll();
-//  Future upProd(OpsModel model);
-//  Future upEnt(OpsModel model);
+  Future upProd(OpsModel model);
   Future canProd(OpsModel model);
-//  Future atProd(OpsModel model);
 }

@@ -109,9 +109,14 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           return Text("Teve um erro");
         }
         if (controller.opsListAll.data == null) {
-          return CircularProgressIndicator();
+          return Center(child: CircularProgressIndicator());
         }
-        return controller.controllerOpsList.opslistWidget(widget.showMenu, filtro);
+        return controller.controllerOpsList.opslistWidget(
+          widget.showMenu,
+          filtro,
+          controller.upProd,
+          controller.canProd,
+        );
       },
     );
   }

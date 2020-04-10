@@ -13,7 +13,7 @@ class CircularprogressWidget extends StatelessWidget {
 
 
   CircularprogressWidget({this.top, this.bottom, this.left, this.right,
-      this.swidth, this.sheight, this.strok, this.color});
+    this.swidth, this.sheight, this.strok, this.color});
 
   @override
   Widget build(BuildContext context) {

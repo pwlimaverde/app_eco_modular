@@ -75,13 +75,27 @@ class OpsModel {
       servico: doc['servico'],
       quant: doc['quant'],
       valor: doc['valor'],
-      entrada:
-          DateTime.fromMillisecondsSinceEpoch(doc['entrada'].seconds * 1000),
-      entrega:
-          DateTime.fromMillisecondsSinceEpoch(doc['entrega'].seconds * 1000),
+      entrada: doc['entrada'] == null
+          ? doc['entrada']
+          : DateTime.fromMillisecondsSinceEpoch(
+              doc['entrada'].seconds * 1000,
+            ),
+      entrega: doc['entrega'] == null
+          ? doc['entrega']
+          : DateTime.fromMillisecondsSinceEpoch(
+              doc['entrega'].seconds * 1000,
+            ),
       vendedor: doc['vendedor'],
-      produzido: doc['produzido'],
-      entregue: doc['entregue'],
+      produzido: doc['produzido'] == null
+          ? doc['produzido']
+          : DateTime.fromMillisecondsSinceEpoch(
+              doc['produzido'].seconds * 1000,
+            ),
+      entregue: doc['entregue'] == null
+          ? doc['entregue']
+          : DateTime.fromMillisecondsSinceEpoch(
+              doc['entregue'].seconds * 1000,
+            ),
       cancelada: doc['cancelada'],
       obs: doc['obs'],
       op: doc['op'],

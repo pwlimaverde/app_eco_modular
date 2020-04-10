@@ -122,7 +122,7 @@ class OpslisttileWidget extends StatelessWidget {
             children: <Widget>[
               Container(
 //              color: Colors.greenAccent,
-                alignment: alingL ? Alignment(-1.0, 0.0) : Alignment(0.0, 0.0),
+                alignment: alingL ? Alignment(-1.0,-0.0) : Alignment(0.0, 0.0),
                 height: heightS,
                 child: Text(
                   subTile,
