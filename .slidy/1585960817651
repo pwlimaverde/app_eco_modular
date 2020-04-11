@@ -1,0 +1,4 @@
+lib/app/shared/widgets/opslist/opslist_widget.dart
+test/app/shared/widgets/opslist/opslist_widget_test.dart
+lib/app/shared/widgets/opslist/opslist_controller.dart
+test/app/shared/widgets/opslist/opslist_controller_test.dart

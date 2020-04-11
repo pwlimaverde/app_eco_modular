@@ -1,0 +1,2 @@
+lib/app/shared/service/firebase/firebase_service.dart
+test/app/shared/service/firebase/firebase_service_test.dart
