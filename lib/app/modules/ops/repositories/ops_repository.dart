@@ -55,12 +55,31 @@ class OpsRepository implements IOpsRepository {
 
   @override
   Stream<List<OpsModel>> getOpsAll() {
-    return firestore.collection("ops").snapshots().map((query) {
+    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
       return query.documents.map((doc) {
         return OpsModel.fromDocument(doc);
       }).toList();
     });
   }
+
+  @override
+  Stream<List<OpsModel>> getOpsProd() {
+    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
+      return query.documents.where((doc) => doc['cancelada'] == false && doc['produzido'] == null && doc['entregue'] == null).map((doc) {
+        return OpsModel.fromDocument(doc);
+      }).toList();
+    });
+  }
+
+  @override
+  Stream<List<OpsModel>> getOpsEnt() {
+    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
+      return query.documents.where((doc) => doc['cancelada'] == false && doc['produzido'] != null && doc['entregue'] == null).map((doc) {
+        return OpsModel.fromDocument(doc);
+      }).toList();
+    });
+  }
+
 
 //  @override
 //  Future upload(List<OpsModel> listOps) async{
@@ -105,6 +124,8 @@ class OpsRepository implements IOpsRepository {
   //dispose will be called automatically
   @override
   void dispose() {}
+
+
 
 
 }

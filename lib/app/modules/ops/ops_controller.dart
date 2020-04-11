@@ -22,6 +22,8 @@ abstract class _OpsControllerBase with Store {
 
   _OpsControllerBase(IOpsRepository this.repository, this.prefsOps) {
     getOpsListAll();
+    getOpsListProd();
+    getOpsListEnt();
   }
 
   final controllerGeral = Modular.get<AppController>();
@@ -61,6 +63,49 @@ abstract class _OpsControllerBase with Store {
     opsListAll = repository.getOpsAll().asObservable();
     setStatus(OpsStatus.success);
   }
+
+  @observable
+  ObservableStream<List<OpsModel>> opsListProd;
+
+  @action
+  getOpsListProd() {
+    setStatus(OpsStatus.loading);
+    opsListProd = repository.getOpsProd().asObservable();
+    setStatus(OpsStatus.success);
+  }
+
+  @observable
+  ObservableStream<List<OpsModel>> opsListEnt;
+
+  @action
+  getOpsListEnt() {
+    setStatus(OpsStatus.loading);
+    opsListEnt = repository.getOpsEnt().asObservable();
+    setStatus(OpsStatus.success);
+  }
+
+//  @observable
+//  ObservableStream<List<OpsModel>> opsListProd;
+//
+//  @observable
+//  ObservableStream<List<OpsModel>> opsListEnt;
+//
+//  @action
+//  getOpsListFiltro(){
+//    try{
+//      List<OpsModel> prod;
+//      List<OpsModel> ent;
+//      for(OpsModel op in opsListAll.data){
+//        if(op.cancelada == false && op.produzido == null && op.entregue == null){
+//          prod.add(op);
+//        }else if(op.cancelada == false && op.produzido != null && op.entregue == null){
+//          ent.add(op);
+//        }
+//      }
+//    }catch(e){
+//
+//    }
+//  }
 
   @observable
   OpsStatus status = OpsStatus.none;

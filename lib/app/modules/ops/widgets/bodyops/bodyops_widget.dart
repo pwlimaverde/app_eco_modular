@@ -88,8 +88,8 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     return TabBarView(
       controller: _tabController,
       children: [
-        color(Colors.greenAccent),
-        color(Colors.blue),
+        _observerListProd(),
+        _observerListEnt(),
         _observerList(),
       ],
     );
@@ -109,6 +109,46 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           return Text("Teve um erro");
         }
         if (controller.opsListAll.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return controller.controllerOpsList.opslistWidget(
+          widget.showMenu,
+          filtro,
+          controller.upProd,
+          controller.canProd,
+        );
+      },
+    );
+  }
+
+  _observerListProd() {
+    return Observer(
+      builder: (context) {
+        List<OpsModel> filtro = controller.opsListProd.data;
+        if (controller.opsListProd.hasError) {
+          return Text("Teve um erro");
+        }
+        if (controller.opsListProd.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return controller.controllerOpsList.opslistWidget(
+          widget.showMenu,
+          filtro,
+          controller.upProd,
+          controller.canProd,
+        );
+      },
+    );
+  }
+
+  _observerListEnt() {
+    return Observer(
+      builder: (context) {
+        List<OpsModel> filtro = controller.opsListEnt.data;
+        if (controller.opsListEnt.hasError) {
+          return Text("Teve um erro");
+        }
+        if (controller.opsListEnt.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
