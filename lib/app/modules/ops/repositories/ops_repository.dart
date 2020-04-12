@@ -55,12 +55,13 @@ class OpsRepository implements IOpsRepository {
 
   @override
   Stream<List<OpsModel>> getOpsAll() {
-    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
+    return firestore.collection("ops").orderBy('op', descending: true).snapshots().map((query) {
       return query.documents.map((doc) {
         return OpsModel.fromDocument(doc);
       }).toList();
     });
   }
+
 
   @override
   Stream<List<OpsModel>> getOpsProd() {
@@ -124,8 +125,5 @@ class OpsRepository implements IOpsRepository {
   //dispose will be called automatically
   @override
   void dispose() {}
-
-
-
 
 }

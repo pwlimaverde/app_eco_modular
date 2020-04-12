@@ -13,9 +13,6 @@ class OpslistWidget extends StatelessWidget {
   bool showMenu;
   final Function(OpsModel) check;
   final Function(OpsModel) can;
-
-//  bool upProd;
-//  bool allOps;
   List<OpsModel> filtro;
 
   OpslistWidget({this.showMenu, this.filtro, this.check, this.can});
@@ -44,9 +41,8 @@ class OpslistWidget extends StatelessWidget {
           double size = controllerGeral.getQueryMed(context, 100, showMenu);
           String cliente =
               o.cliente.length >= 35 ? o.cliente.substring(0, 35) : o.cliente;
-//            bool upProd = controller.upProd ?? false;
-//            bool allOps = controller.allOps ?? false;
           return Card(
+            color: controller.getCorCard(o),
             child: Container(
               width: size,
               child: Row(
@@ -73,7 +69,7 @@ class OpslistWidget extends StatelessWidget {
                     line: 2,
                     alingL: true,
                     title:
-                        "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente}",
+                        "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente} ${controller.getAtraso(o)}",
                     subTile:
                         "${o.servico.length >= 300 ? o.servico.substring(0, 300) : o.servico}",
                   ),
