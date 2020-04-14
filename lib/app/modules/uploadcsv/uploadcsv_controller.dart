@@ -1,8 +1,11 @@
+
+import 'package:eco_web_mobx/app/modules/ops/ops_controller.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/auxiliares.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/menu/menu_controller.dart';
+import 'package:eco_web_mobx/app/shared/widgets/opslist/opslist_controller.dart';
 import 'package:eco_web_mobx/app/shared/widgets/right/right_controller.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
@@ -29,6 +32,7 @@ abstract class _UploadcsvControllerBase with Store {
   final controllerHeader = Modular.get<HeaderController>();
   final controllerMenu = Modular.get<MenuController>();
   final controllerRight = Modular.get<RightController>();
+  final controllerOpsList = Modular.get<OpslistController>();
 
   get sizeW => controllerGeral.size.width;
 
@@ -178,4 +182,6 @@ abstract class _UploadcsvControllerBase with Store {
   }
 
   Future upload(List<OpsModel> model) => repository.upload(model);
+  Future upProd(OpsModel model) => repository.upProd(model);
+  Future canProd(OpsModel model) => repository.canProd(model);
 }

@@ -3,4 +3,6 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 abstract class IUploadcsvRepository extends Disposable{
   Future upload(List<OpsModel> listOps);
+  Future upProd(OpsModel model);
+  Future canProd(OpsModel model);
 }

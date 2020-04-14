@@ -35,6 +35,7 @@ class BodyuploadcsvWidget extends StatelessWidget {
       } else if (controller.status == UploadcsvStatus.success) {
         UploadcsvStatus statusRight = controller.status;
         final list = statusRight.valorGet as List<OpsModel>;
+
         return _buildContainer(_ListaUploadOps(list));
       } else {
         UploadcsvStatus statusRight = controller.status;
@@ -59,12 +60,12 @@ class BodyuploadcsvWidget extends StatelessWidget {
   }
 
   _ListaUploadOps(List<OpsModel> list) {
-    return ListView.builder(
-        itemCount: list.length,
-        itemBuilder: (context, index) {
-          OpsModel model = list[index];
-          return _buildCheckboxListTile(model);
-        });
+    return controller.controllerOpsList.opslistWidget(
+      showMenu,
+      list,
+      controller.upProd,
+      controller.canProd,
+    );
   }
 
   _buildCheckboxListTile(OpsModel model) {
@@ -74,5 +75,6 @@ class BodyuploadcsvWidget extends StatelessWidget {
       subtitle: Text(model.servico),
     );
   }
+
 
 }

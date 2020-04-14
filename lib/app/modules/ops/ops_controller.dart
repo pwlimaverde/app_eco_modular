@@ -26,6 +26,8 @@ abstract class _OpsControllerBase with Store {
     getOpsListEnt();
   }
 
+  String busca;
+
   final controllerGeral = Modular.get<AppController>();
   final controllerHeader = Modular.get<HeaderController>();
   final controllerMenu = Modular.get<MenuController>();
@@ -82,6 +84,14 @@ abstract class _OpsControllerBase with Store {
     setStatus(OpsStatus.loading);
     opsListEnt = repository.getOpsEnt().asObservable();
     setStatus(OpsStatus.success);
+  }
+
+  @observable
+  bool buscando;
+
+  @action
+  setBuscando(bool valor){
+    buscando = valor;
   }
 
 //  @observable

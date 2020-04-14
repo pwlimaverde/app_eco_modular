@@ -115,7 +115,7 @@ class OpslistWidget extends StatelessWidget {
                               strok: 2,
                               color: Colors.green,
                             );
-                          }else{
+                          } else {
                             return IconbuttonWidget(
                               icon: Icons.check,
                               color: Colors.green,
@@ -140,7 +140,7 @@ class OpslistWidget extends StatelessWidget {
                               strok: 2,
                               color: Colors.red,
                             );
-                          }else{
+                          } else {
                             return IconbuttonWidget(
                               icon: Icons.cancel,
                               color: Colors.red,

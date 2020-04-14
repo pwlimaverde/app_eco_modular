@@ -2,6 +2,7 @@ import 'package:eco_web_mobx/app/modules/ops/widgets/listops/listops_widget.dart
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../ops_controller.dart';
@@ -21,6 +22,8 @@ class BodyopsWidget extends StatefulWidget {
 class _BodyopsWidgetState extends State<BodyopsWidget>
     with SingleTickerProviderStateMixin<BodyopsWidget> {
   final controller = Modular.get<OpsController>();
+  final formKey = GlobalKey<FormState>();
+  final crtlBusca = TextEditingController();
 
   TabController _tabController;
 
@@ -76,10 +79,116 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         indicatorColor: Colors.blue,
         labelStyle: TextStyle(color: Colors.white, fontSize: 13),
         tabs: [
-          Tab(text: "Em Produção"),
-          Tab(text: "Em Expedição"),
-          Tab(text: "Todas as Ops"),
+          Tab(
+            text: "Em Produção",
+          ),
+          Tab(
+            text: "Em Expedição",
+          ),
+          Tab(
+//            text: "Todas as Ops",
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: <Widget>[
+                Text(""),
+                Text("Todas as Ops"),
+                _iconButtonSearch(),
+              ],
+            ),
+          ),
         ],
+      ),
+    );
+  }
+
+  _iconButtonSearch() {
+    return Observer(
+      builder: (context) {
+        return controller.buscando == true
+            ? _inkWell(
+                icon: Icon(
+                  Icons.clear,
+                  color: Colors.red,
+                ),
+                title: " Limpar",
+                color: Colors.red,
+                ontap: () {
+                  crtlBusca.clear();
+                  controller.setBuscando(false);
+                },
+              )
+            : _inkWell(
+          icon: Icon(
+            Icons.search,
+            color: Colors.white,
+          ),
+          title: " Buscar",
+          color: Colors.white,
+          ontap: () {
+            _alertBusca();
+          },
+        );
+      },
+    );
+  }
+
+  _inkWell({Icon icon, String title, Function ontap, Color color}) {
+    return InkWell(
+      child: Row(
+        children: <Widget>[
+          icon,
+          Text(
+            title,
+            style: TextStyle(color: color),
+          ),
+        ],
+      ),
+      onTap: ontap,
+    );
+  }
+
+  _alertBusca() {
+    showDialog(
+        barrierDismissible: false,
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Digite a Busca..."),
+            content: _textFormField(),
+            actions: <Widget>[
+              FlatButton(
+                  child: Text("Ok"),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  }),
+              FlatButton(
+                  child: Text("Cancelar"),
+                  onPressed: () {
+                    crtlBusca.clear();
+                    controller.setBuscando(false);
+                    Navigator.pop(context);
+                  })
+            ],
+          );
+        });
+
+  }
+
+  _textFormField() {
+    return TextFormField(
+      autofocus: true,
+      controller: crtlBusca,
+      onChanged: (value) {
+        controller.busca = value;
+        controller.setBuscando(true);
+      },
+      style: TextStyle(fontSize: 15),
+      decoration: InputDecoration(
+        hintStyle: TextStyle(fontSize: 15),
+        contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 5),
+        labelText: "Busca",
+        hintText: "Digite a palavra chave",
+        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
       ),
     );
   }
@@ -95,12 +204,6 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  color(Color color) {
-    return Container(
-      color: color,
-    );
-  }
-
   _observerList() {
     return Observer(
       builder: (context) {
@@ -113,7 +216,19 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
-          filtro,
+          controller.buscando == true
+              ? controller.busca != null && controller.busca.length >= 1
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
+              : filtro,
           controller.upProd,
           controller.canProd,
         );
@@ -133,7 +248,19 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
-          filtro,
+          controller.buscando == true
+              ? controller.busca != null && controller.busca.length >= 1
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
+              : filtro,
           controller.upProd,
           controller.canProd,
         );
@@ -153,7 +280,19 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
-          filtro,
+          controller.buscando == true
+              ? controller.busca != null && controller.busca.length >= 1
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
+              : filtro,
           controller.upProd,
           controller.canProd,
         );

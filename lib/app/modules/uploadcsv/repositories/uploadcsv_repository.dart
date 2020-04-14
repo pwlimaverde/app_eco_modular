@@ -50,6 +50,49 @@ class UploadcsvRepository implements IUploadcsvRepository {
     return listOpsUP.length > 0 ? listOpsUP : null;
   }
 
+  @override
+  Future upProd(OpsModel model) async{
+    var now = DateTime.now();
+    try{
+      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+      DocumentSnapshot doc = await docRef.get();
+      if(doc.data['produzido'] != null && doc.data['entregue'] != null){
+        return;
+      }
+      if(doc.data['produzido'] == null){
+        model.reference.updateData({
+          'produzido': now,
+        });
+      }else{
+        model.reference.updateData({
+          'entregue': now,
+        });
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
+  Future canProd(OpsModel model) async{
+    try{
+      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+      DocumentSnapshot doc = await docRef.get();
+      if(doc.data['cancelada'] == false){
+        model.reference.updateData({
+          'cancelada': true,
+        });
+      }else{
+        model.reference.updateData({
+          'cancelada': false,
+        });
+      }
+
+    }catch(e){
+      print(e);
+    }
+  }
+
   //dispose will be called automatically
   @override
   void dispose() {}
