@@ -116,27 +116,32 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
 
   _buttonLimpar() {
     return Container(
-//      color: Colors.greenAccent,
-      width: 170,
+      width: 130,
       child: Row(
         children: <Widget>[
           Container(
             padding: EdgeInsets.all(0),
-            width: 120,
+            width: 110,
             height: 30,
             child: _textFormField(),
           ),
-          IconButton(
+          Container(
             padding: EdgeInsets.all(0),
-            alignment: Alignment.centerLeft,
-            icon: Icon(
-              Icons.clear,
-              color: Colors.red,
+            width: 20,
+            height: 30,
+            child: IconButton(
+              padding: EdgeInsets.all(0),
+              alignment: Alignment.centerLeft,
+              icon: Icon(
+                Icons.clear,
+                color: Colors.red,
+                  size: 20,
+              ),
+              onPressed: () {
+                crtlBusca.clear();
+                controller.setBuscando(false);
+              },
             ),
-            onPressed: () {
-              crtlBusca.clear();
-              controller.setBuscando(false);
-            },
           ),
         ],
       ),
