@@ -2,6 +2,7 @@ import 'package:eco_web_mobx/app/modules/ops/widgets/listops/listops_widget.dart
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -85,17 +86,21 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           Tab(
             text: "Em Expedição",
           ),
-          Tab(
+          Observer(builder: (_) {
+            return Tab(
 //            text: "Todas as Ops",
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: <Widget>[
-                Text(""),
-                Text("Todas as Ops"),
-                _iconButtonSearch(),
-              ],
-            ),
-          ),
+              child: controller.buscando == true
+                  ? _iconButtonSearch()
+                  : Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text(""),
+                        Text("Todas Ops"),
+                        _iconButtonSearch(),
+                      ],
+                    ),
+            );
+          }),
         ],
       ),
     );
@@ -104,30 +109,48 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
   _iconButtonSearch() {
     return Observer(
       builder: (context) {
-        return controller.buscando == true
-            ? _inkWell(
-                icon: Icon(
-                  Icons.clear,
-                  color: Colors.red,
-                ),
-                title: " Limpar",
-                color: Colors.red,
-                ontap: () {
-                  crtlBusca.clear();
-                  controller.setBuscando(false);
-                },
-              )
-            : _inkWell(
-          icon: Icon(
-            Icons.search,
-            color: Colors.white,
+        return controller.buscando == true ? _buttonLimpar() : _buttonSearch();
+      },
+    );
+  }
+
+  _buttonLimpar() {
+    return Container(
+//      color: Colors.greenAccent,
+      width: 170,
+      child: Row(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(0),
+            width: 120,
+            height: 30,
+            child: _textFormField(),
           ),
-          title: " Buscar",
-          color: Colors.white,
-          ontap: () {
-            _alertBusca();
-          },
-        );
+          IconButton(
+            padding: EdgeInsets.all(0),
+            alignment: Alignment.centerLeft,
+            icon: Icon(
+              Icons.clear,
+              color: Colors.red,
+            ),
+            onPressed: () {
+              crtlBusca.clear();
+              controller.setBuscando(false);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buttonSearch() {
+    return IconButton(
+      icon: Icon(
+        Icons.search,
+        color: Colors.white,
+      ),
+      onPressed: () {
+        controller.setBuscando(true);
       },
     );
   }
@@ -171,7 +194,6 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
             ],
           );
         });
-
   }
 
   _textFormField() {
@@ -182,14 +204,22 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         controller.busca = value;
         controller.setBuscando(true);
       },
-      style: TextStyle(fontSize: 15),
+      style: TextStyle(fontSize: 15, color: Colors.white),
       decoration: InputDecoration(
-        hintStyle: TextStyle(fontSize: 15),
-        contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 5),
-        labelText: "Busca",
-        hintText: "Digite a palavra chave",
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-      ),
+
+          contentPadding: EdgeInsets.fromLTRB(20, 5, 10, 5),
+          labelText: "Busca",
+          labelStyle: TextStyle(color: Colors.white),
+          hintText: "Digite a busca",
+          hintStyle: TextStyle(fontSize: 10, color: Colors.white),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: Colors.white),
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(15),
+            borderSide: BorderSide(color: Colors.white),
+          )),
     );
   }
 
