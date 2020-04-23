@@ -6,7 +6,7 @@ import 'package:eco_web_mobx/app/modules/ops/ops_page.dart';
 import 'package:hasura_connect/hasura_connect.dart';
 import 'repositories/ops_hasura_repository.dart';
 import 'repositories/ops_interface.dart';
-import 'repositories/op_firebases_repository.dart';
+import 'repositories/ops_firebases_repository.dart';
 
 class OpsModule extends ChildModule {
   @override

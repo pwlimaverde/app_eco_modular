@@ -140,60 +140,60 @@ class OpslistWidget extends StatelessWidget {
 //                      ),
 //                    ),
 //                  ),
-//                  Column(
-//                    children: <Widget>[
-//                      Container(
-//                        height: 40,
-//                        child: Observer(builder: (_) {
-//                          if (controller.loadOpCheck == o.op) {
-//                            return CircularprogressWidget(
-//                              left: 0,
-//                              right: 0,
-//                              top: 14,
-//                              bottom: 14,
-//                              swidth: 14,
-//                              sheight: 14,
-//                              strok: 2,
-//                              color: Colors.green,
-//                            );
-//                          } else {
-//                            return IconbuttonWidget(
-//                              icon: Icons.check,
-//                              color: Colors.green,
-//                              onPressed: () {
-//                                check(o);
-//                              },
-//                            );
-//                          }
-//                        }),
-//                      ),
-//                      Container(
-//                        height: 40,
-//                        child: Observer(builder: (_) {
-//                          if (controller.loadOpCan == o.op) {
-//                            return CircularprogressWidget(
-//                              left: 0,
-//                              right: 0,
-//                              top: 14,
-//                              bottom: 14,
-//                              swidth: 14,
-//                              sheight: 14,
-//                              strok: 2,
-//                              color: Colors.red,
-//                            );
-//                          } else {
-//                            return IconbuttonWidget(
-//                              icon: Icons.cancel,
-//                              color: Colors.red,
-//                              onPressed: () {
-//                                can(o);
-//                              },
-//                            );
-//                          }
-//                        }),
-//                      ),
-//                    ],
-//                  ),
+                  Column(
+                    children: <Widget>[
+                      Container(
+                        height: 40,
+                        child: Observer(builder: (_) {
+                          if (controller.loadOpCheck == o.op) {
+                            return CircularprogressWidget(
+                              left: 0,
+                              right: 0,
+                              top: 14,
+                              bottom: 14,
+                              swidth: 14,
+                              sheight: 14,
+                              strok: 2,
+                              color: Colors.green,
+                            );
+                          } else {
+                            return IconbuttonWidget(
+                              icon: Icons.check,
+                              color: Colors.green,
+                              onPressed: () {
+                                check(o);
+                              },
+                            );
+                          }
+                        }),
+                      ),
+                      Container(
+                        height: 40,
+                        child: Observer(builder: (_) {
+                          if (controller.loadOpCan == o.op) {
+                            return CircularprogressWidget(
+                              left: 0,
+                              right: 0,
+                              top: 14,
+                              bottom: 14,
+                              swidth: 14,
+                              sheight: 14,
+                              strok: 2,
+                              color: Colors.red,
+                            );
+                          } else {
+                            return IconbuttonWidget(
+                              icon: Icons.cancel,
+                              color: Colors.red,
+                              onPressed: () {
+                                can(o);
+                              },
+                            );
+                          }
+                        }),
+                      ),
+                    ],
+                  ),
 
 
 //                    Container(

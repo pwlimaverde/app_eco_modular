@@ -1,6 +1,7 @@
 import 'package:eco_web_mobx/app/modules/ops/repositories/documents/ops_document.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:hasura_connect/hasura_connect.dart';
+import 'package:intl/intl.dart';
 import 'ops_interface.dart';
 
 class OpsHasuraRepository implements IOpsRepository {
@@ -11,9 +12,12 @@ class OpsHasuraRepository implements IOpsRepository {
 
 
   @override
-  Future canProd(OpsModel model) {
-    // TODO: implement canProd
-    throw UnimplementedError();
+  Future canProd(OpsModel model) async{
+    if(model.cancelada == false){
+      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": true});
+    }else{
+      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": false});
+    }
   }
 
   @override
@@ -50,9 +54,21 @@ class OpsHasuraRepository implements IOpsRepository {
   }
 
   @override
-  Future upProd(OpsModel model) {
-    // TODO: implement upProd
-    throw UnimplementedError();
+  Future upProd(OpsModel model) async{
+    var now = DateTime.now();
+    final df = DateFormat('yyyy/MM/dd');
+    try{
+      if(model.produzido != null && model.entregue != null){
+        return;
+      }
+      if(model.produzido == null){
+        connect.mutation(opsProdMutation, variables: {"op": model.op, "produzido": df.format(now)});
+      }else{
+        connect.mutation(opsEntMutation, variables: {"op": model.op, "entregue": df.format(now)});
+      }
+    }catch(e){
+      print(e);
+    }
   }
 
   @override

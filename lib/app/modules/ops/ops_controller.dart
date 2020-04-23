@@ -73,7 +73,6 @@ abstract class _OpsControllerBase with Store {
   getOpsListProd() {
     setStatus(OpsStatus.loading);
     opsListProd = repository.getOpsProd().asObservable();
-    print("teste lista ${opsListProd.value}");
     setStatus(OpsStatus.success);
   }
 
