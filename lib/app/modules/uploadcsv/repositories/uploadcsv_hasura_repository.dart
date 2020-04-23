@@ -11,17 +11,34 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
   UploadcsvHasuraRepository(this.connect);
 
   @override
-  Future canProd(OpsModel model) {
-    throw UnimplementedError();
+  Future canProd(OpsModel model) async{
+    if(model.cancelada == false){
+      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": true});
+    }else{
+      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": false});
+    }
+  }
+
+  @override
+  Future upProd(OpsModel model) async{
+    var now = DateTime.now();
+    final df = DateFormat('yyyy/MM/dd');
+    try{
+      if(model.produzido != null && model.entregue != null){
+        return;
+      }
+      if(model.produzido == null){
+        connect.mutation(opsProdMutation, variables: {"op": model.op, "produzido": df.format(now)});
+      }else{
+        connect.mutation(opsEntMutation, variables: {"op": model.op, "entregue": df.format(now)});
+      }
+    }catch(e){
+      print(e);
+    }
   }
 
   @override
   Future upInfo(OpsModel model) {
-    throw UnimplementedError();
-  }
-
-  @override
-  Future upProd(OpsModel model) {
     throw UnimplementedError();
   }
 
@@ -57,6 +74,9 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
           },
         );
         model.id = data['data']['insert_ops']['returning'][0]['id'];
+        model.cancelada = false;
+        model.produzido = null;
+        model.entregue = null;
         listOpsUPOk.add(model);
 
       }

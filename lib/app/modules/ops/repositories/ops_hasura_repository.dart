@@ -21,6 +21,24 @@ class OpsHasuraRepository implements IOpsRepository {
   }
 
   @override
+  Future upProd(OpsModel model) async{
+    var now = DateTime.now();
+    final df = DateFormat('yyyy/MM/dd');
+    try{
+      if(model.produzido != null && model.entregue != null){
+        return;
+      }
+      if(model.produzido == null){
+        connect.mutation(opsProdMutation, variables: {"op": model.op, "produzido": df.format(now)});
+      }else{
+        connect.mutation(opsEntMutation, variables: {"op": model.op, "entregue": df.format(now)});
+      }
+    }catch(e){
+      print(e);
+    }
+  }
+
+  @override
   Stream<List<OpsModel>> getOpsAll() {
     return connect.subscription(opsAllQuery).map((event) {
       return (event['data']['ops'] as List).map((json) {
@@ -51,24 +69,6 @@ class OpsHasuraRepository implements IOpsRepository {
   Future upInfo(OpsModel model) {
     // TODO: implement upInfo
     throw UnimplementedError();
-  }
-
-  @override
-  Future upProd(OpsModel model) async{
-    var now = DateTime.now();
-    final df = DateFormat('yyyy/MM/dd');
-    try{
-      if(model.produzido != null && model.entregue != null){
-        return;
-      }
-      if(model.produzido == null){
-        connect.mutation(opsProdMutation, variables: {"op": model.op, "produzido": df.format(now)});
-      }else{
-        connect.mutation(opsEntMutation, variables: {"op": model.op, "entregue": df.format(now)});
-      }
-    }catch(e){
-      print(e);
-    }
   }
 
   @override

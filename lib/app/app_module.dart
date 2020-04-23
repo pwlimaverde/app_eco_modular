@@ -37,9 +37,9 @@ class AppModule extends MainModule {
 
   @override
   List<Router> get routers => [
-        Router('/', child: (_, args) => SplashPage()),
-        Router('/login', module: LoginModule(), transition: TransitionType.noTransition),
-        Router('/home', module: HomeModule(), transition: TransitionType.noTransition),
+//        Router('/', child: (_, args) => SplashPage()),
+//        Router('/login', module: LoginModule(), transition: TransitionType.noTransition),
+        Router('/', module: HomeModule(), transition: TransitionType.noTransition),
         Router('/upload',
             module: UploadcsvModule(), transition: TransitionType.noTransition),
         Router('/ops',
