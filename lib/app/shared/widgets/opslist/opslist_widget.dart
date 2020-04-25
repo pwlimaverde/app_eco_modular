@@ -23,6 +23,7 @@ class OpslistWidget extends StatelessWidget {
   final controller = Modular.get<OpslistController>();
 
   final f = DateFormat('dd/MM/yy');
+  final f2 = DateFormat('dd/MM');
   final fc = DateFormat('dd/MM/yyyy');
   final numMilhar = NumberFormat(",##0", "pt_BR");
 
@@ -98,12 +99,12 @@ class OpslistWidget extends StatelessWidget {
                     sizeFontTile: 1.5,
                     sizeFontSubTile: 1.2,
                     line: 2,
-                    labelT: "Entrega:",
+                    labelT: o.entregaprog!=null?"Ini ${f2.format(o.entregaprog)}:":"Entrega:",
                     title: f.format(o.entrega),
                     subTile:
                         "${o.obs != null ? o.obs.length >= 68 ? o.obs.substring(0, 68) : o.obs : ""}",
                     ontap: () {
-//                      _showDialog(context, o);
+                      _showDialog(context, o);
                     },
                   ),
 //                  CheckboxWidget(
@@ -369,49 +370,50 @@ class OpslistWidget extends StatelessWidget {
 //    );
   }
 
-//  _showDialog(context, OpsModel model) {
-//    showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text("Alterar dados"),
-//            content: Column(
-//              children: <Widget>[
-//                TextFormField(
-//                  initialValue: fc.format(model.entrega),
-//                  onChanged: (value) {
-//                    model.entrega = DateTime.parse(
-//                        "${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}");
-//                  },
-//                  decoration: InputDecoration(
-//                      border: OutlineInputBorder(),
-//                      labelText: "Altere a data de Entrega"),
-//                ),
-//                TextFormField(
-//                  initialValue: model.obs,
-//                  onChanged: (value) => model.obs = value,
-//                  decoration: InputDecoration(
-//                      border: OutlineInputBorder(),
-//                      labelText: "Altere as Observações"),
-//                ),
-//              ],
-//            ),
-//            actions: <Widget>[
-//              FlatButton(
-//                onPressed: () {
-//                  Modular.to.pop();
-//                },
-//                child: Text("Cancelar"),
-//              ),
-//              FlatButton(
-//                onPressed: () {
-//                  save(model);
-//                  Modular.to.pop();
-//                },
-//                child: Text("Salvar"),
-//              ),
-//            ],
-//          );
-//        });
-//  }
+  _showDialog(context, OpsModel model) {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Alterar dados"),
+            content: Column(
+              children: <Widget>[
+                TextFormField(
+                  initialValue: fc.format(model.entrega),
+                  onChanged: (value) {
+                    model.entregaprog = model.entrega;
+                    model.entrega = DateTime.parse(
+                        "${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}");
+                  },
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Reprograme a data de Entrega"),
+                ),
+                TextFormField(
+                  initialValue: model.obs,
+                  onChanged: (value) => model.obs = value,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: "Altere as Observações"),
+                ),
+              ],
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Modular.to.pop();
+                },
+                child: Text("Cancelar"),
+              ),
+              FlatButton(
+                onPressed: () {
+                  save(model);
+                  Modular.to.pop();
+                },
+                child: Text("Salvar"),
+              ),
+            ],
+          );
+        });
+  }
 }

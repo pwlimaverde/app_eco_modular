@@ -22,7 +22,7 @@ class MenuWidget extends StatelessWidget {
           ItemWidget(
             page: page,
             indice: 0,
-            nav: "/home",
+            nav: "/",
             icon: Icon(Icons.home),
             title: "Home",
           ),

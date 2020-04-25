@@ -41,7 +41,7 @@ abstract class _OpslistControllerBase with Store {
     String dayProd;
     String dayExped;
     String dayEnt;
-    int dif = int.parse(now.difference(model.entrega).inDays.toString());
+    int dif = int.parse(now.difference(model.entregaprog!=null?model.entregaprog:model.entrega).inDays.toString());
     if (model.cancelada) {
       return "";
     }
@@ -49,8 +49,10 @@ abstract class _OpslistControllerBase with Store {
       int difEnt = int.parse(now.difference(model.entregue).inDays.toString());
       if (difEnt == 0) {
         dayEnt = "- Entregue hoje";
-      } else {
-        dayEnt = "- Entregue a ${dayEnt} dia(s)";
+      } else if(difEnt > 30){
+        dayEnt = "- Entregue";
+      } else{
+        dayEnt = "- Entregue a ${difEnt} dia(s)";
       }
       return dayEnt;
     }

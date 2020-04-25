@@ -12,6 +12,7 @@ query{
     produzido
     entrega
     entregue
+    entregaprog
   }
 }
 """;
@@ -30,6 +31,7 @@ query{
     produzido
     entrega
     entregue
+    entregaprog
   }
 }
 """;
@@ -48,6 +50,7 @@ query{
     produzido
     entrega
     entregue
+    entregaprog
   }
 }
 """;
@@ -69,7 +72,7 @@ mutation CanOps(\$op: Int, \$cancelada: Boolean) {
 """;
 
 const String opsProdMutation = """
-mutation CanOps(\$op: Int, \$produzido: date) {
+mutation ProdOps(\$op: Int, \$produzido: date) {
   update_ops(where: {op: {_eq: \$op}}, _set: {produzido: \$produzido}) {
     affected_rows
   }
@@ -77,13 +80,20 @@ mutation CanOps(\$op: Int, \$produzido: date) {
 """;
 
 const String opsEntMutation = """
-mutation CanOps(\$op: Int, \$entregue: date) {
+mutation EntOps(\$op: Int, \$entregue: date) {
   update_ops(where: {op: {_eq: \$op}}, _set: {entregue: \$entregue}) {
     affected_rows
   }
 }
 """;
 
+const String opsInfoMutation = """
+mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs}) {
+    affected_rows
+  }
+}
+""";
 
 //const String opsQuery = """
 //query{ops{op servico acabamento acm cancelada cliente coa colagem com corte cva cvm1 cvm2 entrada entrega entregue flexo id impressao lam1 laminacao obs orcamento produzido quant ryobi sm2c sm4c valor vendedor}}

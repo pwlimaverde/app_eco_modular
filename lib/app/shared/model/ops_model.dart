@@ -10,6 +10,7 @@ class OpsModel {
   double valor;
   DateTime entrada;
   DateTime entrega;
+  DateTime entregaprog;
   String vendedor;
   DateTime produzido;
   DateTime entregue;
@@ -43,6 +44,7 @@ class OpsModel {
     this.valor,
     this.entrada,
     this.entrega,
+    this.entregaprog,
     this.vendedor,
     this.produzido,
     this.entregue,
@@ -81,6 +83,9 @@ class OpsModel {
       entrega: doc['entrega'] == null
           ? doc['entrega']
           : DateTime.parse(doc['entrega']),
+      entregaprog: doc['entregaprog'] == null
+          ? doc['entregaprog']
+          : DateTime.parse(doc['entregaprog']),
       vendedor: doc['vendedor'],
       produzido: doc['produzido'] == null
           ? doc['produzido']
