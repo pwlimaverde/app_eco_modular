@@ -1,0 +1,2 @@
+lib/app/shared/widgets/opslist/components/switcher/switcher_widget.dart
+test/app/shared/widgets/opslist/components/switcher/switcher_widget_test.dart

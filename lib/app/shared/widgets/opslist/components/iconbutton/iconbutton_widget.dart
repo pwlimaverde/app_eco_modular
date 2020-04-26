@@ -14,7 +14,7 @@ class IconbuttonWidget extends StatelessWidget {
     return IconButton(
       icon: Icon(
         icon,
-        size: 20,
+        size: 15,
         color: color,
       ),
       padding: EdgeInsets.all(4),

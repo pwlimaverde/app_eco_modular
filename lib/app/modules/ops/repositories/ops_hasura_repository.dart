@@ -11,13 +11,8 @@ class OpsHasuraRepository implements IOpsRepository {
 
   @override
   Future canProd(OpsModel model) async {
-    if (model.cancelada == false) {
-      connect.mutation(opsCanMutation,
-          variables: {"op": model.op, "cancelada": true});
-    } else {
-      connect.mutation(opsCanMutation,
-          variables: {"op": model.op, "cancelada": false});
-    }
+    connect.mutation(opsCanMutation,
+        variables: {"op": model.op, "cancelada": !model.cancelada});
   }
 
   @override
@@ -74,8 +69,12 @@ class OpsHasuraRepository implements IOpsRepository {
       connect.mutation(opsInfoMutation, variables: {
         "op": model.op,
         "entrega": df.format(model.entrega),
-        "entregaprog": df.format(model.entregaprog),
-        "obs": model.obs
+        "entregaprog": model.entregaprog != null?df.format(model.entregaprog):null,
+        "obs": model.obs,
+        "ryobi": model.ryobi,
+        "sm2c": model.sm2c,
+        "sm4c": model.sm4c,
+        "flexo": model.flexo
       });
     }catch (e){
       print("erro --- $e");

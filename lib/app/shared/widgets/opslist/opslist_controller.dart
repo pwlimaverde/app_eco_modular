@@ -8,6 +8,39 @@ part 'opslist_controller.g.dart';
 class OpslistController = _OpslistControllerBase with _$OpslistController;
 
 abstract class _OpslistControllerBase with Store {
+
+  @observable
+  bool colorCrtRyobi = false;
+
+  @action
+  setColorCrtRyobi(bool crt){
+    colorCrtRyobi = crt;
+  }
+
+  @observable
+  bool colorCrtSm2c = false;
+
+  @action
+  setColorCrtSm2c(bool crt){
+    colorCrtSm2c = crt;
+  }
+
+  @observable
+  bool colorCrtSm4c = false;
+
+  @action
+  setColorCrtSm4c(bool crt){
+    colorCrtSm4c = crt;
+  }
+
+  @observable
+  bool colorCrtFlexo = false;
+
+  @action
+  setColorCrtFlexo(bool crt){
+    colorCrtFlexo = crt;
+  }
+
   @observable
   int loadOpCheck;
 

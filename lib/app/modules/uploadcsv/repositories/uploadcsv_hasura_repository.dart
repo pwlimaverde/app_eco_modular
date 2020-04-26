@@ -12,11 +12,7 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
 
   @override
   Future canProd(OpsModel model) async{
-    if(model.cancelada == false){
-      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": true});
-    }else{
-      connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": false});
-    }
+    connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": !model.cancelada});
   }
 
   @override

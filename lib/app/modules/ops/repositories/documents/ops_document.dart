@@ -13,6 +13,11 @@ query{
     entrega
     entregue
     entregaprog
+    impressao
+    ryobi
+    sm2c
+    sm4c
+    flexo
   }
 }
 """;
@@ -32,6 +37,11 @@ query{
     entrega
     entregue
     entregaprog
+    impressao
+    ryobi
+    sm2c
+    sm4c
+    flexo
   }
 }
 """;
@@ -51,6 +61,11 @@ query{
     entrega
     entregue
     entregaprog
+    impressao
+    ryobi
+    sm2c
+    sm4c
+    flexo
   }
 }
 """;
@@ -88,8 +103,8 @@ mutation EntOps(\$op: Int, \$entregue: date) {
 """;
 
 const String opsInfoMutation = """
-mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String) {
-  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs}) {
+mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String, \$ryobi: Boolean, \$sm2c: Boolean, \$sm4c: Boolean, \$flexo: Boolean) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs, ryobi: \$ryobi, sm2c: \$sm2c, sm4c: \$sm4c, flexo: \$flexo}) {
     affected_rows
   }
 }

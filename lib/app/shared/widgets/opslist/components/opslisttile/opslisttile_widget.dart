@@ -18,6 +18,7 @@ class OpslisttileWidget extends StatelessWidget {
   bool alingL;
   double heightT;
   double heightS;
+  bool cardAux = false;
 
   OpslisttileWidget({
     this.sizeGeral,
@@ -34,6 +35,7 @@ class OpslisttileWidget extends StatelessWidget {
     this.heightT,
     this.heightS,
     this.ontap,
+    this.cardAux,
   });
 
   final controller = Modular.get<AppController>();
@@ -79,7 +81,7 @@ class OpslisttileWidget extends StatelessWidget {
       child: Container(
 //      color: Colors.greenAccent,
         padding: EdgeInsets.all(0),
-        width: controller.getSize(sizeGeral, sizeCont),
+        width: cardAux == true?controller.getSize(sizeGeral, sizeCont)-130:controller.getSize(sizeGeral, sizeCont),
         child: ListTile(
           onTap: ontap,
           isThreeLine: threeLine ?? false,

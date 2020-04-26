@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -8,6 +10,7 @@ import 'components/checkbox/checkbox_widget.dart';
 import 'components/circularprogress/circularprogress_widget.dart';
 import 'components/iconbutton/iconbutton_widget.dart';
 import 'components/opslisttile/opslisttile_widget.dart';
+import 'components/switcher/switcher_widget.dart';
 import 'opslist_controller.dart';
 
 class OpslistWidget extends StatelessWidget {
@@ -65,10 +68,11 @@ class OpslistWidget extends StatelessWidget {
                     subTile: f.format(o.entrada),
                   ),
                   OpslisttileWidget(
+                    cardAux: true,
                     heightT: 25,
                     heightS: 35,
                     sizeGeral: size,
-                    sizeCont: 50,
+                    sizeCont: 65,
                     sizeFontTile: 1.5,
                     sizeFontSubTile: 1.4,
                     line: 2,
@@ -99,7 +103,9 @@ class OpslistWidget extends StatelessWidget {
                     sizeFontTile: 1.5,
                     sizeFontSubTile: 1.2,
                     line: 2,
-                    labelT: o.entregaprog!=null?"Ini ${f2.format(o.entregaprog)}:":"Entrega:",
+                    labelT: o.entregaprog != null
+                        ? "Ini ${f2.format(o.entregaprog)}:"
+                        : "Entrega:",
                     title: f.format(o.entrega),
                     subTile:
                         "${o.obs != null ? o.obs.length >= 68 ? o.obs.substring(0, 68) : o.obs : ""}",
@@ -107,95 +113,96 @@ class OpslistWidget extends StatelessWidget {
                       _showDialog(context, o);
                     },
                   ),
-//                  CheckboxWidget(
-//                    heightT: 25,
-//                    sizeGeral: size,
-//                    sizeCont: 10,
-//                    sizeFontTile: 1.5,
-//                    labelT: "Impressão:",
-//                    title: "Ryobi",
-//                    value: o.ryobi??false,
-//                    onChanged: (check){
-//                      o.ryobi = check;
-//                      save(o);
-//                    },
-//                  ),
-//                  Card(
-//                    child: Container(
-//                      width: 80,
-//                      child: Column(
-//                        children: <Widget>[
-//                          Row(
-//                            children: <Widget>[
-//                              Checkbox(
-//                                value: o.ryobi??false,
-//                                onChanged: (check){
-//                                  o.ryobi = check;
-//                                  save(o);
-//                                },
-//                              ),
-//                              Text("Ryobi"),
-//                            ],
-//                          ),
-//                        ],
-//                      ),
-//                    ),
-//                  ),
-                  Column(
-                    children: <Widget>[
-                      Container(
-                        height: 40,
-                        child: Observer(builder: (_) {
-                          if (controller.loadOpCheck == o.op) {
-                            return CircularprogressWidget(
-                              left: 0,
-                              right: 0,
-                              top: 14,
-                              bottom: 14,
-                              swidth: 14,
-                              sheight: 14,
-                              strok: 2,
-                              color: Colors.green,
-                            );
-                          } else {
-                            return IconbuttonWidget(
-                              icon: Icons.check,
-                              color: Colors.green,
-                              onPressed: () {
-                                check(o);
-                              },
-                            );
-                          }
-                        }),
+                  Card(
+                    elevation: 0.5,
+                    child: Container(
+                      padding: EdgeInsets.all(2),
+                      width: 75,
+                      height: 72,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SwitcherWidget(title: "Ryobi ", crtL: o.ryobi, mini: true, onTap: (){
+                            o.ryobi = !o.ryobi;
+                            save(o);
+                          },),
+                          SwitcherWidget(title: "SM 4c ", crtL: o.sm4c, mini: true, onTap: (){
+                            o.sm4c = !o.sm4c;
+                            save(o);
+                          },),
+                          SwitcherWidget(title: "SM 2c ", crtL: o.sm2c, mini: true, onTap: (){
+                            o.sm2c = !o.sm2c;
+                            save(o);
+                          },),
+                          SwitcherWidget(title: "Flexo ", crtL: o.flexo, mini: true, onTap: (){
+                            o.flexo = !o.flexo;
+                            save(o);
+                          },),
+                        ],
                       ),
-                      Container(
-                        height: 40,
-                        child: Observer(builder: (_) {
-                          if (controller.loadOpCan == o.op) {
-                            return CircularprogressWidget(
-                              left: 0,
-                              right: 0,
-                              top: 14,
-                              bottom: 14,
-                              swidth: 14,
-                              sheight: 14,
-                              strok: 2,
-                              color: Colors.red,
-                            );
-                          } else {
-                            return IconbuttonWidget(
-                              icon: Icons.cancel,
-                              color: Colors.red,
-                              onPressed: () {
-                                can(o);
-                              },
-                            );
-                          }
-                        }),
-                      ),
-                    ],
+                    ),
                   ),
-
+                  Card(
+                    elevation: 0.5,
+                    child: Container(
+                      width: 30,
+                      height: 72,
+                      child: Column(
+                        children: <Widget>[
+                          Container(
+                            height: 31,
+                            child: Observer(builder: (_) {
+                              if (controller.loadOpCheck == o.op) {
+                                return CircularprogressWidget(
+                                  left: 0,
+                                  right: 0,
+                                  top: 12,
+                                  bottom: 12,
+                                  swidth: 12,
+                                  sheight: 12,
+                                  strok: 2,
+                                  color: Colors.green,
+                                );
+                              } else {
+                                return IconbuttonWidget(
+                                  icon: Icons.check,
+                                  color: Colors.green,
+                                  onPressed: () {
+                                    check(o);
+                                  },
+                                );
+                              }
+                            }),
+                          ),
+                          Container(
+                            height: 41,
+                            child: Observer(builder: (_) {
+                              if (controller.loadOpCan == o.op) {
+                                return CircularprogressWidget(
+                                  left: 0,
+                                  right: 0,
+                                  top: 12,
+                                  bottom: 12,
+                                  swidth: 12,
+                                  sheight: 12,
+                                  strok: 2,
+                                  color: Colors.red,
+                                );
+                              } else {
+                                return IconbuttonWidget(
+                                  icon: Icons.cancel,
+                                  color: Colors.red,
+                                  onPressed: () {
+                                    can(o);
+                                  },
+                                );
+                              }
+                            }),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
 
 //                    Container(
 //                      width: controller.getSize(size, 3),
@@ -370,37 +377,113 @@ class OpslistWidget extends StatelessWidget {
 //    );
   }
 
+
   _showDialog(context, OpsModel model) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: Text("Alterar dados"),
-            content: Column(
-              children: <Widget>[
-                TextFormField(
-                  initialValue: fc.format(model.entrega),
-                  onChanged: (value) {
-                    model.entregaprog = model.entrega;
-                    model.entrega = DateTime.parse(
-                        "${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}");
-                  },
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Reprograme a data de Entrega"),
-                ),
-                TextFormField(
-                  initialValue: model.obs,
-                  onChanged: (value) => model.obs = value,
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: "Altere as Observações"),
-                ),
-              ],
+            content: Container(
+              width: 500,
+              height: 90,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        width: 120,
+                        height: 60,
+                        child: TextFormField(
+                          initialValue: fc.format(model.entrega),
+                          onChanged: (value) {
+                            model.entregaprog =
+                                value != null ? model.entrega : null;
+                            model.entrega = value != null
+                                ? DateTime.parse(
+                                    "${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}")
+                                : model.entrega;
+                          },
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Entrega"),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(3),
+                        width: 380,
+                        height: 60,
+                        child: TextFormField(
+                          initialValue: model.obs,
+                          onChanged: (value) => model.obs = value,
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "Altere as Observações"),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    padding: EdgeInsets.all(3),
+                    width: 500,
+                    height: 30,
+                    child: Observer(builder: (context) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: <Widget>[
+                          SwitcherWidget(
+                            title: "Ryobi ",
+                            crtL: model.ryobi,
+                            crtC: controller.colorCrtRyobi,
+                            onTap: () {
+                              controller.setColorCrtRyobi(!model.ryobi);
+                              model.ryobi = !model.ryobi;
+                              save(model);
+                            },
+                          ),
+                          SwitcherWidget(
+                            title: "SM 4 cor ",
+                            crtL: model.sm4c,
+                            crtC: controller.colorCrtSm4c,
+                            onTap: () {
+                              controller.setColorCrtSm4c(!model.sm4c);
+                              model.sm4c = !model.sm4c;
+                              save(model);
+                            },
+                          ),
+                          SwitcherWidget(
+                            title: "SM 2 cor ",
+                            crtL: model.sm2c,
+                            crtC: controller.colorCrtSm2c,
+                            onTap: () {
+                              controller.setColorCrtSm2c(!model.sm2c);
+                              model.sm2c = !model.sm2c;
+                              save(model);
+                            },
+                          ),
+                          SwitcherWidget(
+                            title: "Flexo ",
+                            crtL: model.flexo,
+                            crtC: controller.colorCrtFlexo,
+                            onTap: () {
+                              controller.setColorCrtFlexo(!model.flexo);
+                              model.flexo = !model.flexo;
+                              save(model);
+                            },
+                          ),
+                        ],
+                      );
+                    }),
+                  ),
+                ],
+              ),
             ),
             actions: <Widget>[
               FlatButton(
                 onPressed: () {
+                  controller.setColorCrtRyobi(false);
+                  controller.setColorCrtSm4c(false);
                   Modular.to.pop();
                 },
                 child: Text("Cancelar"),
@@ -408,6 +491,8 @@ class OpslistWidget extends StatelessWidget {
               FlatButton(
                 onPressed: () {
                   save(model);
+                  controller.setColorCrtRyobi(false);
+                  controller.setColorCrtSm4c(false);
                   Modular.to.pop();
                 },
                 child: Text("Salvar"),
