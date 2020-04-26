@@ -13,14 +13,16 @@ class SwitcherWidget extends StatelessWidget {
   bool crtL;
   bool crtC;
   bool mini = false;
+  DateTime imp;
+  bool impOK = false;
 
 
-  SwitcherWidget({this.onTap, this.title, this.crtL, this.crtC, this.mini});
+  SwitcherWidget({this.onTap, this.title, this.crtL, this.crtC, this.mini, this.imp, this.impOK});
 
   final controller = Modular.get<OpslistController>();
   @override
   Widget build(BuildContext context) {
-    return mini == true ?_inkWellMini(crtL):_inkWell(crtL, crtC);
+    return impOK == true? _inkWellImp(crtC):mini == true ?_inkWellMini(crtL):_inkWell(crtL, crtC);
   }
 
   _inkWell(bool crtL, bool crtC) {
@@ -49,7 +51,7 @@ class SwitcherWidget extends StatelessWidget {
           ),
         ],
       ),
-      onTap: onTap,
+      onTap: imp != null ? null:onTap,
     );
   }
 
@@ -95,6 +97,36 @@ class SwitcherWidget extends StatelessWidget {
             ),
           ],
         ),
+      ),
+      onTap: imp != null ? null:onTap,
+    );
+  }
+
+  _inkWellImp(bool crtC) {
+    return InkWell(
+      child: Row(
+        children: <Widget>[
+          Text(title, style: TextStyle(fontWeight: crtC==false? imp != null ? FontWeight.bold : FontWeight.normal : FontWeight.bold),),
+          AnimatedContainer(
+            duration: Duration(milliseconds: 200),
+            width: 45,
+            height: 15,
+            alignment: crtC==false ? imp != null ? Alignment.topRight : Alignment.topLeft : Alignment.topRight,
+            decoration: BoxDecoration(
+              color: crtC==false ? imp != null ? Colors.green[100] : Colors.grey[100] : Colors.green[100],
+              borderRadius: BorderRadius.circular(5),
+            ),
+            child: AnimatedContainer(
+              duration: Duration(milliseconds: 200),
+              width: 15,
+              height: 15,
+              decoration: BoxDecoration(
+                color: crtC==false ? imp != null ? Colors.green : Colors.grey:Colors.green,
+                borderRadius: BorderRadius.circular(5),
+              ),
+            ),
+          ),
+        ],
       ),
       onTap: onTap,
     );

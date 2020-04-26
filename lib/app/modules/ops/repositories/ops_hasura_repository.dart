@@ -74,7 +74,8 @@ class OpsHasuraRepository implements IOpsRepository {
         "ryobi": model.ryobi,
         "sm2c": model.sm2c,
         "sm4c": model.sm4c,
-        "flexo": model.flexo
+        "flexo": model.flexo,
+        "impressao": model.impressao != null?df.format(model.impressao):null,
       });
     }catch (e){
       print("erro --- $e");

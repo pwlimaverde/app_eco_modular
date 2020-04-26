@@ -25,9 +25,11 @@ class OpslistWidget extends StatelessWidget {
   final controllerGeral = Modular.get<AppController>();
   final controller = Modular.get<OpslistController>();
 
+  var now = DateTime.now();
   final f = DateFormat('dd/MM/yy');
   final f2 = DateFormat('dd/MM');
   final fc = DateFormat('dd/MM/yyyy');
+  final df = DateFormat('yyyy/MM/dd');
   final numMilhar = NumberFormat(",##0", "pt_BR");
 
   @override
@@ -78,7 +80,7 @@ class OpslistWidget extends StatelessWidget {
                     line: 2,
                     alingL: true,
                     title:
-                        "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente} ${controller.getAtraso(o)}",
+                        "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente} ${controller.getAtraso(o)} ${o.impressao != null ? " - Impresso" : ""}",
                     subTile:
                         "${o.servico.length >= 300 ? o.servico.substring(0, 300) : o.servico}",
                   ),
@@ -122,22 +124,46 @@ class OpslistWidget extends StatelessWidget {
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          SwitcherWidget(title: "Ryobi ", crtL: o.ryobi, mini: true, onTap: (){
-                            o.ryobi = !o.ryobi;
-                            save(o);
-                          },),
-                          SwitcherWidget(title: "SM 4c ", crtL: o.sm4c, mini: true, onTap: (){
-                            o.sm4c = !o.sm4c;
-                            save(o);
-                          },),
-                          SwitcherWidget(title: "SM 2c ", crtL: o.sm2c, mini: true, onTap: (){
-                            o.sm2c = !o.sm2c;
-                            save(o);
-                          },),
-                          SwitcherWidget(title: "Flexo ", crtL: o.flexo, mini: true, onTap: (){
-                            o.flexo = !o.flexo;
-                            save(o);
-                          },),
+                          SwitcherWidget(
+                            imp: o.impressao,
+                            title: "Ryobi ",
+                            crtL: o.ryobi,
+                            mini: true,
+                            onTap: () {
+                              o.ryobi = o.impressao != null ? false : !o.ryobi;
+                              save(o);
+                            },
+                          ),
+                          SwitcherWidget(
+                            imp: o.impressao,
+                            title: "SM 4c ",
+                            crtL: o.sm4c,
+                            mini: true,
+                            onTap: () {
+                              o.sm4c = o.impressao != null ? false : !o.sm4c;
+                              save(o);
+                            },
+                          ),
+                          SwitcherWidget(
+                            imp: o.impressao,
+                            title: "SM 2c ",
+                            crtL: o.sm2c,
+                            mini: true,
+                            onTap: () {
+                              o.sm2c = o.impressao != null ? false : !o.sm2c;
+                              save(o);
+                            },
+                          ),
+                          SwitcherWidget(
+                            imp: o.impressao,
+                            title: "Flexo ",
+                            crtL: o.flexo,
+                            mini: true,
+                            onTap: () {
+                              o.flexo = o.impressao != null ? false : !o.flexo;
+                              save(o);
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -377,15 +403,14 @@ class OpslistWidget extends StatelessWidget {
 //    );
   }
 
-
   _showDialog(context, OpsModel model) {
     showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Alterar dados"),
+            title: Text("Alterar dados da OP: ${model.op}"),
             content: Container(
-              width: 500,
+              width: 600,
               height: 90,
               child: Column(
                 children: <Widget>[
@@ -399,7 +424,7 @@ class OpslistWidget extends StatelessWidget {
                           initialValue: fc.format(model.entrega),
                           onChanged: (value) {
                             model.entregaprog =
-                                value != null ? model.entrega : null;
+                            model.entregaprog != null ? model.entregaprog : value != null ? model.entrega : null;
                             model.entrega = value != null
                                 ? DateTime.parse(
                                     "${value.substring(6, 10)}-${value.substring(3, 5)}-${value.substring(0, 2)}")
@@ -412,7 +437,7 @@ class OpslistWidget extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.all(3),
-                        width: 380,
+                        width: 480,
                         height: 60,
                         child: TextFormField(
                           initialValue: model.obs,
@@ -426,49 +451,94 @@ class OpslistWidget extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.all(3),
-                    width: 500,
+                    width: 600,
                     height: 30,
                     child: Observer(builder: (context) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
                           SwitcherWidget(
+                            imp: model.impressao,
                             title: "Ryobi ",
                             crtL: model.ryobi,
                             crtC: controller.colorCrtRyobi,
                             onTap: () {
-                              controller.setColorCrtRyobi(!model.ryobi);
-                              model.ryobi = !model.ryobi;
+                              controller.setColorCrtRyobi(
+                                  model.impressao != null
+                                      ? false
+                                      : !model.ryobi);
+                              model.ryobi = model.impressao != null
+                                  ? false
+                                  : !model.ryobi;
                               save(model);
                             },
                           ),
                           SwitcherWidget(
+                            imp: model.impressao,
                             title: "SM 4 cor ",
                             crtL: model.sm4c,
                             crtC: controller.colorCrtSm4c,
                             onTap: () {
-                              controller.setColorCrtSm4c(!model.sm4c);
-                              model.sm4c = !model.sm4c;
+                              controller.setColorCrtSm4c(model.impressao != null
+                                  ? false
+                                  : !model.sm4c);
+                              model.sm4c =
+                                  model.impressao != null ? false : !model.sm4c;
                               save(model);
                             },
                           ),
                           SwitcherWidget(
+                            imp: model.impressao,
                             title: "SM 2 cor ",
                             crtL: model.sm2c,
                             crtC: controller.colorCrtSm2c,
                             onTap: () {
-                              controller.setColorCrtSm2c(!model.sm2c);
-                              model.sm2c = !model.sm2c;
+                              controller.setColorCrtSm2c(model.impressao != null
+                                  ? false
+                                  : !model.sm2c);
+                              model.sm2c =
+                                  model.impressao != null ? false : !model.sm2c;
                               save(model);
                             },
                           ),
                           SwitcherWidget(
+                            imp: model.impressao,
                             title: "Flexo ",
                             crtL: model.flexo,
                             crtC: controller.colorCrtFlexo,
                             onTap: () {
-                              controller.setColorCrtFlexo(!model.flexo);
-                              model.flexo = !model.flexo;
+                              controller.setColorCrtFlexo(
+                                  model.impressao != null
+                                      ? false
+                                      : !model.flexo);
+                              model.flexo = model.impressao != null
+                                  ? false
+                                  : !model.flexo;
+                              save(model);
+                            },
+                          ),
+                          SwitcherWidget(
+                            impOK: true,
+                            imp: model.impressao,
+                            title: "Impresso ",
+                            crtC: controller.colorCrtImp,
+                            onTap: () {
+                              controller.setColorCrtImp(
+                                  model.impressao != null
+                                      ? false
+                                      : true);
+//                              model.impressao = model.impressao != null
+//                                  ? null
+//                                  : now;
+                              if(model.impressao != null){
+                                model.impressao = null;
+                              }else{
+                                model.impressao = now;
+                                model.ryobi = false;
+                                model.sm2c = false;
+                                model.sm4c = false;
+                                model.flexo = false;
+                              }
                               save(model);
                             },
                           ),
@@ -484,6 +554,8 @@ class OpslistWidget extends StatelessWidget {
                 onPressed: () {
                   controller.setColorCrtRyobi(false);
                   controller.setColorCrtSm4c(false);
+                  controller.setColorCrtSm2c(false);
+                  controller.setColorCrtFlexo(false);
                   Modular.to.pop();
                 },
                 child: Text("Cancelar"),
@@ -493,6 +565,8 @@ class OpslistWidget extends StatelessWidget {
                   save(model);
                   controller.setColorCrtRyobi(false);
                   controller.setColorCrtSm4c(false);
+                  controller.setColorCrtSm2c(false);
+                  controller.setColorCrtFlexo(false);
                   Modular.to.pop();
                 },
                 child: Text("Salvar"),

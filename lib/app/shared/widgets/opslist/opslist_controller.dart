@@ -42,6 +42,14 @@ abstract class _OpslistControllerBase with Store {
   }
 
   @observable
+  bool colorCrtImp = false;
+
+  @action
+  setColorCrtImp(bool crt){
+    colorCrtImp = crt;
+  }
+
+  @observable
   int loadOpCheck;
 
   @action
