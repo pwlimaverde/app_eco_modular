@@ -3,7 +3,6 @@ import 'package:eco_web_mobx/app/modules/ops/ops_controller.dart';
 import 'package:eco_web_mobx/app/shared/global/shared_preferences/prefs_service.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:eco_web_mobx/app/modules/ops/ops_page.dart';
-import 'package:hasura_connect/hasura_connect.dart';
 import 'repositories/ops_hasura_repository.dart';
 import 'repositories/ops_interface.dart';
 import 'repositories/ops_firebases_repository.dart';
@@ -14,7 +13,6 @@ class OpsModule extends ChildModule {
         Bind<IOpsRepository>((i) => OpsHasuraRepository(i.get())),
 //        Bind<IOpsRepository>((i) => OpsFirebaseRepository(Firestore.instance)),
         Bind((i) => OpsController(i.get(), Modular.get<PrefsService>())),
-        Bind((i) => HasuraConnect('https://sistemaecoprint.herokuapp.com/v1/graphql')),
       ];
 
   @override

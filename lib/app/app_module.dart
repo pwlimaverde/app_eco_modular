@@ -12,8 +12,10 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter/material.dart';
 import 'package:eco_web_mobx/app/app_widget.dart';
 import 'package:eco_web_mobx/app/modules/home/home_module.dart';
+import 'package:hasura_connect/hasura_connect.dart';
 import 'modules/login/login_module.dart';
 import 'modules/ops/ops_module.dart';
+import 'modules/pcp/pcp_module.dart';
 import 'modules/uploadcsv/uploadcsv_module.dart';
 import 'shared/auth/repositories/auth_interface.dart';
 import 'shared/global/loginbutton/loginbutton_controller.dart';
@@ -33,17 +35,22 @@ class AppModule extends MainModule {
         Bind((i) => AppController()),
         Bind((i) => LoginbuttonController()),
         Bind((i) => MenudrawerController()),
+        Bind((i) =>
+            HasuraConnect('https://sistemaecoprint.herokuapp.com/v1/graphql')),
       ];
 
   @override
   List<Router> get routers => [
 //        Router('/', child: (_, args) => SplashPage()),
 //        Router('/login', module: LoginModule(), transition: TransitionType.noTransition),
-        Router('/', module: HomeModule(), transition: TransitionType.noTransition),
+        Router('/',
+            module: HomeModule(), transition: TransitionType.noTransition),
         Router('/upload',
             module: UploadcsvModule(), transition: TransitionType.noTransition),
         Router('/ops',
             module: OpsModule(), transition: TransitionType.noTransition),
+        Router('/pcp',
+            module: PcpModule(), transition: TransitionType.noTransition),
       ];
 
   @override

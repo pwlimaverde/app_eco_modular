@@ -30,7 +30,7 @@ class MenuWidget extends StatelessWidget {
             page: page,
             indice: 1,
             nav: "/upload",
-            icon: Icon(Icons.file_upload),
+            icon: Icon(Icons.cloud_upload),
             title: "Upload Ops",
           ),
           ItemWidget(
@@ -43,6 +43,13 @@ class MenuWidget extends StatelessWidget {
           ItemWidget(
             page: page,
             indice: 3,
+            nav: "/pcp",
+            icon: Icon(Icons.cloud_done),
+            title: "Pcp",
+          ),
+          ItemWidget(
+            page: page,
+            indice: 4,
             icon: Icon(Icons.extension),
             title: "Orçamento Flexo ...",
           ),

@@ -18,6 +18,8 @@ class CircularprogressWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: swidth,
+      height: sheight,
       padding: EdgeInsets.fromLTRB(left, top, right, bottom),
       child: SizedBox(
         width: swidth,

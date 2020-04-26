@@ -1,4 +1,3 @@
-import 'package:eco_web_mobx/app/modules/ops/widgets/listops/listops_widget.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +5,7 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../ops_controller.dart';
+import '../../pcp_controller.dart';
 
 class BodyopsWidget extends StatefulWidget {
   var menuWidth;
@@ -22,7 +21,7 @@ class BodyopsWidget extends StatefulWidget {
 
 class _BodyopsWidgetState extends State<BodyopsWidget>
     with SingleTickerProviderStateMixin<BodyopsWidget> {
-  final controller = Modular.get<OpsController>();
+  final controller = Modular.get<PcpController>();
   final formKey = GlobalKey<FormState>();
   final crtlBusca = TextEditingController();
 
@@ -35,10 +34,10 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
   }
 
   Future _initTabs() async {
-    _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = await controller.prefsOps.getInt("tabIndex");
+    _tabController = TabController(length: 4, vsync: this);
+    _tabController.index = await controller.prefsOps.getInt("tabIndexImp");
     _tabController.addListener(() {
-      controller.prefsOps.setInt("tabIndex", _tabController.index);
+      controller.prefsOps.setInt("tabIndexImp", _tabController.index);
     });
   }
 
@@ -81,21 +80,23 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         labelStyle: TextStyle(color: Colors.white, fontSize: 13),
         tabs: [
           Tab(
-            text: "Em Produção",
+            text: "Ryobi",
           ),
           Tab(
-            text: "Em Expedição",
+            text: "SM 4 Cor",
+          ),
+          Tab(
+            text: "SM 2 Cor",
           ),
           Observer(builder: (_) {
             return Tab(
-//            text: "Todas as Ops",
               child: controller.buscando == true
                   ? _iconButtonSearch()
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(""),
-                        Text("Todas Ops"),
+                        Text("Flexo"),
                         _iconButtonSearch(),
                       ],
                     ),
@@ -232,21 +233,23 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     return TabBarView(
       controller: _tabController,
       children: [
-        _observerListProd(),
-        _observerListEnt(),
-        _observerList(),
+        _observerListRyobi(),
+        _observerListSm4c(),
+        _observerListSm2c(),
+        _observerListFlexo(),
+
       ],
     );
   }
 
-  _observerList() {
+  _observerListRyobi() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListAll.data;
-        if (controller.opsListAll.hasError) {
+        List<OpsModel> filtro = controller.opsListRyobi.data;
+        if (controller.opsListRyobi.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListAll.data == null) {
+        if (controller.opsListRyobi.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
@@ -264,7 +267,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
                     ).toList()
                   : filtro
               : filtro,
-          controller.upProd,
+          controller.upImp,
           controller.canProd,
           controller.upInfo,
         );
@@ -272,32 +275,32 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  _observerListProd() {
+  _observerListSm4c() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListProd.data;
-        if (controller.opsListProd.hasError) {
+        List<OpsModel> filtro = controller.opsListSm4c.data;
+        if (controller.opsListSm4c.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListProd.data == null) {
+        if (controller.opsListSm4c.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
           controller.buscando == true
               ? controller.busca != null && controller.busca.length >= 1
-                  ? filtro.where(
-                      (element) {
-                        String termos =
-                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
-                        return termos
-                            .toLowerCase()
-                            .contains(controller.busca.toLowerCase());
-                      },
-                    ).toList()
-                  : filtro
+              ? filtro.where(
+                (element) {
+              String termos =
+                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+              return termos
+                  .toLowerCase()
+                  .contains(controller.busca.toLowerCase());
+            },
+          ).toList()
+              : filtro
               : filtro,
-          controller.upProd,
+          controller.upImp,
           controller.canProd,
           controller.upInfo,
         );
@@ -305,32 +308,32 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  _observerListEnt() {
+  _observerListSm2c() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListEnt.data;
-        if (controller.opsListEnt.hasError) {
+        List<OpsModel> filtro = controller.opsListSm2c.data;
+        if (controller.opsListSm2c.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListEnt.data == null) {
+        if (controller.opsListSm2c.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
           controller.buscando == true
               ? controller.busca != null && controller.busca.length >= 1
-                  ? filtro.where(
-                      (element) {
-                        String termos =
-                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
-                        return termos
-                            .toLowerCase()
-                            .contains(controller.busca.toLowerCase());
-                      },
-                    ).toList()
-                  : filtro
+              ? filtro.where(
+                (element) {
+              String termos =
+                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+              return termos
+                  .toLowerCase()
+                  .contains(controller.busca.toLowerCase());
+            },
+          ).toList()
+              : filtro
               : filtro,
-          controller.upProd,
+          controller.upImp,
           controller.canProd,
           controller.upInfo,
         );
@@ -338,35 +341,37 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-//  _showDialog(OpsModel model) {
-//    showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text("Alterar dados"),
-//            content: TextFormField(
-//              initialValue: model.obs,
-//              onChanged: (value) => model.obs = value,
-//              decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: "Digite a alteração"),
-//            ),
-//            actions: <Widget>[
-//              FlatButton(
-//                onPressed: (){
-//                  Modular.to.pop();
-//                },
-//                child: Text("Cancelar"),
-//              ),
-//              FlatButton(
-//                onPressed: () async{
-//                  controller.upInfo(model);
-//                  Modular.to.pop();
-//                },
-//                child: Text("Salvar"),
-//              ),
-//            ],
-//          );
-//        });
-//  }
+  _observerListFlexo() {
+    return Observer(
+      builder: (context) {
+        List<OpsModel> filtro = controller.opsListFlexo.data;
+        if (controller.opsListFlexo.hasError) {
+          return Text("Teve um erro");
+        }
+        if (controller.opsListFlexo.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return controller.controllerOpsList.opslistWidget(
+          widget.showMenu,
+          controller.buscando == true
+              ? controller.busca != null && controller.busca.length >= 1
+              ? filtro.where(
+                (element) {
+              String termos =
+                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+              return termos
+                  .toLowerCase()
+                  .contains(controller.busca.toLowerCase());
+            },
+          ).toList()
+              : filtro
+              : filtro,
+          controller.upImp,
+          controller.canProd,
+          controller.upInfo,
+        );
+      },
+    );
+  }
+
 }
