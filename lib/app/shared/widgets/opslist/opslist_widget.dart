@@ -410,15 +410,15 @@ class OpslistWidget extends StatelessWidget {
           return AlertDialog(
             title: Text("Alterar dados da OP: ${model.op}"),
             content: Container(
-              width: 600,
-              height: 90,
+              width: 370,
+              height: 120,
               child: Column(
                 children: <Widget>[
                   Row(
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.all(3),
-                        width: 120,
+                        width: 110,
                         height: 60,
                         child: TextFormField(
                           initialValue: fc.format(model.entrega),
@@ -437,7 +437,7 @@ class OpslistWidget extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.all(3),
-                        width: 480,
+                        width: 260,
                         height: 60,
                         child: TextFormField(
                           initialValue: model.obs,
@@ -451,96 +451,106 @@ class OpslistWidget extends StatelessWidget {
                   ),
                   Container(
                     padding: EdgeInsets.all(3),
-                    width: 600,
-                    height: 30,
+                    width: 370,
+                    height: 60,
                     child: Observer(builder: (context) {
-                      return Row(
+                      return Column(
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: <Widget>[
-                          SwitcherWidget(
-                            imp: model.impressao,
-                            title: "Ryobi ",
-                            crtL: model.ryobi,
-                            crtC: controller.colorCrtRyobi,
-                            onTap: () {
-                              controller.setColorCrtRyobi(
-                                  model.impressao != null
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              SwitcherWidget(
+                                imp: model.impressao,
+                                title: "Ryobi ",
+                                crtL: model.ryobi,
+                                crtC: controller.colorCrtRyobi,
+                                onTap: () {
+                                  controller.setColorCrtRyobi(
+                                      model.impressao != null
+                                          ? false
+                                          : !model.ryobi);
+                                  model.ryobi = model.impressao != null
                                       ? false
-                                      : !model.ryobi);
-                              model.ryobi = model.impressao != null
-                                  ? false
-                                  : !model.ryobi;
-                              save(model);
-                            },
-                          ),
-                          SwitcherWidget(
-                            imp: model.impressao,
-                            title: "SM 4 cor ",
-                            crtL: model.sm4c,
-                            crtC: controller.colorCrtSm4c,
-                            onTap: () {
-                              controller.setColorCrtSm4c(model.impressao != null
-                                  ? false
-                                  : !model.sm4c);
-                              model.sm4c =
-                                  model.impressao != null ? false : !model.sm4c;
-                              save(model);
-                            },
-                          ),
-                          SwitcherWidget(
-                            imp: model.impressao,
-                            title: "SM 2 cor ",
-                            crtL: model.sm2c,
-                            crtC: controller.colorCrtSm2c,
-                            onTap: () {
-                              controller.setColorCrtSm2c(model.impressao != null
-                                  ? false
-                                  : !model.sm2c);
-                              model.sm2c =
-                                  model.impressao != null ? false : !model.sm2c;
-                              save(model);
-                            },
-                          ),
-                          SwitcherWidget(
-                            imp: model.impressao,
-                            title: "Flexo ",
-                            crtL: model.flexo,
-                            crtC: controller.colorCrtFlexo,
-                            onTap: () {
-                              controller.setColorCrtFlexo(
-                                  model.impressao != null
+                                      : !model.ryobi;
+                                  save(model);
+                                },
+                              ),
+                              SwitcherWidget(
+                                imp: model.impressao,
+                                title: "SM 4 cor ",
+                                crtL: model.sm4c,
+                                crtC: controller.colorCrtSm4c,
+                                onTap: () {
+                                  controller.setColorCrtSm4c(model.impressao != null
                                       ? false
-                                      : !model.flexo);
-                              model.flexo = model.impressao != null
-                                  ? false
-                                  : !model.flexo;
-                              save(model);
-                            },
-                          ),
-                          SwitcherWidget(
-                            impOK: true,
-                            imp: model.impressao,
-                            title: "Impresso ",
-                            crtC: controller.colorCrtImp,
-                            onTap: () {
-                              controller.setColorCrtImp(
-                                  model.impressao != null
+                                      : !model.sm4c);
+                                  model.sm4c =
+                                      model.impressao != null ? false : !model.sm4c;
+                                  save(model);
+                                },
+                              ),
+                              SwitcherWidget(
+                                imp: model.impressao,
+                                title: "SM 2 cor ",
+                                crtL: model.sm2c,
+                                crtC: controller.colorCrtSm2c,
+                                onTap: () {
+                                  controller.setColorCrtSm2c(model.impressao != null
                                       ? false
-                                      : true);
+                                      : !model.sm2c);
+                                  model.sm2c =
+                                      model.impressao != null ? false : !model.sm2c;
+                                  save(model);
+                                },
+                              ),
+                            ],
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: <Widget>[
+                              SwitcherWidget(
+                                imp: model.impressao,
+                                title: "Flexo ",
+                                crtL: model.flexo,
+                                crtC: controller.colorCrtFlexo,
+                                onTap: () {
+                                  controller.setColorCrtFlexo(
+                                      model.impressao != null
+                                          ? false
+                                          : !model.flexo);
+                                  model.flexo = model.impressao != null
+                                      ? false
+                                      : !model.flexo;
+                                  save(model);
+                                },
+                              ),
+                              SwitcherWidget(
+                                impOK: true,
+                                imp: model.impressao,
+                                title: "Impresso ",
+                                crtC: controller.colorCrtImp,
+                                onTap: () {
+                                  controller.setColorCrtImp(
+                                      model.impressao != null
+                                          ? false
+                                          : true);
 //                              model.impressao = model.impressao != null
 //                                  ? null
 //                                  : now;
-                              if(model.impressao != null){
-                                model.impressao = null;
-                              }else{
-                                model.impressao = now;
-                                model.ryobi = false;
-                                model.sm2c = false;
-                                model.sm4c = false;
-                                model.flexo = false;
-                              }
-                              save(model);
-                            },
+                                  if(model.impressao != null){
+                                    model.impressao = null;
+                                  }else{
+                                    model.impressao = now;
+                                    model.ryobi = false;
+                                    model.sm2c = false;
+                                    model.sm4c = false;
+                                    model.flexo = false;
+                                  }
+                                  save(model);
+                                },
+                              ),
+                            ],
                           ),
                         ],
                       );

@@ -29,10 +29,10 @@ class SwitcherWidget extends StatelessWidget {
     return InkWell(
       child: Row(
         children: <Widget>[
-          Text(title, style: TextStyle(fontWeight: crtC==false?crtL == true ? FontWeight.bold : FontWeight.normal : FontWeight.bold),),
+          Text(title, style: TextStyle(fontWeight: crtC==false?crtL == true ? FontWeight.bold : FontWeight.normal : FontWeight.bold, fontSize: 14),),
           AnimatedContainer(
             duration: Duration(milliseconds: 200),
-            width: 45,
+            width: 40,
             height: 15,
             alignment: crtC==false?crtL == true ?Alignment.topRight : Alignment.topLeft : Alignment.topRight,
             decoration: BoxDecoration(
@@ -106,10 +106,10 @@ class SwitcherWidget extends StatelessWidget {
     return InkWell(
       child: Row(
         children: <Widget>[
-          Text(title, style: TextStyle(fontWeight: crtC==false? imp != null ? FontWeight.bold : FontWeight.normal : FontWeight.bold),),
+          Text(title, style: TextStyle(fontWeight: crtC==false? imp != null ? FontWeight.bold : FontWeight.normal : FontWeight.bold, fontSize: 14),),
           AnimatedContainer(
             duration: Duration(milliseconds: 200),
-            width: 45,
+            width: 40,
             height: 15,
             alignment: crtC==false ? imp != null ? Alignment.topRight : Alignment.topLeft : Alignment.topRight,
             decoration: BoxDecoration(
