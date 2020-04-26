@@ -48,6 +48,14 @@ mutation CanOps(\$op: Int, \$entregue: date) {
 }
 """;
 
+const String opsInfoMutation = """
+mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String, \$ryobi: Boolean, \$sm2c: Boolean, \$sm4c: Boolean, \$flexo: Boolean, \$impressao: date) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs, ryobi: \$ryobi, sm2c: \$sm2c, sm4c: \$sm4c, flexo: \$flexo, impressao: \$impressao}) {
+    affected_rows
+  }
+}
+""";
+
 //mutation InsertOps(\$cliente: String, \$op: Int, \$orcamento: Int, \$quant: Int, \$servico: String, \$valor: float8, \$vendedor: String) {
 //insert_ops(objects: {cliente: \$cliente, op: \$op, orcamento: \$orcamento, quant: \$quant, servico: \$servico, valor: \$valor, vendedor: \$vendedor}, on_conflict: {constraint: ops_pkey, update_columns: cancelada}){
 //returning {

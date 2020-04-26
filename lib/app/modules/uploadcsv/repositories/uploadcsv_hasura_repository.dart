@@ -11,31 +11,51 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
   UploadcsvHasuraRepository(this.connect);
 
   @override
-  Future canProd(OpsModel model) async{
-    connect.mutation(opsCanMutation, variables: {"op": model.op, "cancelada": !model.cancelada});
+  Future canProd(OpsModel model) async {
+    connect.mutation(opsCanMutation,
+        variables: {"op": model.op, "cancelada": !model.cancelada});
   }
 
   @override
-  Future upProd(OpsModel model) async{
+  Future upProd(OpsModel model) async {
     var now = DateTime.now();
     final df = DateFormat('yyyy/MM/dd');
-    try{
-      if(model.produzido != null && model.entregue != null){
+    try {
+      if (model.produzido != null && model.entregue != null) {
         return;
       }
-      if(model.produzido == null){
-        connect.mutation(opsProdMutation, variables: {"op": model.op, "produzido": df.format(now)});
-      }else{
-        connect.mutation(opsEntMutation, variables: {"op": model.op, "entregue": df.format(now)});
+      if (model.produzido == null) {
+        connect.mutation(opsProdMutation,
+            variables: {"op": model.op, "produzido": df.format(now)});
+      } else {
+        connect.mutation(opsEntMutation,
+            variables: {"op": model.op, "entregue": df.format(now)});
       }
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
   @override
   Future upInfo(OpsModel model) {
-    throw UnimplementedError();
+    final df = DateFormat('yyyy/MM/dd');
+    try {
+      connect.mutation(opsInfoMutation, variables: {
+        "op": model.op,
+        "entrega": df.format(model.entrega),
+        "entregaprog":
+            model.entregaprog != null ? df.format(model.entregaprog) : null,
+        "obs": model.obs,
+        "ryobi": model.ryobi,
+        "sm2c": model.sm2c,
+        "sm4c": model.sm4c,
+        "flexo": model.flexo,
+        "impressao":
+            model.impressao != null ? df.format(model.impressao) : null,
+      });
+    } catch (e) {
+      print("erro --- $e");
+    }
   }
 
   @override
@@ -73,8 +93,14 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
         model.cancelada = false;
         model.produzido = null;
         model.entregue = null;
+        model.entregaprog = null;
+        model.obs = null;
+        model.ryobi = false;
+        model.sm2c = false;
+        model.sm4c = false;
+        model.flexo = false;
+        model.impressao = null;
         listOpsUPOk.add(model);
-
       }
     }
     return listOpsUPOk.length > 0 ? listOpsUPOk : null;

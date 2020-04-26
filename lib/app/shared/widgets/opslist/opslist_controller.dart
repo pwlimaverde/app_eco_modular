@@ -8,12 +8,11 @@ part 'opslist_controller.g.dart';
 class OpslistController = _OpslistControllerBase with _$OpslistController;
 
 abstract class _OpslistControllerBase with Store {
-
   @observable
   bool colorCrtRyobi = false;
 
   @action
-  setColorCrtRyobi(bool crt){
+  setColorCrtRyobi(bool crt) {
     colorCrtRyobi = crt;
   }
 
@@ -21,7 +20,7 @@ abstract class _OpslistControllerBase with Store {
   bool colorCrtSm2c = false;
 
   @action
-  setColorCrtSm2c(bool crt){
+  setColorCrtSm2c(bool crt) {
     colorCrtSm2c = crt;
   }
 
@@ -29,7 +28,7 @@ abstract class _OpslistControllerBase with Store {
   bool colorCrtSm4c = false;
 
   @action
-  setColorCrtSm4c(bool crt){
+  setColorCrtSm4c(bool crt) {
     colorCrtSm4c = crt;
   }
 
@@ -37,7 +36,7 @@ abstract class _OpslistControllerBase with Store {
   bool colorCrtFlexo = false;
 
   @action
-  setColorCrtFlexo(bool crt){
+  setColorCrtFlexo(bool crt) {
     colorCrtFlexo = crt;
   }
 
@@ -45,7 +44,7 @@ abstract class _OpslistControllerBase with Store {
   bool colorCrtImp = false;
 
   @action
-  setColorCrtImp(bool crt){
+  setColorCrtImp(bool crt) {
     colorCrtImp = crt;
   }
 
@@ -82,7 +81,11 @@ abstract class _OpslistControllerBase with Store {
     String dayProd;
     String dayExped;
     String dayEnt;
-    int dif = int.parse(now.difference(model.entregaprog!=null?model.entregaprog:model.entrega).inDays.toString());
+    int dif = int.parse(now
+        .difference(
+            model.entregaprog != null ? model.entregaprog : model.entrega)
+        .inDays
+        .toString());
     if (model.cancelada) {
       return "";
     }
@@ -90,9 +93,9 @@ abstract class _OpslistControllerBase with Store {
       int difEnt = int.parse(now.difference(model.entregue).inDays.toString());
       if (difEnt == 0) {
         dayEnt = "- Entregue hoje";
-      } else if(difEnt > 30){
+      } else if (difEnt > 30) {
         dayEnt = "- Entregue";
-      } else{
+      } else {
         dayEnt = "- Entregue a ${difEnt} dia(s)";
       }
       return dayEnt;
@@ -144,8 +147,10 @@ abstract class _OpslistControllerBase with Store {
     check,
     can,
     save,
+    up,
   ) {
     return OpslistWidget(
+      up: up,
       showMenu: showMenu,
       filtro: filtro,
       check: (OpsModel o) {

@@ -18,9 +18,10 @@ class OpslistWidget extends StatelessWidget {
   final Function(OpsModel) check;
   final Function(OpsModel) can;
   final Function(OpsModel) save;
+  bool up = false;
   List<OpsModel> filtro;
 
-  OpslistWidget({this.showMenu, this.filtro, this.check, this.can, this.save});
+  OpslistWidget({this.showMenu, this.filtro, this.check, this.can, this.save, this.up});
 
   final controllerGeral = Modular.get<AppController>();
   final controller = Modular.get<OpslistController>();
@@ -115,7 +116,7 @@ class OpslistWidget extends StatelessWidget {
                       _showDialog(context, o);
                     },
                   ),
-                  Card(
+                  up == false ? Card(
                     elevation: 0.5,
                     child: Container(
                       padding: EdgeInsets.all(2),
@@ -167,7 +168,7 @@ class OpslistWidget extends StatelessWidget {
                         ],
                       ),
                     ),
-                  ),
+                  ):Container(),
                   Card(
                     elevation: 0.5,
                     child: Container(
@@ -418,6 +419,18 @@ class OpslistWidget extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         padding: EdgeInsets.all(3),
+                        width: 50,
+                        height: 60,
+                        child: TextFormField(
+                          initialValue: model.orderpcp != null ? model.orderpcp.toString():null,
+                          onChanged: (value) => model.orderpcp = int.parse(value),
+                          decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: "N°"),
+                        ),
+                      ),
+                      Container(
+                        padding: EdgeInsets.all(3),
                         width: 110,
                         height: 60,
                         child: TextFormField(
@@ -437,7 +450,7 @@ class OpslistWidget extends StatelessWidget {
                       ),
                       Container(
                         padding: EdgeInsets.all(3),
-                        width: 260,
+                        width: 210,
                         height: 60,
                         child: TextFormField(
                           initialValue: model.obs,

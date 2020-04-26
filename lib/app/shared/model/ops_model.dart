@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class OpsModel {
   int id;
+  int orderpcp;
   DocumentReference reference;
   int orcamento;
   String cliente;
@@ -36,6 +37,7 @@ class OpsModel {
 
   OpsModel({
     this.id,
+    this.orderpcp,
     this.reference,
     this.orcamento,
     this.cliente,
@@ -72,6 +74,7 @@ class OpsModel {
   factory OpsModel.fromJson(Map doc) {
     return OpsModel(
       id: doc['id'],
+      orderpcp: doc['orderpcp'],
       orcamento: doc['orcamento'],
       cliente: doc['cliente'],
       servico: doc['servico'],

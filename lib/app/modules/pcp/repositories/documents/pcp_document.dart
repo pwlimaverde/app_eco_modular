@@ -1,7 +1,8 @@
 const String opsRyobiQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, ryobi: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, ryobi: {_eq: true}}){
     op 
+    orderpcp
     servico  
     cancelada 
     cliente 
@@ -24,8 +25,9 @@ query{
 
 const String opsSm2cQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm2c: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm2c: {_eq: true}}){
     op 
+    orderpcp
     servico  
     cancelada 
     cliente 
@@ -48,8 +50,9 @@ query{
 
 const String opsSm4cQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm4c: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm4c: {_eq: true}}){
     op 
+    orderpcp
     servico  
     cancelada 
     cliente 
@@ -72,8 +75,9 @@ query{
 
 const String opsFlexoQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, flexo: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, flexo: {_eq: true}}){
     op 
+    orderpcp
     servico  
     cancelada 
     cliente 
@@ -118,17 +122,17 @@ mutation ProdOps(\$op: Int, \$impressao: date, \$ryobi: Boolean, \$sm2c: Boolean
 }
 """;
 
-const String opsEntMutation = """
-mutation EntOps(\$op: Int, \$entregue: date) {
-  update_ops(where: {op: {_eq: \$op}}, _set: {entregue: \$entregue}) {
+const String opsOrderMutation = """
+mutation Order(\$op: Int, \$orderpcp: Int) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {orderpcp: \$orderpcp}) {
     affected_rows
   }
 }
 """;
 
 const String opsInfoMutation = """
-mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String, \$ryobi: Boolean, \$sm2c: Boolean, \$sm4c: Boolean, \$flexo: Boolean, \$impressao: date) {
-  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs, ryobi: \$ryobi, sm2c: \$sm2c, sm4c: \$sm4c, flexo: \$flexo, impressao: \$impressao}) {
+mutation InfoOps(\$op: Int, \$orderpcp: Int, \$entrega: date, \$entregaprog: date, \$obs: String, \$ryobi: Boolean, \$sm2c: Boolean, \$sm4c: Boolean, \$flexo: Boolean, \$impressao: date) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {entrega: \$entrega, entregaprog: \$entregaprog, obs: \$obs, ryobi: \$ryobi, sm2c: \$sm2c, sm4c: \$sm4c, flexo: \$flexo, impressao: \$impressao, orderpcp: \$orderpcp}) {
     affected_rows
   }
 }

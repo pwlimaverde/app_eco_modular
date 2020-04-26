@@ -5,7 +5,6 @@ import 'documents/pcp_document.dart';
 import 'pcp_interface.dart';
 
 class PcpHasuraRepository implements IPcpRepository {
-
   final HasuraConnect connect;
 
   PcpHasuraRepository(this.connect);
@@ -21,8 +20,14 @@ class PcpHasuraRepository implements IPcpRepository {
     var now = DateTime.now();
     final df = DateFormat('yyyy/MM/dd');
     try {
-      connect.mutation(opsImpMutation,
-          variables: {"op": model.op, "impressao": df.format(now), "ryobi": false, "sm4c": false, "sm2c": false, "flexo": false});
+      connect.mutation(opsImpMutation, variables: {
+        "op": model.op,
+        "impressao": df.format(now),
+        "ryobi": false,
+        "sm4c": false,
+        "sm2c": false,
+        "flexo": false
+      });
     } catch (e) {
       print(e);
     }
@@ -67,22 +72,24 @@ class PcpHasuraRepository implements IPcpRepository {
   @override
   Future upInfo(OpsModel model) {
     final df = DateFormat('yyyy/MM/dd');
-    try{
+    try {
       connect.mutation(opsInfoMutation, variables: {
         "op": model.op,
+        "orderpcp": model.orderpcp,
         "entrega": df.format(model.entrega),
-        "entregaprog": model.entregaprog != null?df.format(model.entregaprog):null,
+        "entregaprog":
+            model.entregaprog != null ? df.format(model.entregaprog) : null,
         "obs": model.obs,
         "ryobi": model.ryobi,
         "sm2c": model.sm2c,
         "sm4c": model.sm4c,
         "flexo": model.flexo,
-        "impressao": model.impressao != null?df.format(model.impressao):null,
+        "impressao":
+            model.impressao != null ? df.format(model.impressao) : null,
       });
-    }catch (e){
+    } catch (e) {
       print("erro --- $e");
     }
-
 
 //    try{
 //      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
@@ -101,5 +108,6 @@ class PcpHasuraRepository implements IPcpRepository {
   void dispose() {
     // TODO: implement dispose
   }
+
 
 }

@@ -267,6 +267,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           controller.upProd,
           controller.canProd,
           controller.upInfo,
+          false,
         );
       },
     );
@@ -300,6 +301,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           controller.upProd,
           controller.canProd,
           controller.upInfo,
+          false,
         );
       },
     );
@@ -333,6 +335,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           controller.upProd,
           controller.canProd,
           controller.upInfo,
+          false,
         );
       },
     );

@@ -68,6 +68,12 @@ class PcpFirebaseRepository implements IPcpRepository {
     throw UnimplementedError();
   }
 
+  @override
+  Future upOrder(List<OpsModel> list) {
+    // TODO: implement upOrder
+    throw UnimplementedError();
+  }
+
 
 
 }

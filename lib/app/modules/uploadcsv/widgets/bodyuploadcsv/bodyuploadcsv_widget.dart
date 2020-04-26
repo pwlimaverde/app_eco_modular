@@ -66,6 +66,7 @@ class BodyuploadcsvWidget extends StatelessWidget {
       controller.upProd,
       controller.canProd,
       controller.upInfo,
+      true,
     );
   }
 
