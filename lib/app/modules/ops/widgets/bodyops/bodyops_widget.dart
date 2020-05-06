@@ -7,6 +7,10 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../ops_controller.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pdfLib;
+import 'package:printing/printing.dart';
+import 'dart:html' as html;
 
 class BodyopsWidget extends StatefulWidget {
   var menuWidth;
@@ -80,8 +84,13 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         indicatorColor: Colors.blue,
         labelStyle: TextStyle(color: Colors.white, fontSize: 13),
         tabs: [
-          Tab(
-            text: "Em Produção",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buttonPdf(),
+              Text("Em Produção"),
+              Text(""),
+            ],
           ),
           Tab(
             text: "Em Expedição",
@@ -104,6 +113,34 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         ],
       ),
     );
+  }
+
+  _buttonPdf() {
+    return IconButton(
+      iconSize: 18,
+      icon: Icon(
+        Icons.picture_as_pdf,
+        color: Colors.white,
+      ),
+      onPressed: () => _generatePdf(context),
+    );
+  }
+
+  _generatePdf(context) async {
+//    final pdf = pdfLib.Document();
+//    pdf.addPage(pdfLib.Page(
+//        pageFormat: PdfPageFormat.a4,
+//        build: (pdfLib.Context context) {
+//          return pdfLib.Center(
+//            child: pdfLib.Text("Hello World"),
+//          ); // Center
+//        }));
+
+//    await Printing.layoutPdf(
+//        onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
+//          format: format,
+//          html: '<html><body><p>Hello!</p></body></html>',
+//        ));
   }
 
   _iconButtonSearch() {
@@ -151,6 +188,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
 
   _buttonSearch() {
     return IconButton(
+      iconSize: 18,
       icon: Icon(
         Icons.search,
         color: Colors.white,
@@ -160,47 +198,6 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
       },
     );
   }
-
-//  _inkWell({Icon icon, String title, Function ontap, Color color}) {
-//    return InkWell(
-//      child: Row(
-//        children: <Widget>[
-//          icon,
-//          Text(
-//            title,
-//            style: TextStyle(color: color),
-//          ),
-//        ],
-//      ),
-//      onTap: ontap,
-//    );
-//  }
-//
-//  _alertBusca() {
-//    showDialog(
-//        barrierDismissible: false,
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text("Digite a Busca..."),
-//            content: _textFormField(),
-//            actions: <Widget>[
-//              FlatButton(
-//                  child: Text("Ok"),
-//                  onPressed: () {
-//                    Navigator.pop(context);
-//                  }),
-//              FlatButton(
-//                  child: Text("Cancelar"),
-//                  onPressed: () {
-//                    crtlBusca.clear();
-//                    controller.setBuscando(false);
-//                    Navigator.pop(context);
-//                  })
-//            ],
-//          );
-//        });
-//  }
 
   _textFormField() {
     return TextFormField(
@@ -340,36 +337,4 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
       },
     );
   }
-
-//  _showDialog(OpsModel model) {
-//    showDialog(
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text("Alterar dados"),
-//            content: TextFormField(
-//              initialValue: model.obs,
-//              onChanged: (value) => model.obs = value,
-//              decoration: InputDecoration(
-//                  border: OutlineInputBorder(),
-//                  labelText: "Digite a alteração"),
-//            ),
-//            actions: <Widget>[
-//              FlatButton(
-//                onPressed: (){
-//                  Modular.to.pop();
-//                },
-//                child: Text("Cancelar"),
-//              ),
-//              FlatButton(
-//                onPressed: () async{
-//                  controller.upInfo(model);
-//                  Modular.to.pop();
-//                },
-//                child: Text("Salvar"),
-//              ),
-//            ],
-//          );
-//        });
-//  }
 }

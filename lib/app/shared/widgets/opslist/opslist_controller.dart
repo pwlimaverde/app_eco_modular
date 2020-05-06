@@ -1,5 +1,6 @@
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 import 'opslist_widget.dart';
 
@@ -77,7 +78,8 @@ abstract class _OpslistControllerBase with Store {
   }
 
   getAtraso(OpsModel model) {
-    var now = DateTime.now();
+    final df = DateFormat('yyyy-MM-dd');
+    var now = DateTime.parse(df.format(DateTime.now()));
     String dayProd;
     String dayExped;
     String dayEnt;
@@ -110,11 +112,11 @@ abstract class _OpslistControllerBase with Store {
       }
       return dayExped;
     }
-    if (dif > 0) {
+    if (dif >= 1) {
       dayProd = "- Atrasado à ${dif.toString()} dias";
     } else if (dif == 0) {
       dayProd = "- Entrega hoje";
-    } else if (dif == -1) {
+    } else if (-dif == 1) {
       dayProd = "- Entrega amanhã";
     } else {
       dayProd = "- Faltam ${-dif} dia(s) para entrega";
@@ -123,7 +125,8 @@ abstract class _OpslistControllerBase with Store {
   }
 
   getCorCard(OpsModel model) {
-    var now = DateTime.now();
+    final df = DateFormat('yyyy-MM-dd');
+    var now = DateTime.parse(df.format(DateTime.now()));
     int dif = int.parse(now.difference(model.entrega).inDays.toString());
     if (model.cancelada == true) {
       return Colors.grey[100];

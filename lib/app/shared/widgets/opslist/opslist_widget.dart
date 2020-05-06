@@ -70,20 +70,22 @@ class OpslistWidget extends StatelessWidget {
                     labelS: "Entrada:",
                     subTile: f.format(o.entrada),
                   ),
-                  OpslisttileWidget(
-                    cardAux: true,
-                    heightT: 25,
-                    heightS: 35,
-                    sizeGeral: size,
-                    sizeCont: 65,
-                    sizeFontTile: 1.5,
-                    sizeFontSubTile: 1.4,
-                    line: 2,
-                    alingL: true,
-                    title:
-                        "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente} ${controller.getAtraso(o)} ${o.impressao != null ? " - Impresso" : ""}",
-                    subTile:
-                        "${o.servico.length >= 300 ? o.servico.substring(0, 300) : o.servico}",
+                  Expanded(
+                    child: OpslisttileWidget(
+                      cardAux: true,
+                      heightT: 25,
+                      heightS: 35,
+                      sizeGeral: size,
+                      sizeCont: 65,
+                      sizeFontTile: 1.5,
+                      sizeFontSubTile: 1.4,
+                      line: 2,
+                      alingL: true,
+                      title:
+                          "${o.cancelada == true ? cliente + " - OP CANCELADA" : o.entregue != null ? cliente + " - OP ENTREGUE" : o.produzido != null ? cliente + " - OP PRODUZIDA" : cliente} ${controller.getAtraso(o)} ${o.impressao != null ? " - Impresso" : ""}",
+                      subTile:
+                          "${o.servico.length >= 300 ? o.servico.substring(0, 300) : o.servico}",
+                    ),
                   ),
                   OpslisttileWidget(
                     heightT: 25,

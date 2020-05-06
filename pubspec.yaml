@@ -17,6 +17,8 @@ environment:
   sdk: ">=2.7.2 <3.0.0"
 
 dependencies:
+  printing: ^3.3.1
+  pdf: ^1.7.1
   hasura_connect: ^1.2.1+1
   custom_radio_grouped_button: ^1.0.0
   google_sign_in_web: ^0.9.0
