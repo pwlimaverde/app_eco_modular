@@ -185,8 +185,8 @@ class OpslistWidget extends StatelessWidget {
                                 return CircularprogressWidget(
                                   left: 0,
                                   right: 0,
-                                  top: 12,
-                                  bottom: 12,
+                                  top: 9,
+                                  bottom: 9,
                                   swidth: 12,
                                   sheight: 12,
                                   strok: 2,
@@ -194,8 +194,9 @@ class OpslistWidget extends StatelessWidget {
                                 );
                               } else {
                                 return IconbuttonWidget(
+                                  isImp: o.ryobi || o.sm2c || o.sm4c || o.flexo,
                                   icon: Icons.check,
-                                  color: Colors.green,
+                                  color: o.ryobi || o.sm2c || o.sm4c || o.flexo ? Colors.green : Colors.grey,
                                   onPressed: () {
                                     check(o);
                                   },
@@ -210,8 +211,8 @@ class OpslistWidget extends StatelessWidget {
                                 return CircularprogressWidget(
                                   left: 0,
                                   right: 0,
-                                  top: 12,
-                                  bottom: 12,
+                                  top: 9,
+                                  bottom: 9,
                                   swidth: 12,
                                   sheight: 12,
                                   strok: 2,
@@ -219,6 +220,7 @@ class OpslistWidget extends StatelessWidget {
                                 );
                               } else {
                                 return IconbuttonWidget(
+                                  isImp: true,
                                   icon: Icons.cancel,
                                   color: Colors.red,
                                   onPressed: () {

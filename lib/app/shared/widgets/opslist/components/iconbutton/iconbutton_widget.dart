@@ -5,9 +5,10 @@ class IconbuttonWidget extends StatelessWidget {
   IconData icon;
   Color color;
   Function onPressed;
+  bool isImp;
 
 
-  IconbuttonWidget({this.icon, this.color, this.onPressed});
+  IconbuttonWidget({this.icon, this.color, this.onPressed,this.isImp = false});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +19,7 @@ class IconbuttonWidget extends StatelessWidget {
         color: color,
       ),
       padding: EdgeInsets.all(4),
-      onPressed: onPressed,
+      onPressed: isImp?onPressed:null,
     );
   }
 }

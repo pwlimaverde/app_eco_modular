@@ -157,9 +157,9 @@ abstract class _OpslistControllerBase with Store {
       showMenu: showMenu,
       filtro: filtro,
       check: (OpsModel o) {
-        setOpCheck(o);
-        check(o);
-        setOpCheckCan();
+          setOpCheck(o);
+          check(o);
+          setOpCheckCan();
       },
       can: (OpsModel o) {
         setOpCan(o);
