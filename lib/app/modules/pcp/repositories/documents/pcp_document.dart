@@ -1,6 +1,6 @@
 const String opsRyobiQuery = """
 query{
-  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, ryobi: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, estoque: {_is_null: false}, ryobi: {_eq: true}}){
     op 
     orderpcp
     servico  
@@ -25,7 +25,7 @@ query{
 
 const String opsSm2cQuery = """
 query{
-  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm2c: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, estoque: {_is_null: false}, sm2c: {_eq: true}}){
     op 
     orderpcp
     servico  
@@ -50,7 +50,7 @@ query{
 
 const String opsSm4cQuery = """
 query{
-  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, sm4c: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, estoque: {_is_null: false}, sm4c: {_eq: true}}){
     op 
     orderpcp
     servico  
@@ -75,7 +75,7 @@ query{
 
 const String opsFlexoQuery = """
 query{
-  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, flexo: {_eq: true}}){
+  ops(order_by: {orderpcp: asc, entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, estoque: {_is_null: false}, flexo: {_eq: true}}){
     op 
     orderpcp
     servico  

@@ -48,7 +48,7 @@ query{
 
 const String opsEntQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: false}, entregue: {_is_null: true}, estoque: {_is_null: false}}){
+  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: false}, entregue: {_is_null: true}}){
     op 
     servico  
     cancelada 
