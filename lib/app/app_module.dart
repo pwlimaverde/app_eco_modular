@@ -16,6 +16,7 @@ import 'package:hasura_connect/hasura_connect.dart';
 import 'modules/login/login_module.dart';
 import 'modules/ops/ops_module.dart';
 import 'modules/pcp/pcp_module.dart';
+import 'modules/planejamento/planejamento_module.dart';
 import 'modules/uploadcsv/uploadcsv_module.dart';
 import 'shared/auth/repositories/auth_interface.dart';
 import 'shared/global/loginbutton/loginbutton_controller.dart';
@@ -51,6 +52,8 @@ class AppModule extends MainModule {
             module: OpsModule(), transition: TransitionType.noTransition),
         Router('/pcp',
             module: PcpModule(), transition: TransitionType.noTransition),
+        Router('/planejamento',
+            module: PlanejamentoModule(), transition: TransitionType.noTransition),
       ];
 
   @override

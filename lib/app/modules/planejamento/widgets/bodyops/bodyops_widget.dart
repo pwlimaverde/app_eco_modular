@@ -1,3 +1,4 @@
+import 'package:eco_web_mobx/app/modules/ops/widgets/listops/listops_widget.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:flutter/material.dart';
@@ -5,7 +6,11 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import '../../pcp_controller.dart';
+import '../../planejamento_controller.dart';
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pdfLib;
+import 'package:printing/printing.dart';
+import 'dart:html' as html;
 
 class BodyopsWidget extends StatefulWidget {
   var menuWidth;
@@ -21,7 +26,7 @@ class BodyopsWidget extends StatefulWidget {
 
 class _BodyopsWidgetState extends State<BodyopsWidget>
     with SingleTickerProviderStateMixin<BodyopsWidget> {
-  final controller = Modular.get<PcpController>();
+  final controller = Modular.get<PlanejamentoController>();
   final formKey = GlobalKey<FormState>();
   final crtlBusca = TextEditingController();
 
@@ -34,10 +39,10 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
   }
 
   Future _initTabs() async {
-    _tabController = TabController(length: 4, vsync: this);
-    _tabController.index = await controller.prefsOps.getInt("pcptabIndexImp");
+    _tabController = TabController(length: 3, vsync: this);
+    _tabController.index = await controller.prefsOps.getInt("planejamentotabIndex");
     _tabController.addListener(() {
-      controller.prefsOps.setInt("pcptabIndexImp", _tabController.index);
+      controller.prefsOps.setInt("planejamentotabIndex", _tabController.index);
     });
   }
 
@@ -79,24 +84,27 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         indicatorColor: Colors.blue,
         labelStyle: TextStyle(color: Colors.white, fontSize: 13),
         tabs: [
-          Tab(
-            text: "Ryobi",
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              _buttonPdf(),
+              Text("Liberação Designer"),
+              Text(""),
+            ],
           ),
           Tab(
-            text: "SM 4 Cor",
-          ),
-          Tab(
-            text: "SM 2 Cor",
+            text: "Liberação Arte Final",
           ),
           Observer(builder: (_) {
             return Tab(
+//            text: "Todas as Ops",
               child: controller.buscando == true
                   ? _iconButtonSearch()
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
                         Text(""),
-                        Text("Flexo"),
+                        Text("Liberação Estoque"),
                         _iconButtonSearch(),
                       ],
                     ),
@@ -105,6 +113,34 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
         ],
       ),
     );
+  }
+
+  _buttonPdf() {
+    return IconButton(
+      iconSize: 18,
+      icon: Icon(
+        Icons.picture_as_pdf,
+        color: Colors.white,
+      ),
+      onPressed: () => _generatePdf(context),
+    );
+  }
+
+  _generatePdf(context) async {
+//    final pdf = pdfLib.Document();
+//    pdf.addPage(pdfLib.Page(
+//        pageFormat: PdfPageFormat.a4,
+//        build: (pdfLib.Context context) {
+//          return pdfLib.Center(
+//            child: pdfLib.Text("Hello World"),
+//          ); // Center
+//        }));
+
+//    await Printing.layoutPdf(
+//        onLayout: (PdfPageFormat format) async => await Printing.convertHtml(
+//          format: format,
+//          html: '<html><body><p>Hello!</p></body></html>',
+//        ));
   }
 
   _iconButtonSearch() {
@@ -152,6 +188,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
 
   _buttonSearch() {
     return IconButton(
+      iconSize: 18,
       icon: Icon(
         Icons.search,
         color: Colors.white,
@@ -161,47 +198,6 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
       },
     );
   }
-
-//  _inkWell({Icon icon, String title, Function ontap, Color color}) {
-//    return InkWell(
-//      child: Row(
-//        children: <Widget>[
-//          icon,
-//          Text(
-//            title,
-//            style: TextStyle(color: color),
-//          ),
-//        ],
-//      ),
-//      onTap: ontap,
-//    );
-//  }
-//
-//  _alertBusca() {
-//    showDialog(
-//        barrierDismissible: false,
-//        context: context,
-//        builder: (context) {
-//          return AlertDialog(
-//            title: Text("Digite a Busca..."),
-//            content: _textFormField(),
-//            actions: <Widget>[
-//              FlatButton(
-//                  child: Text("Ok"),
-//                  onPressed: () {
-//                    Navigator.pop(context);
-//                  }),
-//              FlatButton(
-//                  child: Text("Cancelar"),
-//                  onPressed: () {
-//                    crtlBusca.clear();
-//                    controller.setBuscando(false);
-//                    Navigator.pop(context);
-//                  })
-//            ],
-//          );
-//        });
-//  }
 
   _textFormField() {
     return TextFormField(
@@ -233,23 +229,21 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     return TabBarView(
       controller: _tabController,
       children: [
-        _observerListRyobi(),
-        _observerListSm4c(),
-        _observerListSm2c(),
-        _observerListFlexo(),
-
+        _observerListLibDesigner(),
+        _observerListLibArteFinal(),
+        _observerListLibEstoque(),
       ],
     );
   }
 
-  _observerListRyobi() {
+  _observerListLibEstoque() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListRyobi.data;
-        if (controller.opsListRyobi.hasError) {
+        List<OpsModel> filtro = controller.libEstoqueList.data;
+        if (controller.libEstoqueList.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListRyobi.data == null) {
+        if (controller.libEstoqueList.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
@@ -267,7 +261,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
                     ).toList()
                   : filtro
               : filtro,
-          controller.upImp,
+          controller.upProd,
           controller.canProd,
           controller.upInfo,
           false,
@@ -276,32 +270,32 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  _observerListSm4c() {
+  _observerListLibDesigner() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListSm4c.data;
-        if (controller.opsListSm4c.hasError) {
+        List<OpsModel> filtro = controller.libDesignerList.data;
+        if (controller.libDesignerList.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListSm4c.data == null) {
+        if (controller.libDesignerList.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
           controller.buscando == true
               ? controller.busca != null && controller.busca.length >= 1
-              ? filtro.where(
-                (element) {
-              String termos =
-                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
-              return termos
-                  .toLowerCase()
-                  .contains(controller.busca.toLowerCase());
-            },
-          ).toList()
-              : filtro
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
               : filtro,
-          controller.upImp,
+          controller.upProd,
           controller.canProd,
           controller.upInfo,
           false,
@@ -310,32 +304,32 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     );
   }
 
-  _observerListSm2c() {
+  _observerListLibArteFinal() {
     return Observer(
       builder: (context) {
-        List<OpsModel> filtro = controller.opsListSm2c.data;
-        if (controller.opsListSm2c.hasError) {
+        List<OpsModel> filtro = controller.libArteFinalList.data;
+        if (controller.libArteFinalList.hasError) {
           return Text("Teve um erro");
         }
-        if (controller.opsListSm2c.data == null) {
+        if (controller.libArteFinalList.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(
           widget.showMenu,
           controller.buscando == true
               ? controller.busca != null && controller.busca.length >= 1
-              ? filtro.where(
-                (element) {
-              String termos =
-                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
-              return termos
-                  .toLowerCase()
-                  .contains(controller.busca.toLowerCase());
-            },
-          ).toList()
-              : filtro
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
               : filtro,
-          controller.upImp,
+          controller.upProd,
           controller.canProd,
           controller.upInfo,
           false,
@@ -343,39 +337,4 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
       },
     );
   }
-
-  _observerListFlexo() {
-    return Observer(
-      builder: (context) {
-        List<OpsModel> filtro = controller.opsListFlexo.data;
-        if (controller.opsListFlexo.hasError) {
-          return Text("Teve um erro");
-        }
-        if (controller.opsListFlexo.data == null) {
-          return Center(child: CircularProgressIndicator());
-        }
-        return controller.controllerOpsList.opslistWidget(
-          widget.showMenu,
-          controller.buscando == true
-              ? controller.busca != null && controller.busca.length >= 1
-              ? filtro.where(
-                (element) {
-              String termos =
-                  "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
-              return termos
-                  .toLowerCase()
-                  .contains(controller.busca.toLowerCase());
-            },
-          ).toList()
-              : filtro
-              : filtro,
-          controller.upImp,
-          controller.canProd,
-          controller.upInfo,
-          false,
-        );
-      },
-    );
-  }
-
 }

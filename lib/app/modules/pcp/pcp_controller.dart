@@ -43,7 +43,7 @@ abstract class _PcpControllerBase with Store {
 
   get header => controllerHeader.header(sizeW, hederHeight);
 
-  get menu => controllerMenu.menuWidget(3);
+  get menu => controllerMenu.menuWidget(4);
 
   get right => controllerRight.rightWidget(
         widget: BodyopsWidget(

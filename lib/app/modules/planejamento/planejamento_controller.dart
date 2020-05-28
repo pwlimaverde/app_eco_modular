@@ -1,4 +1,3 @@
-import 'package:eco_web_mobx/app/modules/ops/repositories/ops_interface.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/constants.dart';
 import 'package:eco_web_mobx/app/shared/widgets/header/header_controller.dart';
@@ -9,21 +8,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import '../../app_controller.dart';
-import 'ops_status.dart';
+import 'planejamento_status.dart';
+import 'repositories/planejamento_interface.dart';
 import 'widgets/bodyops/bodyops_widget.dart';
 
-part 'ops_controller.g.dart';
+part 'planejamento_controller.g.dart';
 
-class OpsController = _OpsControllerBase with _$OpsController;
+class PlanejamentoController = _PlanejamentoControllerBase with _$PlanejamentoController;
 
-abstract class _OpsControllerBase with Store {
-  final IOpsRepository repository;
+abstract class _PlanejamentoControllerBase with Store {
+  final IPlanejamentoRepository repository;
   final prefsOps;
 
-  _OpsControllerBase(IOpsRepository this.repository, this.prefsOps) {
-    getOpsListAll();
-    getOpsListProd();
-    getOpsListEnt();
+  _PlanejamentoControllerBase(IPlanejamentoRepository this.repository, this.prefsOps) {
+    getOpsListEstoque();
+    getOpsListDesigner();
+    getOpsListArteFinal();
   }
 
   String busca;
@@ -42,7 +42,7 @@ abstract class _OpsControllerBase with Store {
 
   get header => controllerHeader.header(sizeW, hederHeight);
 
-  get menu => controllerMenu.menuWidget(3);
+  get menu => controllerMenu.menuWidget(2);
 
   get right => controllerRight.rightWidget(
         widget: BodyopsWidget(
@@ -57,32 +57,32 @@ abstract class _OpsControllerBase with Store {
       );
 
   @observable
-  ObservableStream<List<OpsModel>> opsListAll;
+  ObservableStream<List<OpsModel>> libEstoqueList;
 
   @action
-  getOpsListAll() {
+  getOpsListEstoque() {
     setStatus(OpsStatus.loading);
-    opsListAll = repository.getOpsAll().asObservable();
+    libEstoqueList = repository.getOpsEstoque().asObservable();
     setStatus(OpsStatus.success);
   }
 
   @observable
-  ObservableStream<List<OpsModel>> opsListProd;
+  ObservableStream<List<OpsModel>> libDesignerList;
 
   @action
-  getOpsListProd() {
+  getOpsListDesigner() {
     setStatus(OpsStatus.loading);
-    opsListProd = repository.getOpsProd().asObservable();
+    libDesignerList = repository.getOpsDesigner().asObservable();
     setStatus(OpsStatus.success);
   }
 
   @observable
-  ObservableStream<List<OpsModel>> opsListEnt;
+  ObservableStream<List<OpsModel>> libArteFinalList;
 
   @action
-  getOpsListEnt() {
+  getOpsListArteFinal() {
     setStatus(OpsStatus.loading);
-    opsListEnt = repository.getOpsEnt().asObservable();
+    libArteFinalList = repository.getOpsArteFinal().asObservable();
     setStatus(OpsStatus.success);
   }
 

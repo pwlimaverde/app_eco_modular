@@ -40,9 +40,9 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
 
   Future _initTabs() async {
     _tabController = TabController(length: 3, vsync: this);
-    _tabController.index = await controller.prefsOps.getInt("tabIndex");
+    _tabController.index = await controller.prefsOps.getInt("opstabIndex");
     _tabController.addListener(() {
-      controller.prefsOps.setInt("tabIndex", _tabController.index);
+      controller.prefsOps.setInt("opstabIndex", _tabController.index);
     });
   }
 

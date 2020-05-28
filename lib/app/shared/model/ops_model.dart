@@ -13,6 +13,9 @@ class OpsModel {
   DateTime entrega;
   DateTime entregaprog;
   String vendedor;
+  DateTime designer;
+  DateTime artefinal;
+  DateTime estoque;
   DateTime produzido;
   DateTime entregue;
   bool cancelada;
@@ -48,6 +51,9 @@ class OpsModel {
     this.entrega,
     this.entregaprog,
     this.vendedor,
+    this.designer,
+    this.artefinal,
+    this.estoque,
     this.produzido,
     this.entregue,
     this.cancelada = false,
@@ -90,6 +96,15 @@ class OpsModel {
           ? doc['entregaprog']
           : DateTime.parse(doc['entregaprog']),
       vendedor: doc['vendedor'],
+      designer: doc['designer'] == null
+          ? doc['designer']
+          : DateTime.parse(doc['designer']),
+      artefinal: doc['artefinal'] == null
+          ? doc['artefinal']
+          : DateTime.parse(doc['artefinal']),
+      estoque: doc['estoque'] == null
+          ? doc['estoque']
+          : DateTime.parse(doc['estoque']),
       produzido: doc['produzido'] == null
           ? doc['produzido']
           : DateTime.parse(doc['produzido']),
@@ -235,6 +250,21 @@ class OpsModel {
               doc['entrega'].seconds * 1000,
             ),
       vendedor: doc['vendedor'],
+      designer: doc['designer'] == null
+          ? doc['designer']
+          : DateTime.fromMillisecondsSinceEpoch(
+        doc['designer'].seconds * 1000,
+      ),
+      artefinal: doc['artefinal'] == null
+          ? doc['artefinal']
+          : DateTime.fromMillisecondsSinceEpoch(
+        doc['artefinal'].seconds * 1000,
+      ),
+      estoque: doc['estoque'] == null
+          ? doc['estoque']
+          : DateTime.fromMillisecondsSinceEpoch(
+        doc['estoque'].seconds * 1000,
+      ),
       produzido: doc['produzido'] == null
           ? doc['produzido']
           : DateTime.fromMillisecondsSinceEpoch(
