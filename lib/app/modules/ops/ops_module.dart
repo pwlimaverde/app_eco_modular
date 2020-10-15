@@ -17,9 +17,9 @@ class OpsModule extends ChildModule {
       ];
 
   @override
-  List<Router> get routers => [
-        Router(Modular.initialRoute, child: (_, args) => OpsPage()),
-        Router('/prod', child: (_, args) => ProdPage()),
+  List<ModularRouter> get routers => [
+        ModularRouter(Modular.initialRoute, child: (_, args) => OpsPage()),
+        ModularRouter('/prod', child: (_, args) => ProdPage()),
       ];
 
   static Inject get to => Inject<OpsModule>.of();

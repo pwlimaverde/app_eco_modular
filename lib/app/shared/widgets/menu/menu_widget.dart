@@ -33,13 +33,13 @@ class MenuWidget extends StatelessWidget {
             icon: Icon(Icons.cloud_upload),
             title: "Upload Ops",
           ),
-          ItemWidget(
-            page: page,
-            indice: 2,
-            nav: "/planejamento",
-            icon: Icon(Icons.cloud),
-            title: "Planejamento",
-          ),
+          // ItemWidget(
+          //   page: page,
+          //   indice: 2,
+          //   nav: "/planejamento",
+          //   icon: Icon(Icons.cloud_download),
+          //   title: "Planejamento",
+          // ),
           ItemWidget(
             page: page,
             indice: 3,

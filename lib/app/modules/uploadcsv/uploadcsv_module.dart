@@ -20,8 +20,9 @@ class UploadcsvModule extends ChildModule {
       ];
 
   @override
-  List<Router> get routers => [
-        Router(Modular.initialRoute, child: (_, args) => UploadcsvPage()),
+  List<ModularRouter> get routers => [
+        ModularRouter(Modular.initialRoute,
+            child: (_, args) => UploadcsvPage()),
       ];
 
   static Inject get to => Inject<UploadcsvModule>.of();

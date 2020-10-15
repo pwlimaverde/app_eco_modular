@@ -41,19 +41,20 @@ class AppModule extends MainModule {
       ];
 
   @override
-  List<Router> get routers => [
-//        Router('/', child: (_, args) => SplashPage()),
-//        Router('/login', module: LoginModule(), transition: TransitionType.noTransition),
-        Router('/',
+  List<ModularRouter> get routers => [
+//        ModularRouter('/', child: (_, args) => SplashPage()),
+//        ModularRouter('/login', module: LoginModule(), transition: TransitionType.noTransition),
+        ModularRouter('/',
             module: HomeModule(), transition: TransitionType.noTransition),
-        Router('/upload',
+        ModularRouter('/upload',
             module: UploadcsvModule(), transition: TransitionType.noTransition),
-        Router('/ops',
+        ModularRouter('/ops',
             module: OpsModule(), transition: TransitionType.noTransition),
-        Router('/pcp',
+        ModularRouter('/pcp',
             module: PcpModule(), transition: TransitionType.noTransition),
-        Router('/planejamento',
-            module: PlanejamentoModule(), transition: TransitionType.noTransition),
+        ModularRouter('/planejamento',
+            module: PlanejamentoModule(),
+            transition: TransitionType.noTransition),
       ];
 
   @override

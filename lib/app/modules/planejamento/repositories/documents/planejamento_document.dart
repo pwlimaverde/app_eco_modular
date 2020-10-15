@@ -54,7 +54,7 @@ query{
 
 const String opsArteFinalQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, designer: {_is_null: false}, artefinal: {_is_null: true}}){
+  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, artefinal: {_is_null: true}}){
     op 
     servico  
     cancelada 
@@ -118,8 +118,6 @@ mutation ProdOps(\$op: Int, \$estoque: date) {
   }
 }
 """;
-
-
 
 const String opsInfoMutation = """
 mutation InfoOps(\$op: Int, \$entrega: date, \$entregaprog: date, \$obs: String, \$ryobi: Boolean, \$sm2c: Boolean, \$sm4c: Boolean, \$flexo: Boolean, \$impressao: date) {

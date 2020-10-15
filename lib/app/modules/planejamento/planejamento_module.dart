@@ -8,14 +8,17 @@ import 'repositories/planejamento_interface.dart';
 class PlanejamentoModule extends ChildModule {
   @override
   List<Bind> get binds => [
-        Bind<IPlanejamentoRepository>((i) => PlanejamentoHasuraRepository(i.get())),
+        Bind<IPlanejamentoRepository>(
+            (i) => PlanejamentoHasuraRepository(i.get())),
 //        Bind<IOpsRepository>((i) => OpsFirebaseRepository(Firestore.instance)),
-        Bind((i) => PlanejamentoController(i.get(), Modular.get<PrefsService>())),
+        Bind((i) =>
+            PlanejamentoController(i.get(), Modular.get<PrefsService>())),
       ];
 
   @override
-  List<Router> get routers => [
-        Router(Modular.initialRoute, child: (_, args) => PlanejamentoPage()),
+  List<ModularRouter> get routers => [
+        ModularRouter(Modular.initialRoute,
+            child: (_, args) => PlanejamentoPage()),
       ];
 
   static Inject get to => Inject<PlanejamentoModule>.of();

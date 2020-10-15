@@ -22,6 +22,7 @@ abstract class _OpsControllerBase with Store {
 
   _OpsControllerBase(IOpsRepository this.repository, this.prefsOps) {
     getOpsListAll();
+    getOpsListArteFinal();
     getOpsListProd();
     getOpsListEnt();
   }
@@ -67,6 +68,16 @@ abstract class _OpsControllerBase with Store {
   }
 
   @observable
+  ObservableStream<List<OpsModel>> libArteFinalList;
+
+  @action
+  getOpsListArteFinal() {
+    setStatus(OpsStatus.loading);
+    libArteFinalList = repository.getOpsArteFinal().asObservable();
+    setStatus(OpsStatus.success);
+  }
+
+  @observable
   ObservableStream<List<OpsModel>> opsListProd;
 
   @action
@@ -90,7 +101,7 @@ abstract class _OpsControllerBase with Store {
   bool buscando;
 
   @action
-  setBuscando(bool valor){
+  setBuscando(bool valor) {
     buscando = valor;
   }
 
@@ -150,7 +161,6 @@ abstract class _OpsControllerBase with Store {
     var prop = ((size * med) / 100);
     return prop;
   }
-
 
   Future upProd(OpsModel model) => repository.upProd(model);
   Future upInfo(OpsModel model) => repository.upInfo(model);

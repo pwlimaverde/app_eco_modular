@@ -39,7 +39,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
   }
 
   Future _initTabs() async {
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
     _tabController.index = await controller.prefsOps.getInt("opstabIndex");
     _tabController.addListener(() {
       controller.prefsOps.setInt("opstabIndex", _tabController.index);
@@ -88,9 +88,12 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               _buttonPdf(),
-              Text("Em Produção"),
+              Text("Liberação Arte Final"),
               Text(""),
             ],
+          ),
+          Tab(
+            text: "Em Produção",
           ),
           Tab(
             text: "Em Expedição",
@@ -229,6 +232,7 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
     return TabBarView(
       controller: _tabController,
       children: [
+        _observerListLibArteFinal(),
         _observerListProd(),
         _observerListEnt(),
         _observerList(),
@@ -244,6 +248,40 @@ class _BodyopsWidgetState extends State<BodyopsWidget>
           return Text("Teve um erro");
         }
         if (controller.opsListAll.data == null) {
+          return Center(child: CircularProgressIndicator());
+        }
+        return controller.controllerOpsList.opslistWidget(
+          widget.showMenu,
+          controller.buscando == true
+              ? controller.busca != null && controller.busca.length >= 1
+                  ? filtro.where(
+                      (element) {
+                        String termos =
+                            "${element.op} - ${element.cliente} - ${element.servico} - ${element.quant} - ${element.vendedor} - ${element.obs}";
+                        return termos
+                            .toLowerCase()
+                            .contains(controller.busca.toLowerCase());
+                      },
+                    ).toList()
+                  : filtro
+              : filtro,
+          controller.upProd,
+          controller.canProd,
+          controller.upInfo,
+          false,
+        );
+      },
+    );
+  }
+
+  _observerListLibArteFinal() {
+    return Observer(
+      builder: (context) {
+        List<OpsModel> filtro = controller.libArteFinalList.data;
+        if (controller.libArteFinalList.hasError) {
+          return Text("Teve um erro");
+        }
+        if (controller.libArteFinalList.data == null) {
           return Center(child: CircularProgressIndicator());
         }
         return controller.controllerOpsList.opslistWidget(

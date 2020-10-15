@@ -22,9 +22,9 @@ query{
 }
 """;
 
-const String opsProdQuery = """
+const String opsArteFinalQuery = """
 query{
-  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, estoque: {_is_null: false}}){
+  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, artefinal: {_is_null: true}}){
     op 
     servico  
     cancelada 
@@ -42,6 +42,34 @@ query{
     sm2c
     sm4c
     flexo
+    designer
+    artefinal
+    estoque
+  }
+}
+""";
+
+const String opsProdQuery = """
+query{
+  ops(order_by: {entrega: asc, cliente: asc, op: asc}, where: {cancelada: {_eq: false}, produzido: {_is_null: true}, entregue: {_is_null: true}, artefinal: {_is_null: false}}){
+    op 
+    servico  
+    cancelada 
+    cliente 
+    obs 
+    quant 
+    vendedor
+    entrada 
+    produzido
+    entrega
+    entregue
+    entregaprog
+    impressao
+    ryobi
+    sm2c
+    sm4c
+    flexo
+    artefinal
   }
 }
 """;
@@ -66,6 +94,7 @@ query{
     sm2c
     sm4c
     flexo
+    artefinal
   }
 }
 """;
@@ -81,6 +110,14 @@ query (\$op: Int) {
 const String opsCanMutation = """
 mutation CanOps(\$op: Int, \$cancelada: Boolean) {
   update_ops(where: {op: {_eq: \$op}}, _set: {cancelada: \$cancelada}) {
+    affected_rows
+  }
+}
+""";
+
+const String opsArteFinalMutation = """
+mutation ProdOps(\$op: Int, \$artefinal: date) {
+  update_ops(where: {op: {_eq: \$op}}, _set: {artefinal: \$artefinal}) {
     affected_rows
   }
 }

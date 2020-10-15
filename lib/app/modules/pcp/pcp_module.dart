@@ -5,7 +5,6 @@ import 'pcp_page.dart';
 import 'repositories/pcp_hasura_repository.dart';
 import 'repositories/pcp_interface.dart';
 
-
 class PcpModule extends ChildModule {
   @override
   List<Bind> get binds => [
@@ -15,8 +14,8 @@ class PcpModule extends ChildModule {
       ];
 
   @override
-  List<Router> get routers => [
-        Router(Modular.initialRoute, child: (_, args) => PcpPage()),
+  List<ModularRouter> get routers => [
+        ModularRouter(Modular.initialRoute, child: (_, args) => PcpPage()),
       ];
 
   static Inject get to => Inject<PcpModule>.of();

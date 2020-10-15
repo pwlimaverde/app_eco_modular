@@ -5,87 +5,98 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'ops_interface.dart';
 
-
 class OpsFirebaseRepository implements IOpsRepository {
-
   final Firestore firestore;
   OpsFirebaseRepository(this.firestore);
 
   final auth = Modular.get<AuthController>();
 
   @override
-  Future upProd(OpsModel model) async{
+  Future upProd(OpsModel model) async {
     var now = DateTime.now();
-    try{
-      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+    try {
+      DocumentReference docRef =
+          firestore.collection("ops").document("${model.op}");
       DocumentSnapshot doc = await docRef.get();
-      if(doc.data['produzido'] != null && doc.data['entregue'] != null){
+      if (doc.data['produzido'] != null && doc.data['entregue'] != null) {
         return;
       }
-      if(doc.data['produzido'] == null){
+      if (doc.data['produzido'] == null) {
         model.reference.updateData({
           'produzido': now,
         });
-      }else{
+      } else {
         model.reference.updateData({
           'entregue': now,
         });
       }
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
   @override
-  Future upInfo(OpsModel model) async{
-    try{
-      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+  Future upInfo(OpsModel model) async {
+    try {
+      DocumentReference docRef =
+          firestore.collection("ops").document("${model.op}");
       DocumentSnapshot doc = await docRef.get();
       model.reference.updateData({
         'obs': model.obs,
         'entrega': model.entrega,
         'ryobi': model.ryobi,
       });
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
   @override
-  Future canProd(OpsModel model) async{
-    try{
-      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
+  Future canProd(OpsModel model) async {
+    try {
+      DocumentReference docRef =
+          firestore.collection("ops").document("${model.op}");
       DocumentSnapshot doc = await docRef.get();
-      if(doc.data['cancelada'] == false){
+      if (doc.data['cancelada'] == false) {
         model.reference.updateData({
           'cancelada': true,
         });
-      }else{
+      } else {
         model.reference.updateData({
           'cancelada': false,
         });
       }
-
-    }catch(e){
+    } catch (e) {
       print(e);
     }
   }
 
-
   @override
   Stream<List<OpsModel>> getOpsAll() {
-    return firestore.collection("ops").orderBy('op', descending: true).snapshots().map((query) {
+    return firestore
+        .collection("ops")
+        .orderBy('op', descending: true)
+        .snapshots()
+        .map((query) {
       return query.documents.map((doc) {
         return OpsModel.fromDocument(doc);
       }).toList();
     });
   }
 
-
   @override
   Stream<List<OpsModel>> getOpsProd() {
-    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
-      return query.documents.where((doc) => doc['cancelada'] == false && doc['produzido'] == null && doc['entregue'] == null).map((doc) {
+    return firestore
+        .collection("ops")
+        .orderBy('entrega')
+        .snapshots()
+        .map((query) {
+      return query.documents
+          .where((doc) =>
+              doc['cancelada'] == false &&
+              doc['produzido'] == null &&
+              doc['entregue'] == null)
+          .map((doc) {
         return OpsModel.fromDocument(doc);
       }).toList();
     });
@@ -93,13 +104,21 @@ class OpsFirebaseRepository implements IOpsRepository {
 
   @override
   Stream<List<OpsModel>> getOpsEnt() {
-    return firestore.collection("ops").orderBy('entrega').snapshots().map((query) {
-      return query.documents.where((doc) => doc['cancelada'] == false && doc['produzido'] != null && doc['entregue'] == null).map((doc) {
+    return firestore
+        .collection("ops")
+        .orderBy('entrega')
+        .snapshots()
+        .map((query) {
+      return query.documents
+          .where((doc) =>
+              doc['cancelada'] == false &&
+              doc['produzido'] != null &&
+              doc['entregue'] == null)
+          .map((doc) {
         return OpsModel.fromDocument(doc);
       }).toList();
     });
   }
-
 
 //  @override
 //  Future upload(List<OpsModel> listOps) async{
@@ -151,6 +170,9 @@ class OpsFirebaseRepository implements IOpsRepository {
     throw UnimplementedError();
   }
 
-
-
+  @override
+  Stream<List<OpsModel>> getOpsArteFinal() {
+    // TODO: implement getOpsArteFinal
+    throw UnimplementedError();
+  }
 }

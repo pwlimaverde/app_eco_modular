@@ -20,10 +20,17 @@ class OpsHasuraRepository implements IOpsRepository {
     var now = DateTime.now();
     final df = DateFormat('yyyy/MM/dd');
     try {
-      if (model.produzido != null && model.entregue != null) {
+      if (model.artefinal != null &&
+          model.produzido != null &&
+          model.entregue != null) {
         return;
       }
-      if (model.produzido == null) {
+      if (model.artefinal == null) {
+        print("inicio arte final");
+        connect.mutation(opsArteFinalMutation,
+            variables: {"op": model.op, "artefinal": df.format(now)});
+        print("fim arte final");
+      } else if (model.produzido == null) {
         connect.mutation(opsProdMutation,
             variables: {"op": model.op, "produzido": df.format(now)});
       } else {
@@ -54,6 +61,15 @@ class OpsHasuraRepository implements IOpsRepository {
   }
 
   @override
+  Stream<List<OpsModel>> getOpsArteFinal() {
+    return connect.subscription(opsArteFinalQuery).map((event) {
+      return (event['data']['ops'] as List).map((json) {
+        return OpsModel.fromJson(json);
+      }).toList();
+    });
+  }
+
+  @override
   Stream<List<OpsModel>> getOpsProd() {
     return connect.subscription(opsProdQuery).map((event) {
       return (event['data']['ops'] as List).map((json) {
@@ -65,22 +81,23 @@ class OpsHasuraRepository implements IOpsRepository {
   @override
   Future upInfo(OpsModel model) {
     final df = DateFormat('yyyy/MM/dd');
-    try{
+    try {
       connect.mutation(opsInfoMutation, variables: {
         "op": model.op,
         "entrega": df.format(model.entrega),
-        "entregaprog": model.entregaprog != null?df.format(model.entregaprog):null,
+        "entregaprog":
+            model.entregaprog != null ? df.format(model.entregaprog) : null,
         "obs": model.obs,
         "ryobi": model.ryobi,
         "sm2c": model.sm2c,
         "sm4c": model.sm4c,
         "flexo": model.flexo,
-        "impressao": model.impressao != null?df.format(model.impressao):null,
+        "impressao":
+            model.impressao != null ? df.format(model.impressao) : null,
       });
-    }catch (e){
+    } catch (e) {
       print("erro --- $e");
     }
-
 
 //    try{
 //      DocumentReference docRef = firestore.collection("ops").document("${model.op}");
