@@ -58,53 +58,113 @@ class UploadcsvHasuraRepository implements IUploadcsvRepository {
     }
   }
 
+  Future<OpsModel> _enviarOp(OpsModel model) async {
+    final df = DateFormat('yyyy/MM/dd');
+    var query = await connect.query(opsDup, variables: {"op": model.op});
+    var lDup = (query['data']['ops'] as List).length;
+    if (lDup == 0) {
+      var data = await connect.mutation(
+        uploadOpsMutation,
+        variables: {
+          "cliente": model.cliente,
+          "op": model.op,
+          "orcamento": model.orcamento,
+          "quant": model.quant,
+          "servico": model.servico,
+          "valor": model.valor,
+          "vendedor": model.vendedor,
+          "entrada": df.format(model.entrada),
+          "entrega": df.format(model.entrega),
+        },
+      );
+      model.id = data['data']['insert_ops']['returning'][0]['id'];
+      model.cancelada = false;
+      model.produzido = null;
+      model.entregue = null;
+      model.entregaprog = null;
+      model.obs = null;
+      model.ryobi = false;
+      model.sm2c = false;
+      model.sm4c = false;
+      model.flexo = false;
+      model.impressao = null;
+      return model;
+    } else {
+      return model;
+    }
+  }
+
   @override
   Future upload(List<OpsModel> listOps) async {
-    final df = DateFormat('yyyy/MM/dd');
-    List<OpsModel> listOpsAnalitic = listOps;
-    List<OpsModel> listOpsUP = [];
-    List<OpsModel> listOpsUPOk = [];
+    try {
+      List<OpsModel> listOpsUPOk = [];
+      final Iterable<Future<OpsModel>> enviarOpsFuturo = listOps.map(_enviarOp);
 
-    for (OpsModel model in listOpsAnalitic) {
-      var query = await connect.query(opsDup, variables: {"op": model.op});
-      var lDup = (query['data']['ops'] as List).length;
-      if (lDup == 0) {
-        listOpsUP.add(model);
-      }
-    }
+      final Future<Iterable<OpsModel>> waited = Future.wait(enviarOpsFuturo);
 
-    if (listOpsUP.length > 0) {
-      for (OpsModel model in listOpsUP) {
-        var data = await connect.mutation(
-          uploadOpsMutation,
-          variables: {
-            "cliente": model.cliente,
-            "op": model.op,
-            "orcamento": model.orcamento,
-            "quant": model.quant,
-            "servico": model.servico,
-            "valor": model.valor,
-            "vendedor": model.vendedor,
-            "entrada": df.format(model.entrada),
-            "entrega": df.format(model.entrega),
-          },
-        );
-        model.id = data['data']['insert_ops']['returning'][0]['id'];
-        model.cancelada = false;
-        model.produzido = null;
-        model.entregue = null;
-        model.entregaprog = null;
-        model.obs = null;
-        model.ryobi = false;
-        model.sm2c = false;
-        model.sm4c = false;
-        model.flexo = false;
-        model.impressao = null;
-        listOpsUPOk.add(model);
+      final awaitedWaited = await waited;
+
+      for (OpsModel op in awaitedWaited) {
+        if (op.id != null) {
+          listOpsUPOk.add(op);
+        }
       }
+      print("teste envio model fim ${listOpsUPOk.length}");
+      print("teste envio awaitedWaited fim ${awaitedWaited.length}");
+
+      return listOpsUPOk.length > 0 ? listOpsUPOk : null;
+    } catch (e) {
+      return null;
     }
-    return listOpsUPOk.length > 0 ? listOpsUPOk : null;
   }
+
+  // @override
+  // Future upload(List<OpsModel> listOps) async {
+  //   final df = DateFormat('yyyy/MM/dd');
+  //   List<OpsModel> listOpsAnalitic = listOps;
+  //   List<OpsModel> listOpsUP = [];
+  //   List<OpsModel> listOpsUPOk = [];
+
+  //   for (OpsModel model in listOpsAnalitic) {
+  //     var query = await connect.query(opsDup, variables: {"op": model.op});
+  //     var lDup = (query['data']['ops'] as List).length;
+  //     if (lDup == 0) {
+  //       listOpsUP.add(model);
+  //     }
+  //   }
+
+  //   if (listOpsUP.length > 0) {
+  //     for (OpsModel model in listOpsUP) {
+  //       var data = await connect.mutation(
+  //         uploadOpsMutation,
+  //         variables: {
+  //           "cliente": model.cliente,
+  //           "op": model.op,
+  //           "orcamento": model.orcamento,
+  //           "quant": model.quant,
+  //           "servico": model.servico,
+  //           "valor": model.valor,
+  //           "vendedor": model.vendedor,
+  //           "entrada": df.format(model.entrada),
+  //           "entrega": df.format(model.entrega),
+  //         },
+  //       );
+  //       model.id = data['data']['insert_ops']['returning'][0]['id'];
+  //       model.cancelada = false;
+  //       model.produzido = null;
+  //       model.entregue = null;
+  //       model.entregaprog = null;
+  //       model.obs = null;
+  //       model.ryobi = false;
+  //       model.sm2c = false;
+  //       model.sm4c = false;
+  //       model.flexo = false;
+  //       model.impressao = null;
+  //       listOpsUPOk.add(model);
+  //     }
+  //   }
+  //   return listOpsUPOk.length > 0 ? listOpsUPOk : null;
+  // }
 
   @override
   void dispose() {}

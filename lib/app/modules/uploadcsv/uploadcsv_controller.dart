@@ -1,4 +1,3 @@
-
 import 'package:eco_web_mobx/app/modules/ops/ops_controller.dart';
 import 'package:eco_web_mobx/app/shared/model/ops_model.dart';
 import 'package:eco_web_mobx/app/shared/utilitario/auxiliares.dart';
@@ -110,54 +109,61 @@ abstract class _UploadcsvControllerBase with Store {
               List<OpsModel> listOps = [];
 
               for (String item in decoderRow) {
-                if (item.isNotEmpty) {
-                  OpsModel up = OpsModel();
-                  List<String> i2 = item
-                      .replaceAll("\r\n", " | ")
-                      .trim()
-                      .replaceAll('$ano,', '$ano","')
-                      .replaceFirst(',', ',"')
-                      .trim()
-                      .split(',"');
-                  up.orcamento = int.parse(i2[0].replaceAll("|", " ").trim());
-                  up.cliente = i2[1].replaceAll('"', '').trim();
-                  up.servico = i2[2].replaceAll('"', '').trim();
-                  up.quant = int.parse(i2[3]
-                      .replaceAll('"', '')
-                      .replaceAll(',00', '')
-                      .replaceAll('.', '')
-                      .trim());
-                  up.valor = double.parse(i2[4]
-                      .substring(0, i2[4].indexOf('",'))
-                      .replaceFirst('.', '')
-                      .replaceAll(',', '.')
-                      .trim());
-                  String entrada = i2[4]
-                      .substring(i2[4].indexOf('",') + 2)
-                      .replaceAll('"', '')
-                      .trim();
-                  DateTime entradaFD = DateTime.parse(
-                    "${entrada.substring(6, 10)}-${entrada.substring(3, 5)}-${entrada.substring(0, 2)}",
-                  );
-                  up.entrada = entradaFD;
-                  String voe = i2[5];
-                  String vendedor = voe
-                      .substring(0, voe.indexOf(','))
-                      .replaceAll('"', '')
-                      .trim();
-                  up.vendedor = vendedor;
-                  String oe = voe.substring(voe.indexOf(',') + 1);
-                  String op = oe.substring(0, oe.indexOf(','));
-                  up.op = int.parse(op);
-                  String entrega = "${oe.substring(oe.indexOf(',') + 1)}";
-                  String entregaOk = "${entrega.substring(0, 6)}-$ano";
-                  DateTime entregaFD = DateTime.parse(
-                    "${entregaOk.substring(7, 11)}-${convertMes("${entregaOk.substring(3, 6)}")}-${entregaOk.substring(0, 2)}",
-                  );
-                  up.entrega = entregaFD;
-                  listOps.add(up);
+                try {
+                  if (item.isNotEmpty) {
+                    OpsModel up = OpsModel();
+                    List<String> i2 = item
+                        .replaceAll("\r\n", " | ")
+                        .trim()
+                        .replaceAll('$ano,', '$ano","')
+                        .replaceAll(',","', '","')
+                        .replaceFirst(',', ',"')
+                        .trim()
+                        .split(',"');
+                    up.orcamento = int.parse(i2[0].replaceAll("|", " ").trim());
+                    up.cliente = i2[1].replaceAll('"', '').trim();
+                    up.servico = i2[2].replaceAll('"', '').trim();
+                    up.quant = int.parse(i2[3]
+                        .replaceAll('"', '')
+                        .replaceAll(',00', '')
+                        .replaceAll('.', '')
+                        .trim());
+                    up.valor = double.parse(i2[4]
+                        .substring(0, i2[4].indexOf('",'))
+                        .replaceFirst('.', '')
+                        .replaceAll(',', '.')
+                        .trim());
+                    String entrada = i2[4]
+                        .substring(i2[4].indexOf('",') + 2)
+                        .replaceAll('"', '')
+                        .trim();
+                    DateTime entradaFD = DateTime.parse(
+                      "${entrada.substring(6, 10)}-${entrada.substring(3, 5)}-${entrada.substring(0, 2)}",
+                    );
+                    up.entrada = entradaFD;
+                    String voe = i2[5];
+                    String vendedor = voe
+                        .substring(0, voe.indexOf(','))
+                        .replaceAll('"', '')
+                        .trim();
+                    up.vendedor = vendedor;
+                    String oe = voe.substring(voe.indexOf(',') + 1);
+                    String op = oe.substring(0, oe.indexOf(','));
+                    up.op = int.parse(op);
+                    String entrega = "${oe.substring(oe.indexOf(',') + 1)}";
+                    String entregaOk = "${entrega.substring(0, 6)}-$ano";
+                    DateTime entregaFD = DateTime.parse(
+                      "${entregaOk.substring(7, 11)}-${convertMes("${entregaOk.substring(3, 6)}")}-${entregaOk.substring(0, 2)}",
+                    );
+                    up.entrega = entregaFD;
+
+                    listOps.add(up);
+                  }
+                } catch (e) {
+                  print("erro");
                 }
               }
+
               List<OpsModel> listOk = await upload(listOps);
               if (listOk == null) {
                 setStatus(
